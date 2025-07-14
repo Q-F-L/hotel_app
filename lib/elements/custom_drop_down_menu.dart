@@ -1,0 +1,144 @@
+import 'package:flutter/material.dart';
+
+import '../themes/themes.dart';
+import 'icon_gradient.dart';
+
+class CustomDropDownMenu extends StatefulWidget {
+  CustomDropDownMenu(
+      {super.key,
+      required this.listString,
+      this.icon,
+      this.text,
+      this.width,
+      required this.active});
+
+  final List<String?> listString;
+  final Widget? icon;
+  final String? text;
+  final double? width;
+  bool active;
+  @override
+  State<CustomDropDownMenu> createState() => _CustomDropDownMenuState();
+}
+
+class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
+  String? selected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      borderRadius: BorderRadius.circular(16),
+      elevation: 18.0,
+      type: MaterialType.button,
+      color: AppColors.textWhite,
+      shadowColor: Color.fromARGB(42, 23, 133, 137),
+      child: DropdownMenu<String?>(
+        width: widget.width,
+        enabled: widget.active,
+        requestFocusOnTap: false,
+        leadingIcon: widget.icon,
+        trailingIcon: Icon(
+          Icons.keyboard_arrow_down_rounded,
+          color: Color.fromARGB(255, 72, 218, 128),
+          size: 26,
+        ),
+        selectedTrailingIcon: Icon(
+          Icons.keyboard_arrow_down_rounded,
+          color: Color.fromARGB(255, 72, 218, 128),
+        ),
+        hintText: widget.text,
+        inputDecorationTheme: InputDecorationTheme(
+          hintStyle: inputText,
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16.0),
+            borderSide: BorderSide(color: AppColors.inputWhite),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16.0),
+            borderSide: BorderSide(color: AppColors.inputWhite),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(16.0),
+            borderSide: BorderSide(color: AppColors.inputWhite, width: 2),
+          ),
+          contentPadding:
+              const EdgeInsets.symmetric(vertical: 18.0, horizontal: 24),
+        ),
+        menuStyle: MenuStyle(
+          side: WidgetStatePropertyAll(BorderSide.none),
+          backgroundColor: WidgetStateProperty.all(AppColors.textWhite),
+          elevation: WidgetStateProperty.all(8),
+          shape: WidgetStateProperty.all(
+            RoundedRectangleBorder(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(16),
+                topRight: Radius.circular(16),
+                bottomLeft: Radius.circular(16),
+                bottomRight: Radius.circular(16),
+              ),
+            ),
+          ),
+        ),
+        onSelected: (String? e) {
+          setState(() {
+            selected = e;
+          });
+        },
+        dropdownMenuEntries: widget.listString.asMap().entries.map((entry) {
+          int index = entry.key;
+          String? menu = entry.value;
+
+          return DropdownMenuEntry<String?>(
+            value: menu,
+            label: '',
+            style: ButtonStyle(
+              visualDensity: VisualDensity.compact,
+              padding: WidgetStatePropertyAll(EdgeInsets.all(0)),
+            ),
+            leadingIcon: SizedBox(
+              width: 0,
+            ),
+            trailingIcon: SizedBox(
+              width: 0,
+            ),
+            labelWidget: SizedBox(
+              height: 39,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      IconGradient(
+                        icon: widget.icon ?? SizedBox(),
+                        colors: [
+                          Color.fromARGB(255, 88, 241, 147),
+                          Color.fromARGB(255, 72, 218, 128),
+                        ],
+                      ),
+                      const SizedBox(width: 16),
+                      Expanded(
+                        child: Text(
+                          menu ?? "Не указано",
+                          style:
+                              Theme.of(context).textTheme.labelSmall?.copyWith(
+                                    color: AppColors.black,
+                                  ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (index != widget.listString.length - 1)
+                    const Divider(
+                      color: Color(0xFFEEEEEE),
+                      thickness: 2,
+                      height: 15,
+                    ),
+                ],
+              ),
+            ),
+          );
+        }).toList(),
+      ),
+    );
+  }
+}

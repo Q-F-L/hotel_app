@@ -23,12 +23,12 @@ class _ShowersState extends State<Showers> {
     {
       "image": "assets/images/payment_card.png",
       "description": "Оплачивайте прямо в приложении",
-      "textButton": "Понятно",
+      "textButton": "Хорошо",
     },
     {
       "image": "assets/images/key.png",
       "description": "Оплачивайте прямо в приложении",
-      "textButton": "Понятно",
+      "textButton": "Поехаели!",
     },
   ];
 

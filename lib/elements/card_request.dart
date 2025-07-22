@@ -59,11 +59,11 @@ class _CardRequestState extends State<CardRequest> {
                   style: Theme.of(context)
                       .textTheme
                       .bodySmall
-                      ?.copyWith(fontWeight: FontWeight.normal),
+                      ?.copyWith(fontWeight: FontWeight.normal, fontSize: 18),
                 ),
                 Text(
                   "отменить",
-                  style: Theme.of(context).textTheme.labelSmall,
+                  style: labelSmallManrope.copyWith(fontSize: 12),
                 ),
               ],
             ),
@@ -79,16 +79,15 @@ class _CardRequestState extends State<CardRequest> {
                       ),
                       Text(
                         "12:01",
-                        style: Theme.of(context).textTheme.labelSmall,
+                        style: labelSmallManrope.copyWith(
+                            fontWeight: FontWeight.w700, fontSize: 16),
                       ),
                     ],
                   ),
                 ),
                 Text(
                   "выполнено",
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                        color: AppColors.textGreen,
-                      ),
+                  style: labelSmallManrope.copyWith(color: AppColors.textGreen),
                 ),
               ],
             ),

@@ -17,11 +17,12 @@ class _ServicesPageState extends State<ServicesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      bottomSheet: CustomBottomNabigationBar(),
       appBar: CustomAppbar(
         title: "Сервисы",
         preferredSize: Size(MediaQuery.of(context).size.width, 100),
       ),
-      bottomNavigationBar: CustomBottomNabigationBar(),
+      // bottomNavigationBar: CustomBottomNabigationBar(),
       floatingActionButton: GradientFloatingActionButton(
         firstColor: Color.fromARGB(255, 83, 232, 140),
         secondColor: Color.fromARGB(255, 21, 190, 120),
@@ -32,6 +33,15 @@ class _ServicesPageState extends State<ServicesPage> {
         padding: EdgeInsets.symmetric(horizontal: 30),
         child: ListView(
           children: [
+            ServiceTicket(),
+            ServiceTicket(),
+            ServiceTicket(),
+            ServiceTicket(),
+            ServiceTicket(),
+            ServiceTicket(),
+            ServiceTicket(),
+            ServiceTicket(),
+            ServiceTicket(),
             ServiceTicket(),
             ServiceTicket(),
             ServiceTicket(),

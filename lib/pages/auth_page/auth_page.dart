@@ -104,7 +104,12 @@ class _AuthPageState extends State<AuthPage> {
                           child: Text("Регистрация", style: link)),
                     ),
                     GradientButton(
-                      onPressed: () => canClick ? bloc.add(AuthLogin()) : {},
+                      onPressed: () => canClick
+                          ? {
+                              bloc.add(AuthLogin()),
+                              Navigator.pushNamed(context, "/select_home")
+                            }
+                          : {},
                       canClick: canClick,
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
                       margin: const EdgeInsets.symmetric(

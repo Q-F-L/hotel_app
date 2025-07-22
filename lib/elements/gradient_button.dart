@@ -22,7 +22,7 @@ class GradientButton extends StatelessWidget {
     ),
     this.borderRadius = BorderRadius.zero,
     this.padding = const EdgeInsets.only(top: 8.0, bottom: 8.0),
-    this.margin = const EdgeInsets.all(16.0),
+    this.margin = const EdgeInsets.all(0.0),
     this.border,
     this.shadow,
     this.canClick = true,
@@ -36,6 +36,7 @@ class GradientButton extends StatelessWidget {
       child: Opacity(
         opacity: canClick ? 1 : 0.5,
         child: Container(
+          margin: margin,
           padding: padding,
           decoration: BoxDecoration(
             gradient: gradient,

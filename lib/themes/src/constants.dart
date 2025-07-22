@@ -35,10 +35,11 @@ const titleSmall = TextStyle(
     color: Color.fromARGB(255, 59, 59, 59),
     fontFamily: "Philosopher");
 const headline2_regular = TextStyle(
-    fontFamily: "Philosopher",
-    fontWeight: FontWeight.w500,
-    fontSize: 16,
-    color: AppColors.black);
+  fontFamily: "Philosopher",
+  fontWeight: FontWeight.w500,
+  fontSize: 16,
+  color: AppColors.black,
+);
 const headline3_regular = TextStyle(
     fontFamily: "Philosopher",
     fontWeight: FontWeight.w800,
@@ -62,6 +63,12 @@ const link = TextStyle(
     fontWeight: FontWeight.w700,
     fontSize: 14,
     color: AppColors.lightGreen);
+
+const labelSmallManrope = TextStyle(
+    fontFamily: "Manrope",
+    fontSize: 14,
+    fontWeight: FontWeight.w500,
+    color: AppColors.realBlack);
 
 class AppColors {
   // LightTheme

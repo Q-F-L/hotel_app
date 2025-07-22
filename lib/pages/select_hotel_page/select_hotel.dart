@@ -63,6 +63,7 @@ class _SelectHomeState extends State<SelectHome> {
             ]),
             text: "Ваш отель",
             active: true,
+            width: MediaQuery.of(context).size.width * 0.9,
           ),
           SizedBox(
             height: 20,
@@ -72,6 +73,7 @@ class _SelectHomeState extends State<SelectHome> {
             icon: Image.asset("assets/images/prefix_key.png"),
             text: "Номер",
             active: true,
+            width: MediaQuery.of(context).size.width * 0.9,
           ),
           SizedBox(
             height: 20,

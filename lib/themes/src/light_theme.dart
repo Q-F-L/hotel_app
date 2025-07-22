@@ -2,6 +2,7 @@ part of '../themes.dart';
 
 ThemeData createLightTheme() {
   return ThemeData(
+    bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.transparent),
     useMaterial3: true,
     appBarTheme: const AppBarTheme(
       backgroundColor: Color(0xFFF6FBFB),

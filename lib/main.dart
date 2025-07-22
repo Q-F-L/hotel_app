@@ -3,6 +3,8 @@ import 'package:m_softer_test_project/pages/my_requests_page/my_requests_page.da
 
 import 'pages/auth_page/auth_page.dart';
 import 'pages/auth_page/register_page.dart';
+import 'pages/profile_page/profile_page.dart';
+import 'pages/qr_code_page/qr_code_page.dart';
 import 'pages/select_hotel_page/select_hotel.dart';
 import 'pages/services_page/services_page.dart';
 import 'themes/themes.dart';
@@ -26,8 +28,11 @@ class MyApp extends StatelessWidget {
         '/registration': (context) => RegistrationPage(),
         '/select_home': (context) => SelectHome(),
         '/services': (context) => ServicesPage(),
+        '/requsts': (context) => MyRequestsPage(),
+        '/profile': (context) => ProfilePage(),
+        '/qr_code_page': (context) => QrCodePage(),
       },
-      home: MyRequestsPage(),
+      home: SelectHome(),
     );
   }
 }

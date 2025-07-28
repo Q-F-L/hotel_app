@@ -4,26 +4,27 @@ import '../themes/themes.dart';
 import 'icon_gradient.dart';
 
 class CustomDropDownMenu extends StatefulWidget {
-  CustomDropDownMenu(
-      {super.key,
-      required this.listString,
-      this.icon,
-      this.text,
-      this.width,
-      required this.active});
+  CustomDropDownMenu({
+    super.key,
+    required this.listString,
+    this.icon,
+    this.text,
+    this.width,
+    this.active = true,
+    this.onSelected,
+  });
 
   final List<String?> listString;
   final Widget? icon;
   final String? text;
   final double? width;
+  Function(String?)? onSelected;
   bool active;
   @override
   State<CustomDropDownMenu> createState() => _CustomDropDownMenuState();
 }
 
 class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
-  String? selected;
-
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -33,6 +34,7 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
       color: AppColors.textWhite,
       shadowColor: Color.fromARGB(42, 23, 133, 137),
       child: DropdownMenu<String?>(
+        textStyle: Theme.of(context).textTheme.labelSmall,
         width: widget.width,
         enabled: widget.active,
         requestFocusOnTap: false,
@@ -79,18 +81,14 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
             ),
           ),
         ),
-        onSelected: (String? e) {
-          setState(() {
-            selected = e;
-          });
-        },
+        onSelected: widget.onSelected,
         dropdownMenuEntries: widget.listString.asMap().entries.map((entry) {
           int index = entry.key;
           String? menu = entry.value;
 
           return DropdownMenuEntry<String?>(
             value: menu,
-            label: '',
+            label: menu ?? '',
             style: ButtonStyle(
               visualDensity: VisualDensity.compact,
               padding: WidgetStatePropertyAll(EdgeInsets.all(0)),
@@ -101,10 +99,12 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
             trailingIcon: SizedBox(
               width: 0,
             ),
-            labelWidget: SizedBox(
-              height: 39,
+            labelWidget: Container(
+              height: 44,
+              padding: EdgeInsets.only(top: 10),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   Row(
                     children: [
@@ -131,7 +131,7 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
                     const Divider(
                       color: Color(0xFFEEEEEE),
                       thickness: 2,
-                      height: 15,
+                      height: 10,
                     ),
                 ],
               ),

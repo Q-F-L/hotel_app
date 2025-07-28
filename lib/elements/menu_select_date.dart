@@ -1,22 +1,31 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:scroll_datetime_picker/scroll_datetime_picker.dart';
 import '../themes/themes.dart';
 
 class MenuSelectDate extends StatefulWidget {
-  const MenuSelectDate({super.key});
+  MenuSelectDate({super.key, required this.onChange});
+
+  Function(String?) onChange;
 
   @override
   State<MenuSelectDate> createState() => _MenuSelectDateState();
 }
 
 class _MenuSelectDateState extends State<MenuSelectDate> {
+  TextEditingController? dropdownController;
   String? selected;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    dropdownController = TextEditingController();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return InkWell(
+    return InkResponse(
       onTap: () {
         showModalBottomSheet<void>(
           backgroundColor: Colors.transparent,
@@ -25,6 +34,8 @@ class _MenuSelectDateState extends State<MenuSelectDate> {
           ),
           context: context,
           builder: (BuildContext context) {
+            DateTime buffer = DateTime.now();
+
             return Container(
               decoration: BoxDecoration(
                 color: AppColors.inputWhite,
@@ -73,7 +84,9 @@ class _MenuSelectDateState extends State<MenuSelectDate> {
                         maxDate: DateTime(2030),
                         initialDate: DateTime.now(),
                       ),
-                      onChange: (datetime) {},
+                      onChange: (datetime) {
+                        buffer = datetime;
+                      },
                     ),
                   ),
                   Divider(
@@ -81,7 +94,13 @@ class _MenuSelectDateState extends State<MenuSelectDate> {
                     height: 2,
                   ),
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      widget.onChange(DateFormat('dd MM yyyy').format(buffer));
+                      setState(() {
+                        selected = DateFormat('dd MM yyyy').format(buffer);
+                      });
+                      Navigator.pop(context);
+                    },
                     child: Text(
                       "Далее",
                       style: Theme.of(context).textTheme.labelSmall,
@@ -93,62 +112,98 @@ class _MenuSelectDateState extends State<MenuSelectDate> {
           },
         );
       },
-      child: Material(
-        borderRadius: BorderRadius.circular(16),
-        elevation: 18.0,
-        type: MaterialType.button,
-        color: AppColors.textWhite,
-        shadowColor: Color.fromARGB(38, 26, 251, 255),
-        child: DropdownMenu(
-          enabled: false,
-          width: MediaQuery.of(context).size.width * 0.90,
-          requestFocusOnTap: false,
-          leadingIcon: Image.asset("assets/images/prefix_date.png"),
-          trailingIcon: Icon(
-            Icons.keyboard_arrow_down_rounded,
-            color: Color.fromARGB(255, 72, 218, 128),
-            size: 26,
-          ),
-          selectedTrailingIcon: Icon(
-            Icons.keyboard_arrow_down_rounded,
-            color: Color.fromARGB(255, 72, 218, 128),
-          ),
-          hintText: "Дата заезда",
-          inputDecorationTheme: InputDecorationTheme(
-            hintStyle: Theme.of(context).textTheme.labelSmall,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16.0),
-              borderSide:
-                  BorderSide(color: const Color.fromARGB(255, 255, 0, 0)),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16.0),
-              borderSide: BorderSide(color: const Color.fromARGB(0, 255, 0, 0)),
-            ),
-            focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16.0),
-              borderSide: BorderSide(color: Colors.blue, width: 2),
-            ),
-            contentPadding: const EdgeInsets.symmetric(vertical: 18.0),
-          ),
-          menuStyle: MenuStyle(
-            side: WidgetStatePropertyAll(BorderSide.none),
-            backgroundColor: WidgetStateProperty.all(AppColors.textWhite),
-            elevation: WidgetStateProperty.all(8),
-            shape: WidgetStateProperty.all(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(16),
-                  topRight: Radius.circular(16),
-                  bottomLeft: Radius.circular(16),
-                  bottomRight: Radius.circular(16),
+      child: Container(
+        height: 60,
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(16),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                SizedBox(
+                  width: 20,
                 ),
+                Image.asset("assets/images/prefix_date.png"),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  selected ?? "Дата заезда",
+                  style: Theme.of(context).textTheme.labelSmall,
+                )
+              ],
+            ),
+            Padding(
+              padding: EdgeInsets.only(right: 15),
+              child: Icon(
+                Icons.keyboard_arrow_down_rounded,
+                color: Color.fromARGB(255, 72, 218, 128),
+                size: 26,
               ),
             ),
-          ),
-          dropdownMenuEntries: [],
+          ],
         ),
       ),
+      // child: Material(
+      //   borderRadius: BorderRadius.circular(16),
+      //   elevation: 18.0,
+      //   type: MaterialType.button,
+      //   color: AppColors.textWhite,
+      //   shadowColor: Color.fromARGB(38, 26, 251, 255),
+      //   child: DropdownMenu<DateTime>(
+      //     controller: dropdownController,
+      //     enabled: false,
+      //     width: MediaQuery.of(context).size.width * 0.90,
+      //     requestFocusOnTap: false,
+      //     leadingIcon: Image.asset("assets/images/prefix_date.png"),
+      //     trailingIcon: Icon(
+      //       Icons.keyboard_arrow_down_rounded,
+      //       color: Color.fromARGB(255, 72, 218, 128),
+      //       size: 26,
+      //     ),
+      //     selectedTrailingIcon: Icon(
+      //       Icons.keyboard_arrow_down_rounded,
+      //       color: Color.fromARGB(255, 72, 218, 128),
+      //     ),
+      //     hintText: "Дата заезда",
+      //     inputDecorationTheme: InputDecorationTheme(
+      //       hintStyle: Theme.of(context).textTheme.labelSmall,
+      //       border: OutlineInputBorder(
+      //         borderRadius: BorderRadius.circular(16.0),
+      //         borderSide:
+      //             BorderSide(color: const Color.fromARGB(255, 255, 0, 0)),
+      //       ),
+      //       enabledBorder: OutlineInputBorder(
+      //         borderRadius: BorderRadius.circular(16.0),
+      //         borderSide: BorderSide(color: const Color.fromARGB(0, 255, 0, 0)),
+      //       ),
+      //       focusedBorder: OutlineInputBorder(
+      //         borderRadius: BorderRadius.circular(16.0),
+      //         borderSide: BorderSide(color: Colors.blue, width: 2),
+      //       ),
+      //       contentPadding: const EdgeInsets.symmetric(vertical: 18.0),
+      //     ),
+      //     menuStyle: MenuStyle(
+      //       side: WidgetStatePropertyAll(BorderSide.none),
+      //       backgroundColor: WidgetStateProperty.all(AppColors.textWhite),
+      //       elevation: WidgetStateProperty.all(8),
+      //       shape: WidgetStateProperty.all(
+      //         RoundedRectangleBorder(
+      //           borderRadius: BorderRadius.only(
+      //             topLeft: Radius.circular(16),
+      //             topRight: Radius.circular(16),
+      //             bottomLeft: Radius.circular(16),
+      //             bottomRight: Radius.circular(16),
+      //           ),
+      //         ),
+      //       ),
+      //     ),
+      //     dropdownMenuEntries: [],
+      //   ),
+      // ),
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:m_softer_test_project/themes/themes.dart';
 
 class GradientButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -10,6 +11,7 @@ class GradientButton extends StatelessWidget {
   final List<BoxShadow>? shadow;
   final EdgeInsetsGeometry margin;
   bool canClick;
+  String errorMessage;
 
   GradientButton({
     super.key,
@@ -26,12 +28,26 @@ class GradientButton extends StatelessWidget {
     this.border,
     this.shadow,
     this.canClick = true,
+    this.errorMessage = "Заполните данные!",
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: onPressed,
+      onTap: canClick
+          ? onPressed
+          : () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  backgroundColor: AppColors.white,
+                  content: Text(
+                    errorMessage,
+                    style: Theme.of(context).textTheme.labelSmall,
+                  ),
+                  behavior: SnackBarBehavior.floating,
+                ),
+              );
+            },
       borderRadius: borderRadius,
       child: Opacity(
         opacity: canClick ? 1 : 0.5,

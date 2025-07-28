@@ -1,18 +1,33 @@
 part of 'select_hotel_bloc.dart';
 
+enum SelectHotelStatus { initial, loading, success, failure }
+
 @immutable
-sealed class SelectHotelState {}
+class SelectHotelState {
+  final String? nameHotel;
+  final String? number;
+  final String? date;
+  final SelectHotelStatus? status;
 
-class SelectHotelInitial extends SelectHotelState {
-  final String? selectedRole;
+  const SelectHotelState(
+      {this.status = SelectHotelStatus.initial,
+      this.number,
+      this.date,
+      this.nameHotel});
 
-  SelectHotelInitial({this.selectedRole});
-
-  SelectHotelInitial copyWith({
-    String? selectedRole,
+  SelectHotelState copyWith({
+    String? nameHotel,
+    String? number,
+    String? date,
+    SelectHotelStatus? status,
   }) {
-    return SelectHotelInitial(
-      selectedRole: selectedRole ?? this.selectedRole,
+    return SelectHotelState(
+      nameHotel: nameHotel ?? this.nameHotel,
+      number: number ?? this.number,
+      date: date ?? this.date,
+      status: status ?? this.status,
     );
   }
 }
+
+class SelectHotelInitial extends SelectHotelState {}

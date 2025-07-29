@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:m_softer_test_project/elements/custom_appbar.dart';
 import 'package:m_softer_test_project/themes/themes.dart';
 
+import '../../elements/custom_bottom_navigation_bar.dart';
+import '../../elements/gradient_floating_action_button.dart';
 import '../../elements/user_favorites_element.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -15,6 +17,16 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: GradientFloatingActionButton(
+        onPressed: () => Navigator.popAndPushNamed(context, "/services"),
+        firstColor: AppColors.backgroundWhite,
+        secondColor: AppColors.backgroundWhite,
+        textColor: AppColors.realBlack,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomSheet: CustomBottomNabigationBar(
+        nowRoute: "/profile",
+      ),
       appBar: CustomAppbar(
         title: "Мои запросы",
         preferredSize: Size(MediaQuery.of(context).size.width, 100),

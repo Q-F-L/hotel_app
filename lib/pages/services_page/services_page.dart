@@ -17,15 +17,19 @@ class _ServicesPageState extends State<ServicesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomSheet: CustomBottomNabigationBar(),
+      bottomSheet: CustomBottomNabigationBar(
+        nowRoute: "/services",
+      ),
       appBar: CustomAppbar(
         title: "Сервисы",
         preferredSize: Size(MediaQuery.of(context).size.width, 100),
       ),
       // bottomNavigationBar: CustomBottomNabigationBar(),
       floatingActionButton: GradientFloatingActionButton(
+        onPressed: () => Navigator.pushNamed(context, "/services"),
         firstColor: Color.fromARGB(255, 83, 232, 140),
         secondColor: Color.fromARGB(255, 21, 190, 120),
+        textColor: AppColors.white,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       backgroundColor: AppColors.backgroundWhite,
@@ -46,6 +50,9 @@ class _ServicesPageState extends State<ServicesPage> {
             ServiceTicket(),
             ServiceTicket(),
             ServiceTicket(),
+            SizedBox(
+              height: 100,
+            ),
           ],
         ),
       ),

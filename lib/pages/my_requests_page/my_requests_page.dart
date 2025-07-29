@@ -21,10 +21,14 @@ class _MyRequestsPageState extends State<MyRequestsPage> {
         title: "Мои запросы",
         preferredSize: Size(MediaQuery.of(context).size.width, 100),
       ),
-      bottomNavigationBar: CustomBottomNabigationBar(),
+      bottomNavigationBar: CustomBottomNabigationBar(
+        nowRoute: "/requsts",
+      ),
       floatingActionButton: GradientFloatingActionButton(
-        firstColor: Color.fromARGB(255, 83, 232, 140),
-        secondColor: Color.fromARGB(255, 21, 190, 120),
+        firstColor: AppColors.backgroundWhite,
+        secondColor: AppColors.backgroundWhite,
+        textColor: AppColors.realBlack,
+        onPressed: () => Navigator.pushNamed(context, "/services"),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       backgroundColor: AppColors.backgroundWhite,

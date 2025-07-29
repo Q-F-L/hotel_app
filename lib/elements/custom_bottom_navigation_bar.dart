@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:m_softer_test_project/themes/themes.dart';
 
 class CustomBottomNabigationBar extends StatelessWidget {
-  const CustomBottomNabigationBar({super.key});
+  const CustomBottomNabigationBar({super.key, required this.nowRoute});
+  final String nowRoute;
 
   @override
   Widget build(BuildContext context) {
@@ -26,17 +28,28 @@ class CustomBottomNabigationBar extends StatelessWidget {
               style: IconButton.styleFrom(
                 fixedSize: Size(92, 65),
               ),
-              onPressed: () {},
+              onPressed: () {
+                if (nowRoute != "/requsts") {
+                  Navigator.pushNamed(context, "/requsts");
+                }
+              },
               icon: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Image.asset("assets/images/grey_bell.png"),
+                  Image.asset(
+                    "assets/images/grey_bell.png",
+                    color: nowRoute != "/requsts"
+                        ? AppColors.black
+                        : AppColors.lightGreen,
+                  ),
                   Text(
                     "Мои запросы",
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelSmall
-                        ?.copyWith(fontSize: 12),
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                          fontSize: 12,
+                          color: nowRoute != "/requsts"
+                              ? AppColors.black
+                              : AppColors.lightGreen,
+                        ),
                   )
                 ],
               )),
@@ -45,16 +58,22 @@ class CustomBottomNabigationBar extends StatelessWidget {
               splashFactory: NoSplash.splashFactory,
               fixedSize: Size(92, 65),
             ),
-            onPressed: () {},
+            onPressed: () {
+              if (nowRoute != "/services") {
+                Navigator.pushNamed(context, "/services");
+              }
+            },
             icon: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 Text(
                   "Сервисы",
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall
-                      ?.copyWith(fontSize: 12),
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        fontSize: 12,
+                        color: nowRoute != "/services"
+                            ? AppColors.black
+                            : AppColors.lightGreen,
+                      ),
                 )
               ],
             ),
@@ -63,88 +82,34 @@ class CustomBottomNabigationBar extends StatelessWidget {
             style: IconButton.styleFrom(
               fixedSize: Size(92, 65),
             ),
-            onPressed: () {},
+            onPressed: () {
+              if (nowRoute != "/profile") {
+                Navigator.pushNamed(context, "/profile");
+              }
+            },
             icon: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Image.asset("assets/images/user.png"),
+                Image.asset(
+                  "assets/images/user.png",
+                  color: nowRoute != "/profile"
+                      ? AppColors.black
+                      : AppColors.lightGreen,
+                ),
                 Text(
                   "Профиль",
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall
-                      ?.copyWith(fontSize: 12),
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        fontSize: 12,
+                        color: nowRoute != "/profile"
+                            ? AppColors.black
+                            : AppColors.lightGreen,
+                      ),
                 )
               ],
             ),
           ),
         ],
       ),
-      // child: Column(
-      //   children: [
-      //     Row(
-      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //       children: [
-      //         IconButton(onPressed: () {}, icon: Icon(Icons.abc)),
-      //         SizedBox(),
-      //         IconButton(onPressed: () {}, icon: Icon(Icons.abc)),
-      //       ],
-      //     ),
-      //     Row(
-      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //       children: [
-      //         Text("data"),
-      //         Text("data"),
-      //         Text("data"),
-      //       ],
-      //     )
-      //   ],
-      // ),
     );
-    // return BottomAppBar(
-    //   elevation: 10,
-    //   height: 90,
-    //   shape: CircularNotchedRectangle(),
-    //   notchMargin: 10.0,
-    //   child: Row(
-    //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //     children: <Widget>[
-    //       IconButton(
-    //         icon: Column(
-    //           children: [
-    //             Image.asset("assets/images/request_bell.png"),
-    //             SizedBox(
-    //               height: 5,
-    //             ),
-    //             Text(
-    //               "data",
-    //               style: Theme.of(context).textTheme.labelSmall,
-    //             )
-    //           ],
-    //         ),
-    //         onPressed: () {},
-    //       ),
-    //       Padding(
-    //         padding: const EdgeInsets.only(top: 20),
-    //         child: Text(
-    //           "Переделать что бы было красиво",
-    //           style: Theme.of(context).textTheme.labelSmall,
-    //         ),
-    //       ),
-    //       IconButton(
-    //         icon: Column(
-    //           children: [
-    //             Image.asset("assets/images/user_profil.png"),
-    //             Text(
-    //               "data",
-    //               style: Theme.of(context).textTheme.labelSmall,
-    //             )
-    //           ],
-    //         ),
-    //         onPressed: () {},
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 }

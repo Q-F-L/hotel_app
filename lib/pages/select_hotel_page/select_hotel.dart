@@ -83,7 +83,9 @@ class _SelectHomeState extends State<SelectHome> {
             height: 30,
           ),
           GradientButton(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/services');
+            },
             canClick: true,
             borderRadius: BorderRadius.all(Radius.circular(16)),
             child: Text(
@@ -104,7 +106,9 @@ class _SelectHomeState extends State<SelectHome> {
           ),
           GradientButton(
             padding: EdgeInsets.symmetric(horizontal: 10, vertical: 8),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.pushNamed(context, '/qr_code_page');
+            },
             canClick: true,
             borderRadius: BorderRadius.all(Radius.circular(16)),
             child: Row(

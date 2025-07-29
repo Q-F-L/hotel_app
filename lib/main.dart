@@ -7,6 +7,7 @@ import 'pages/profile_page/profile_page.dart';
 import 'pages/qr_code_page/qr_code_page.dart';
 import 'pages/select_hotel_page/select_hotel.dart';
 import 'pages/services_page/services_page.dart';
+import 'pages/shower_new_page/showers_page.dart';
 import 'themes/themes.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -31,8 +32,9 @@ class MyApp extends StatelessWidget {
         '/requsts': (context) => MyRequestsPage(),
         '/profile': (context) => ProfilePage(),
         '/qr_code_page': (context) => QrCodePage(),
+        '/shower': (context) => Showers(),
       },
-      home: SelectHome(),
+      home: Showers(),
     );
   }
 }

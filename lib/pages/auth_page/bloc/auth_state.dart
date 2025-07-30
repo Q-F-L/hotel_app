@@ -15,8 +15,10 @@ class AuthState {
   final String surname;
   final String? surnameError;
   final bool? isNotEmpty;
+  final String? message;
 
   AuthState({
+    this.message,
     this.isNotEmpty,
     this.email = '',
     this.password = '',
@@ -44,6 +46,7 @@ class AuthState {
     bool? isFormValid,
     AuthStatus? status,
     String? errorMessage,
+    String? message,
   }) {
     return AuthState(
       isNotEmpty: isNotEmpty ?? this.isNotEmpty,
@@ -58,6 +61,7 @@ class AuthState {
       isFormValid: isFormValid ?? this.isFormValid,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
+      message: message ?? this.message,
     );
   }
 }

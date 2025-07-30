@@ -117,13 +117,25 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     if (response.statusCode == 200) {
       try {
-        emit(state.copyWith(status: AuthStatus.success));
+        final json = jsonDecode(response.body);
+
+        emit(state.copyWith(
+          status: AuthStatus.success,
+          message: json['message'],
+        ));
       } catch (e) {
         emit(state.copyWith(
           status: AuthStatus.failure,
           errorMessage: 'Ошибка авторизации',
         ));
       }
+    } else {
+      final json = jsonDecode(response.body);
+
+      emit(state.copyWith(
+        status: AuthStatus.failure,
+        message: json['message'],
+      ));
     }
   }
 }

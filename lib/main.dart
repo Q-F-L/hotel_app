@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:m_softer_test_project/pages/my_requests_page/my_requests_page.dart';
+import 'package:m_softer_test_project/pages/shower_new_page/showers_page.dart';
 
 import 'pages/auth_page/auth_page.dart';
 import 'pages/auth_page/register_page.dart';
@@ -31,8 +32,9 @@ class MyApp extends StatelessWidget {
         '/requsts': (context) => MyRequestsPage(),
         '/profile': (context) => ProfilePage(),
         '/qr_code_page': (context) => QrCodePage(),
+        '/shower': (context) => Showers(),
       },
-      home: RegistrationPage(),
+      home: AuthPage(),
     );
   }
 }

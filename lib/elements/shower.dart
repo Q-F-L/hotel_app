@@ -41,7 +41,7 @@ class Shower extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 25, right: 40),
             child: GradientButton(
-              canClick: false,
+              canClick: true,
               onPressed: () => context.read<ShowerNewPageBloc>().add(NewPage()),
               borderRadius: const BorderRadius.all(Radius.circular(15)),
               margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 40.0),

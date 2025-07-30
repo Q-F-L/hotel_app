@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
         '/profile': (context) => ProfilePage(),
         '/qr_code_page': (context) => QrCodePage(),
       },
-      home: SelectHome(),
+      home: RegistrationPage(),
     );
   }
 }

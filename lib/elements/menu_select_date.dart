@@ -112,39 +112,44 @@ class _MenuSelectDateState extends State<MenuSelectDate> {
           },
         );
       },
-      child: Container(
-        height: 60,
-        decoration: BoxDecoration(
-          color: AppColors.white,
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Row(
-              children: [
-                SizedBox(
-                  width: 20,
-                ),
-                Image.asset("assets/images/prefix_date.png"),
-                SizedBox(
-                  width: 10,
-                ),
-                Text(
-                  selected ?? "Дата заезда",
-                  style: Theme.of(context).textTheme.labelSmall,
-                )
-              ],
-            ),
-            Padding(
-              padding: EdgeInsets.only(right: 15),
-              child: Icon(
-                Icons.keyboard_arrow_down_rounded,
-                color: Color.fromARGB(255, 72, 218, 128),
-                size: 26,
+      child: Material(
+        elevation: 18,
+        shadowColor: AppColors.shadow,
+        color: Colors.transparent,
+        child: Container(
+          height: 60,
+          decoration: BoxDecoration(
+            color: AppColors.white,
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  SizedBox(
+                    width: 20,
+                  ),
+                  Image.asset("assets/images/prefix_date.png"),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    selected ?? "Дата заезда",
+                    style: Theme.of(context).textTheme.labelSmall,
+                  )
+                ],
               ),
-            ),
-          ],
+              Padding(
+                padding: EdgeInsets.only(right: 15),
+                child: Icon(
+                  Icons.keyboard_arrow_down_rounded,
+                  color: Color.fromARGB(255, 72, 218, 128),
+                  size: 26,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       // child: Material(

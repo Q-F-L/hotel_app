@@ -1,5 +1,7 @@
-import 'package:bloc/bloc.dart';
+import 'dart:convert';
 
+import 'package:bloc/bloc.dart';
+import 'package:http/http.dart' as http;
 import '../../../data/validators.dart';
 
 part 'auth_event.dart';
@@ -76,7 +78,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final emailError = Validators.validateEmail(state.email);
     final nameError = Validators.validateName(state.name);
     final surnameError = Validators.validateSurname(state.surname);
-    print("surnameError = $surnameError");
+
     emit(state.copyWith(
       errorName: nameError,
       surnameError: surnameError,
@@ -95,15 +97,33 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       return;
     }
 
+    final response = await http.post(
+      Uri.parse('https://app.successhotel.ru/api/client/register'),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'firstName': state.name,
+        'lastName': state.surname,
+        'email': state.email,
+        'password': state.password,
+        'confirmPassword': state.password,
+        'guard': 'client',
+      }),
+    );
+
     emit(state.copyWith(status: AuthStatus.loading));
 
-    try {
-      emit(state.copyWith(status: AuthStatus.success));
-    } catch (e) {
-      emit(state.copyWith(
-        status: AuthStatus.failure,
-        errorMessage: 'Ошибка авторизации',
-      ));
+    if (response.statusCode == 200) {
+      try {
+        emit(state.copyWith(status: AuthStatus.success));
+      } catch (e) {
+        emit(state.copyWith(
+          status: AuthStatus.failure,
+          errorMessage: 'Ошибка авторизации',
+        ));
+      }
     }
   }
 }

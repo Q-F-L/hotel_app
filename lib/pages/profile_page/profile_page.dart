@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:m_softer_test_project/elements/custom_appbar.dart';
 import 'package:m_softer_test_project/themes/themes.dart';
 
+import '../../elements/custom_bottom_navigation_bar.dart';
+import '../../elements/gradient_floating_action_button.dart';
 import '../../elements/user_favorites_element.dart';
+import '../auth_page/bloc/auth_bloc.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -15,6 +19,14 @@ class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: GradientFloatingActionButton(
+        firstColor: Color.fromARGB(255, 83, 232, 140),
+        secondColor: Color.fromARGB(255, 21, 190, 120),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: CustomBottomNabigationBar(
+        nowPage: '/profile',
+      ),
       appBar: CustomAppbar(
         title: "Мои запросы",
         preferredSize: Size(MediaQuery.of(context).size.width, 100),
@@ -24,7 +36,7 @@ class _ProfilePageState extends State<ProfilePage> {
           Container(
             padding: EdgeInsets.symmetric(vertical: 16),
             margin: EdgeInsets.symmetric(horizontal: 20),
-            height: 92,
+            height: 170,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(16),
               color: AppColors.white,
@@ -38,26 +50,52 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Diana Beppieva",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineLarge
-                      ?.copyWith(fontSize: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    SizedBox(
+                      width: 45,
+                    ),
+                    Text(
+                      "Diana Beppieva",
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineLarge
+                          ?.copyWith(fontSize: 20),
+                    ),
+                    IconButton(
+                      onPressed: () {
+                        setState(() {
+                          context.read<AuthBloc>().add(AuthLogout());
+                        });
+                      },
+                      icon: Icon(
+                        Icons.output_rounded,
+                        color: AppColors.black,
+                      ),
+                    ),
+                  ],
                 ),
                 Text(
-                  "заполните профиль",
-                  style: TextStyle(
-                    shadows: [
-                      Shadow(color: AppColors.realBlack, offset: Offset(0, -5))
-                    ],
-                    color: Colors.transparent,
-                    decoration: TextDecoration.underline,
-                    decorationColor: Color.fromARGB(126, 0, 0, 0),
-                    decorationThickness: 1,
-                    decorationStyle: TextDecorationStyle.solid,
+                  "Почта: david@yandex.ru",
+                  style: Theme.of(context).textTheme.labelSmall,
+                ),
+                SizedBox(
+                  height: 20,
+                ),
+                TextButton(
+                  style: TextButton.styleFrom(
+                    shape: StadiumBorder(
+                      side: BorderSide(
+                        color: AppColors.grey,
+                      ),
+                    ),
+                  ),
+                  onPressed: () {},
+                  child: Text(
+                    "Выселиться",
+                    style: headline2_regular,
                   ),
                 ),
               ],
@@ -110,7 +148,28 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ],
             ),
-          )
+          ),
+          IconButton(
+              onPressed: () {},
+              icon: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(
+                    Icons.delete_outlined,
+                    color: AppColors.black,
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    "Удалить аккаунт",
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodySmall!
+                        .copyWith(fontSize: 20),
+                  ),
+                ],
+              )),
         ],
       ),
     );

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class CustomBottomNabigationBar extends StatelessWidget {
-  const CustomBottomNabigationBar({super.key});
-
+  const CustomBottomNabigationBar({super.key, required this.nowPage});
+  final String nowPage;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,7 +26,11 @@ class CustomBottomNabigationBar extends StatelessWidget {
               style: IconButton.styleFrom(
                 fixedSize: Size(92, 65),
               ),
-              onPressed: () {},
+              onPressed: () {
+                if (nowPage != '/requsts') {
+                  Navigator.pushNamed(context, '/requsts');
+                }
+              },
               icon: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -45,7 +49,11 @@ class CustomBottomNabigationBar extends StatelessWidget {
               splashFactory: NoSplash.splashFactory,
               fixedSize: Size(92, 65),
             ),
-            onPressed: () {},
+            onPressed: () {
+              if (nowPage != '/services') {
+                Navigator.pushNamed(context, '/services');
+              }
+            },
             icon: Column(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -63,7 +71,11 @@ class CustomBottomNabigationBar extends StatelessWidget {
             style: IconButton.styleFrom(
               fixedSize: Size(92, 65),
             ),
-            onPressed: () {},
+            onPressed: () {
+              if (nowPage != '/profile') {
+                Navigator.pushNamed(context, '/profile');
+              }
+            },
             icon: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -80,71 +92,6 @@ class CustomBottomNabigationBar extends StatelessWidget {
           ),
         ],
       ),
-      // child: Column(
-      //   children: [
-      //     Row(
-      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //       children: [
-      //         IconButton(onPressed: () {}, icon: Icon(Icons.abc)),
-      //         SizedBox(),
-      //         IconButton(onPressed: () {}, icon: Icon(Icons.abc)),
-      //       ],
-      //     ),
-      //     Row(
-      //       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      //       children: [
-      //         Text("data"),
-      //         Text("data"),
-      //         Text("data"),
-      //       ],
-      //     )
-      //   ],
-      // ),
     );
-    // return BottomAppBar(
-    //   elevation: 10,
-    //   height: 90,
-    //   shape: CircularNotchedRectangle(),
-    //   notchMargin: 10.0,
-    //   child: Row(
-    //     mainAxisAlignment: MainAxisAlignment.spaceAround,
-    //     children: <Widget>[
-    //       IconButton(
-    //         icon: Column(
-    //           children: [
-    //             Image.asset("assets/images/request_bell.png"),
-    //             SizedBox(
-    //               height: 5,
-    //             ),
-    //             Text(
-    //               "data",
-    //               style: Theme.of(context).textTheme.labelSmall,
-    //             )
-    //           ],
-    //         ),
-    //         onPressed: () {},
-    //       ),
-    //       Padding(
-    //         padding: const EdgeInsets.only(top: 20),
-    //         child: Text(
-    //           "Переделать что бы было красиво",
-    //           style: Theme.of(context).textTheme.labelSmall,
-    //         ),
-    //       ),
-    //       IconButton(
-    //         icon: Column(
-    //           children: [
-    //             Image.asset("assets/images/user_profil.png"),
-    //             Text(
-    //               "data",
-    //               style: Theme.of(context).textTheme.labelSmall,
-    //             )
-    //           ],
-    //         ),
-    //         onPressed: () {},
-    //       ),
-    //     ],
-    //   ),
-    // );
   }
 }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -5,7 +7,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:m_softer_test_project/elements/gradient_button.dart';
 import 'package:m_softer_test_project/elements/icon_gradient.dart';
 import 'package:m_softer_test_project/pages/auth_page/bloc/auth_bloc.dart';
+import 'package:m_softer_test_project/themes/themes.dart';
 
+import '../../data/token.dart';
 import '../../elements/text_input_form.dart';
 
 class RegistrationPage extends StatefulWidget {
@@ -18,43 +22,38 @@ class RegistrationPage extends StatefulWidget {
 class _RegistrationPageState extends State<RegistrationPage> {
   final _formKey = GlobalKey<FormState>();
 
-  void showCustomSnackBar(BuildContext context, String message) {
-    final overlay = Overlay.of(context);
-    final overlayEntry = OverlayEntry(
-      builder: (context) => Positioned(
-        bottom: 50,
-        left: MediaQuery.of(context).size.width * 0.5 - 100, // Центрирование
-        child: Material(
-          color: Colors.transparent,
-          child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black26,
-                  blurRadius: 8,
-                  offset: Offset(2, 2),
-                ),
-              ],
+  void showSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      behavior: SnackBarBehavior.floating,
+      width: min(message.length * 13, MediaQuery.of(context).size.width * 0.8),
+      content: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: 5,
+          vertical: 10,
+        ),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: const Color.fromARGB(162, 59, 59, 59),
+              blurRadius: 10,
+              spreadRadius: 1,
             ),
-            child: IntrinsicWidth(
-              child: Text(
-                message,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
-          ),
+          ],
+          borderRadius: BorderRadius.circular(6),
+          color: AppColors.white,
+        ),
+        child: Text(
+          message,
+          style: Theme.of(context).textTheme.labelSmall,
+          textAlign: TextAlign.center,
         ),
       ),
     );
 
-    overlay.insert(overlayEntry);
-    Future.delayed(Duration(seconds: 2), () {
-      overlayEntry.remove();
-    });
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
   }
 
   @override
@@ -79,7 +78,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         ),
       ),
       body: BlocProvider(
-        create: (context) => AuthBloc(),
+        create: (context) => AuthBloc(tokenRepository: TokenRepository()),
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state.status == AuthStatus.failure ||
@@ -93,16 +92,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   state.emailError ??
                   state.passwordError ??
                   'Произошла ошибка';
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  backgroundColor: Color.fromARGB(255, 255, 255, 255),
-                  content: Text(
-                    errorMessage,
-                    style: TextStyle(color: Colors.black),
-                  ),
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
+              showSnackBar(context, errorMessage);
             }
           },
           builder: (context, state) {
@@ -178,8 +168,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             TextSpan(
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    showCustomSnackBar(
-                                        context, "Правилам сервис");
+                                    showSnackBar(context, "Правилам сервис");
                                   },
                                 text: 'правилами сервиса ',
                                 style: TextStyle(
@@ -188,8 +177,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                             TextSpan(
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
-                                    showCustomSnackBar(
-                                        context, "Политика конфидециальности");
+                                    showSnackBar(
+                                        context, 'Политикой конфидециальности');
                                   },
                                 text: 'политикой конфидециальности',
                                 style: TextStyle(
@@ -199,7 +188,12 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       ),
                     ),
                     GradientButton(
-                      onPressed: () => canClick ? bloc.add(AuthRegister()) : {},
+                      onPressed: () => canClick
+                          ? {
+                              bloc.add(AuthRegister()),
+                              showSnackBar(context, state.message ?? ''),
+                            }
+                          : {},
                       canClick: canClick,
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
                       margin: const EdgeInsets.symmetric(

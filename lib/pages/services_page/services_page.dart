@@ -17,7 +17,7 @@ class _ServicesPageState extends State<ServicesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      bottomSheet: CustomBottomNabigationBar(),
+      bottomSheet: CustomBottomNabigationBar(nowPage: "/services"),
       appBar: CustomAppbar(
         title: "Сервисы",
         preferredSize: Size(MediaQuery.of(context).size.width, 100),

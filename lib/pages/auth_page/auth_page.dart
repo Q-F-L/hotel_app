@@ -1,6 +1,9 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:m_softer_test_project/data/token.dart';
 import 'package:m_softer_test_project/elements/gradient_button.dart';
 import 'package:m_softer_test_project/elements/icon_gradient.dart';
 import 'package:m_softer_test_project/pages/auth_page/bloc/auth_bloc.dart';
@@ -17,6 +20,41 @@ class AuthPage extends StatefulWidget {
 
 class _AuthPageState extends State<AuthPage> {
   final _formKey = GlobalKey<FormState>();
+  final fcmToken = ''; // Получите FCM токен из Firebase Messaging
+
+  void showSnackBar(BuildContext context, String message) {
+    final snackBar = SnackBar(
+      backgroundColor: Colors.transparent,
+      elevation: 0,
+      behavior: SnackBarBehavior.floating,
+      width: min(message.length * 13, MediaQuery.of(context).size.width * 0.8),
+      content: Container(
+        padding: EdgeInsets.symmetric(
+          horizontal: 5,
+          vertical: 10,
+        ),
+        alignment: Alignment.center,
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: const Color.fromARGB(162, 59, 59, 59),
+              blurRadius: 10,
+              spreadRadius: 1,
+            ),
+          ],
+          borderRadius: BorderRadius.circular(6),
+          color: AppColors.white,
+        ),
+        child: Text(
+          message,
+          style: Theme.of(context).textTheme.labelSmall,
+          textAlign: TextAlign.center,
+        ),
+      ),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +74,7 @@ class _AuthPageState extends State<AuthPage> {
         ),
       ),
       body: BlocProvider(
-        create: (context) => AuthBloc(),
+        create: (context) => AuthBloc(tokenRepository: TokenRepository()),
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state.status == AuthStatus.failure ||
@@ -45,12 +83,7 @@ class _AuthPageState extends State<AuthPage> {
                   state.emailError ??
                   state.passwordError ??
                   'Произошла ошибка';
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text(errorMessage),
-                  behavior: SnackBarBehavior.floating,
-                ),
-              );
+              showSnackBar(context, errorMessage);
             }
           },
           builder: (context, state) {
@@ -107,17 +140,20 @@ class _AuthPageState extends State<AuthPage> {
                       onPressed: () => canClick
                           ? {
                               bloc.add(AuthLogin()),
-                              Navigator.pushNamed(context, "/select_home")
+                              if (state.status == AuthStatus.authenticated)
+                                {Navigator.pushNamed(context, "/select_home")}
                             }
                           : {},
                       canClick: canClick,
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
                       margin: const EdgeInsets.symmetric(
                           vertical: 0, horizontal: 40.0),
-                      child: Text(
-                        "Войти",
-                        style: whiteTextButton,
-                      ),
+                      child: state.status == AuthStatus.loading
+                          ? const CircularProgressIndicator()
+                          : Text(
+                              "Войти",
+                              style: whiteTextButton,
+                            ),
                     ),
                   ],
                 ),

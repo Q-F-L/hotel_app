@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:m_softer_test_project/data/rooms.dart';
+import 'package:m_softer_test_project/elements/custom_drop_down_menu_hotel.dart';
+import 'package:m_softer_test_project/elements/custom_drop_down_menu_room.dart';
 import 'package:m_softer_test_project/elements/gradient_button.dart';
 import 'package:m_softer_test_project/elements/icon_gradient.dart';
 import 'package:m_softer_test_project/themes/themes.dart';
 
-import '../../elements/custom_drop_down_menu.dart';
 import '../../elements/menu_select_date.dart';
 import 'bloc/select_hotel_bloc.dart';
 
@@ -17,20 +19,11 @@ class SelectHome extends StatefulWidget {
 }
 
 class _SelectHomeState extends State<SelectHome> {
-  late bool _leadingState;
-  late bool _buttonState;
-  final List<String?> _listHotel = [
-    "dsa",
-    "dsadsa da",
-    "daa dsad d",
-    "   dds  dd   "
-  ];
+  late SelectHotelBloc bloc;
 
   @override
   void initState() {
     // TODO: implement initState
-    _leadingState = true;
-    _buttonState = false;
     super.initState();
   }
 
@@ -38,12 +31,10 @@ class _SelectHomeState extends State<SelectHome> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: _leadingState
-            ? IconButton(
-                onPressed: () => Navigator.pop(context),
-                icon: Image.asset('assets/images/left_arrow.png'),
-              )
-            : null,
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          icon: Image.asset('assets/images/left_arrow.png'),
+        ),
         centerTitle: true,
         backgroundColor: const Color(0xFFF6FBFB),
         surfaceTintColor: Colors.transparent,
@@ -57,15 +48,14 @@ class _SelectHomeState extends State<SelectHome> {
         ),
       ),
       body: BlocProvider(
-        create: (context) => SelectHotelBloc(),
+        create: (context) => SelectHotelBloc()..add(RequestHotelsEvent()),
         child: BlocConsumer<SelectHotelBloc, SelectHotelState>(
           listener: (context, state) {
-            if (state.status == SelectHotelStatus.failure) {
+            if (state.status == SelectHotelStatus.send) {
+              Navigator.pushNamed(context, '/services');
+            } else if (state.status == SelectHotelStatus.failure) {
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  content: Text("Ошибка!"),
-                  behavior: SnackBarBehavior.floating,
-                ),
+                SnackBar(content: Text("Ошибка: ${state.errorMessage}")),
               );
             }
           },
@@ -75,9 +65,9 @@ class _SelectHomeState extends State<SelectHome> {
             return ListView(
               padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
               children: [
-                CustomDropDownMenu(
-                  onSelected: (e) => bloc.add(SelectedHomelEvent(e)),
-                  listString: _listHotel,
+                CustomDropDownMenuHotel(
+                  onSelected: (e) => bloc.add(SelectedHotelEvent(e)),
+                  list: state.listHotel,
                   icon: IconGradient(icon: Icon(Icons.hotel), colors: [
                     Color.fromARGB(255, 88, 241, 147),
                     Color.fromARGB(255, 72, 218, 128),
@@ -88,12 +78,12 @@ class _SelectHomeState extends State<SelectHome> {
                 SizedBox(
                   height: 20,
                 ),
-                CustomDropDownMenu(
-                  onSelected: (e) => bloc.add(SelectedNumberEvent(e)),
-                  listString: _listHotel,
+                CustomDropDownMenuRoom(
+                  onSelected: (e) => bloc.add(SelectedRoomEvent(e)),
+                  listString: state.listRooms ?? [Rooms(name: "loading....")],
                   icon: Image.asset("assets/images/prefix_key.png"),
                   text: "Номер",
-                  active: state.nameHotel != null,
+                  active: state.hotel != null,
                   width: MediaQuery.of(context).size.width * 0.9,
                 ),
                 SizedBox(
@@ -106,8 +96,8 @@ class _SelectHomeState extends State<SelectHome> {
                   height: 30,
                 ),
                 GradientButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, '/services');
+                  onPressed: () async {
+                    bloc.add(SendEvent());
                   },
                   canClick: bloc.canClick,
                   borderRadius: BorderRadius.all(Radius.circular(16)),

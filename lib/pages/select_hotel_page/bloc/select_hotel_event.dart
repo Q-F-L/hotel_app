@@ -1,19 +1,22 @@
 part of 'select_hotel_bloc.dart';
 
-@immutable
 sealed class SelectHotelEvent {}
 
-class SelectedHomelEvent extends SelectHotelEvent {
-  final String? name;
-  SelectedHomelEvent(this.name);
+class SelectedHotelEvent extends SelectHotelEvent {
+  final Organizations? hotel;
+  SelectedHotelEvent(this.hotel);
 }
 
-class SelectedNumberEvent extends SelectHotelEvent {
-  final String? name;
-  SelectedNumberEvent(this.name);
+class SelectedRoomEvent extends SelectHotelEvent {
+  final Rooms? rooms;
+  SelectedRoomEvent(this.rooms);
 }
 
 class SelectedDateEvent extends SelectHotelEvent {
   final String? date;
   SelectedDateEvent(this.date);
 }
+
+class RequestHotelsEvent extends SelectHotelEvent {}
+
+class SendEvent extends SelectHotelEvent {}

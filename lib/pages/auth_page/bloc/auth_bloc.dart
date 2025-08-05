@@ -197,7 +197,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final token = await tokenRepository.getToken();
 
     if (token != null) {
-      // Можно добавить проверку валидности токена на сервере
       emit(state.copyWith(
         status: AuthStatus.authenticated,
         token: token,

@@ -51,12 +51,21 @@ class _ShowersState extends State<Showers> {
             physics: const NeverScrollableScrollPhysics(),
             controller: _pageController,
             children: List<Widget>.generate(
-                3,
-                (i) => Shower(
-                      image: listShowers[i]['image'],
-                      description: listShowers[i]['description'],
-                      textButton: listShowers[i]['textButton'],
-                    )),
+              3,
+              (i) {
+                print(i);
+                return Shower(
+                  image: listShowers[i]['image'],
+                  description: listShowers[i]['description'],
+                  textButton: listShowers[i]['textButton'],
+                  onPressLast: 2 == i
+                      ? () {
+                          Navigator.pushNamed(context, "/auth");
+                        }
+                      : null,
+                );
+              },
+            ),
           );
         },
       ),

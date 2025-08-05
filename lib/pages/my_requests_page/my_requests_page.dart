@@ -21,7 +21,9 @@ class _MyRequestsPageState extends State<MyRequestsPage> {
         title: "Мои запросы",
         preferredSize: Size(MediaQuery.of(context).size.width, 100),
       ),
-      bottomNavigationBar: CustomBottomNabigationBar(),
+      bottomNavigationBar: CustomBottomNabigationBar(
+        nowPage: '/requsts',
+      ),
       floatingActionButton: GradientFloatingActionButton(
         firstColor: Color.fromARGB(255, 83, 232, 140),
         secondColor: Color.fromARGB(255, 21, 190, 120),

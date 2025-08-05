@@ -43,6 +43,7 @@ dependencies:
   scroll_datetime_picker: ^0.2.2
   mobile_scanner: ^6.0.10
   http: ^1.4.0
+  shared_preferences: ^2.5.3
   
 
 dev_dependencies:

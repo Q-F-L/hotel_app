@@ -9,6 +9,7 @@ import 'package:m_softer_test_project/elements/icon_gradient.dart';
 import 'package:m_softer_test_project/pages/auth_page/bloc/auth_bloc.dart';
 import 'package:m_softer_test_project/themes/themes.dart';
 
+import '../../data/token.dart';
 import '../../elements/text_input_form.dart';
 
 class RegistrationPage extends StatefulWidget {
@@ -77,7 +78,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
         ),
       ),
       body: BlocProvider(
-        create: (context) => AuthBloc(),
+        create: (context) => AuthBloc(tokenRepository: TokenRepository()),
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state.status == AuthStatus.failure ||

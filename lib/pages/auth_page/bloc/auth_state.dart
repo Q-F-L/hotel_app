@@ -1,6 +1,13 @@
 part of 'auth_bloc.dart';
 
-enum AuthStatus { initial, loading, success, failure }
+enum AuthStatus {
+  initial,
+  loading,
+  authenticated,
+  unauthenticated,
+  success,
+  failure,
+}
 
 class AuthState {
   final String email;
@@ -16,9 +23,11 @@ class AuthState {
   final String? surnameError;
   final bool? isNotEmpty;
   final String? message;
+  final String? token;
 
   AuthState({
     this.message,
+    this.token,
     this.isNotEmpty,
     this.email = '',
     this.password = '',
@@ -36,6 +45,7 @@ class AuthState {
   AuthState copyWith({
     bool? isNotEmpty,
     String? email,
+    String? token,
     String? name,
     String? surname,
     String? errorName,
@@ -51,6 +61,7 @@ class AuthState {
     return AuthState(
       isNotEmpty: isNotEmpty ?? this.isNotEmpty,
       name: name ?? this.name,
+      token: token ?? this.token,
       errorName: errorName ?? this.errorName,
       surnameError: surnameError ?? this.surnameError,
       surname: surname ?? this.surname,

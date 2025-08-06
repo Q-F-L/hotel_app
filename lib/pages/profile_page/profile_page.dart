@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:m_softer_test_project/elements/custom_appbar.dart';
 import 'package:m_softer_test_project/themes/themes.dart';
 
-import '../../elements/custom_bottom_navigation_bar.dart';
-import '../../elements/gradient_floating_action_button.dart';
 import '../../elements/user_favorites_element.dart';
 import '../auth_page/bloc/auth_bloc.dart';
 

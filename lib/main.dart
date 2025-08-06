@@ -21,7 +21,6 @@ void main() {
   final tokenRepository = TokenRepository();
   final authBloc = AuthBloc(tokenRepository: tokenRepository);
 
-  // Проверяем наличие токена при запуске приложения
   authBloc.add(AuthCheckToken());
 
   initializeDateFormatting('ru_RU', null).then((_) => runApp(MyApp(

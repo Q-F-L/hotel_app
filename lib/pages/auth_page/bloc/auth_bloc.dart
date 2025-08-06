@@ -53,11 +53,9 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _onLogin(AuthLogin event, Emitter<AuthState> emit) async {
     final emailError = Validators.validateEmail(state.email);
-    // final passwordError = Validators.validatePassword(state.password);
 
     emit(state.copyWith(
       emailError: emailError,
-      // passwordError: passwordError,
       isFormValid: emailError == null,
     ));
 
@@ -123,6 +121,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         }),
       );
     } catch (e) {
+      print(e);
       // Игнорируем ошибку отправки FCM токена, так как это не критично
     }
   }

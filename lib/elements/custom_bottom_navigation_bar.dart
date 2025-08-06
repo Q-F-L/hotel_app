@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:m_softer_test_project/pages/bottom_navigation/bloc/botton_navigation_bloc.dart';
-import 'package:m_softer_test_project/pages/bottom_navigation/botton_navigation.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   const CustomBottomNavigationBar({super.key});

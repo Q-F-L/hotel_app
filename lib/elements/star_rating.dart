@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:m_softer_test_project/themes/themes.dart';
 
 typedef void RatingChangeCallback(double rating);
 

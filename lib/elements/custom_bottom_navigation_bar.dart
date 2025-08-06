@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:m_softer_test_project/pages/bottom_navigation/bloc/botton_navigation_bloc.dart';
+import 'package:m_softer_test_project/pages/bottom_navigation/botton_navigation.dart';
 
-class CustomBottomNabigationBar extends StatelessWidget {
-  const CustomBottomNabigationBar({super.key, required this.nowPage});
-  final String nowPage;
+class CustomBottomNavigationBar extends StatefulWidget {
+  const CustomBottomNavigationBar({super.key});
+
+  @override
+  State<CustomBottomNavigationBar> createState() =>
+      _CustomBottomNavigationBarState();
+}
+
+class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -27,9 +36,9 @@ class CustomBottomNabigationBar extends StatelessWidget {
                 fixedSize: Size(92, 65),
               ),
               onPressed: () {
-                if (nowPage != '/requsts') {
-                  Navigator.pushNamed(context, '/requsts');
-                }
+                context
+                    .read<BottonNavigationBloc>()
+                    .add(BNMoveToEvent(selectedPage: 0));
               },
               icon: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -50,9 +59,9 @@ class CustomBottomNabigationBar extends StatelessWidget {
               fixedSize: Size(92, 65),
             ),
             onPressed: () {
-              if (nowPage != '/services') {
-                Navigator.pushNamed(context, '/services');
-              }
+              context
+                  .read<BottonNavigationBloc>()
+                  .add(BNMoveToEvent(selectedPage: 1));
             },
             icon: Column(
               mainAxisAlignment: MainAxisAlignment.end,
@@ -72,9 +81,9 @@ class CustomBottomNabigationBar extends StatelessWidget {
               fixedSize: Size(92, 65),
             ),
             onPressed: () {
-              if (nowPage != '/profile') {
-                Navigator.pushNamed(context, '/profile');
-              }
+              context
+                  .read<BottonNavigationBloc>()
+                  .add(BNMoveToEvent(selectedPage: 2));
             },
             icon: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,

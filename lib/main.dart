@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:m_softer_test_project/pages/bottom_navigation/botton_navigation.dart';
 import 'package:m_softer_test_project/pages/my_requests_page/my_requests_page.dart';
 import 'package:m_softer_test_project/pages/shower_new_page/showers_page.dart';
 
@@ -58,7 +59,7 @@ class MyApp extends StatelessWidget {
                 body: CircularProgressIndicator(),
               );
             } else if (state.status == AuthStatus.authenticated) {
-              return const ServicesPage();
+              return const BottonNavigation();
             } else {
               return const Showers();
             }

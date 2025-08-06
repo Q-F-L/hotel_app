@@ -45,7 +45,6 @@ class _ServiceTicketState extends State<ServiceTicket> {
               child: Text(
                 widget.service.name.toString(),
                 softWrap: true,
-                textAlign: TextAlign.center,
                 style: Theme.of(context).textTheme.bodySmall,
               ),
             ),

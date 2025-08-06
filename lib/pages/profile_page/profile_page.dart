@@ -18,160 +18,146 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      floatingActionButton: GradientFloatingActionButton(
-        firstColor: Color.fromARGB(255, 83, 232, 140),
-        secondColor: Color.fromARGB(255, 21, 190, 120),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: CustomBottomNabigationBar(
-        nowPage: '/profile',
-      ),
-      appBar: CustomAppbar(
-        title: "Мои запросы",
-        preferredSize: Size(MediaQuery.of(context).size.width, 100),
-      ),
-      body: ListView(
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 16),
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            height: 170,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color: AppColors.white,
-              border: Border.all(color: AppColors.grey1),
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.shadow,
-                  offset: Offset(0, 10),
-                  blurRadius: 10,
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    SizedBox(
-                      width: 45,
-                    ),
-                    Text(
-                      "Diana Beppieva",
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineLarge
-                          ?.copyWith(fontSize: 20),
-                    ),
-                    IconButton(
-                      onPressed: () {
-                        setState(() {
-                          context.read<AuthBloc>().add(AuthLogout());
-                        });
-                      },
-                      icon: Icon(
-                        Icons.output_rounded,
-                        color: AppColors.black,
-                      ),
-                    ),
-                  ],
-                ),
-                Text(
-                  "Почта: david@yandex.ru",
-                  style: Theme.of(context).textTheme.labelSmall,
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                TextButton(
-                  style: TextButton.styleFrom(
-                    shape: StadiumBorder(
-                      side: BorderSide(
-                        color: AppColors.grey,
-                      ),
-                    ),
-                  ),
-                  onPressed: () {},
-                  child: Text(
-                    "Выселиться",
-                    style: headline2_regular,
-                  ),
-                ),
-              ],
-            ),
+    return ListView(
+      children: [
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 16),
+          margin: EdgeInsets.symmetric(horizontal: 20),
+          height: 170,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: AppColors.white,
+            border: Border.all(color: AppColors.grey1),
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.shadow,
+                offset: Offset(0, 10),
+                blurRadius: 10,
+              ),
+            ],
           ),
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(16),
-              color: AppColors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: AppColors.shadow,
-                  offset: Offset(0, 10),
-                  blurRadius: 10,
-                ),
-              ],
-            ),
-            child: Column(
-              children: [
-                Text(
-                  "ВАШИ ПРЕДПОЧТЕНИЯ",
-                  style: Theme.of(context)
-                      .textTheme
-                      .headlineLarge
-                      ?.copyWith(fontSize: 20),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                UserFavoritesElement(
-                  unorderedList: [
-                    'Матрас — средней жесткости',
-                    'Подушки — перо '
-                  ],
-                  name: "СОН",
-                  icon: Image.asset('assets\images\sleep_bad.png'),
-                ),
-                SizedBox(
-                  height: 24,
-                ),
-                UserFavoritesElement(
-                  unorderedList: ['С видом на горы', 'Для некурящих'],
-                  name: "Номер",
-                  icon: Image.asset('assets\images\room.png'),
-                ),
-              ],
-            ),
-          ),
-          IconButton(
-              onPressed: () {},
-              icon: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+          child: Column(
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(
-                    Icons.delete_outlined,
-                    color: AppColors.black,
-                  ),
                   SizedBox(
-                    width: 10,
+                    width: 45,
                   ),
                   Text(
-                    "Удалить аккаунт",
+                    "Diana Beppieva",
                     style: Theme.of(context)
                         .textTheme
-                        .bodySmall!
-                        .copyWith(fontSize: 20),
+                        .headlineLarge
+                        ?.copyWith(fontSize: 20),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      setState(() {
+                        context.read<AuthBloc>().add(AuthLogout());
+                      });
+                    },
+                    icon: Icon(
+                      Icons.output_rounded,
+                      color: AppColors.black,
+                    ),
                   ),
                 ],
-              )),
-        ],
-      ),
+              ),
+              Text(
+                "Почта: david@yandex.ru",
+                style: Theme.of(context).textTheme.labelSmall,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              TextButton(
+                style: TextButton.styleFrom(
+                  shape: StadiumBorder(
+                    side: BorderSide(
+                      color: AppColors.grey,
+                    ),
+                  ),
+                ),
+                onPressed: () {},
+                child: Text(
+                  "Выселиться",
+                  style: headline2_regular,
+                ),
+              ),
+            ],
+          ),
+        ),
+        SizedBox(
+          height: 20,
+        ),
+        Container(
+          padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+          margin: EdgeInsets.symmetric(horizontal: 20),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(16),
+            color: AppColors.white,
+            boxShadow: [
+              BoxShadow(
+                color: AppColors.shadow,
+                offset: Offset(0, 10),
+                blurRadius: 10,
+              ),
+            ],
+          ),
+          child: Column(
+            children: [
+              Text(
+                "ВАШИ ПРЕДПОЧТЕНИЯ",
+                style: Theme.of(context)
+                    .textTheme
+                    .headlineLarge
+                    ?.copyWith(fontSize: 20),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              UserFavoritesElement(
+                unorderedList: [
+                  'Матрас — средней жесткости',
+                  'Подушки — перо '
+                ],
+                name: "СОН",
+                icon: Image.asset('assets\images\sleep_bad.png'),
+              ),
+              SizedBox(
+                height: 24,
+              ),
+              UserFavoritesElement(
+                unorderedList: ['С видом на горы', 'Для некурящих'],
+                name: "Номер",
+                icon: Image.asset('assets\images\room.png'),
+              ),
+            ],
+          ),
+        ),
+        IconButton(
+            onPressed: () {},
+            icon: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Icon(
+                  Icons.delete_outlined,
+                  color: AppColors.black,
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                Text(
+                  "Удалить аккаунт",
+                  style: Theme.of(context)
+                      .textTheme
+                      .bodySmall!
+                      .copyWith(fontSize: 20),
+                ),
+              ],
+            )),
+      ],
     );
   }
 }

@@ -22,7 +22,7 @@ class GradientFloatingActionButton extends StatelessWidget {
       child: FloatingActionButton(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        onPressed: () {},
+        onPressed: onPressed,
         child: Image.asset("assets/images/services.png"),
       ),
     );

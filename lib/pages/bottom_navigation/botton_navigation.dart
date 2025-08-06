@@ -27,7 +27,7 @@ class _BottonNavigationState extends State<BottonNavigation> {
           return Scaffold(
             bottomSheet: CustomBottomNavigationBar(),
             appBar: CustomAppbar(
-              title: "Сервисы",
+              title: ["Мои запросы", "Сервисы", "Мой профиль"][state.nowPage],
               preferredSize: Size(MediaQuery.of(context).size.width, 100),
             ),
             floatingActionButton: GradientFloatingActionButton(

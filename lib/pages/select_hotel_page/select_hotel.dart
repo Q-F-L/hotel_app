@@ -48,7 +48,7 @@ class _SelectHomeState extends State<SelectHome> {
         ),
       ),
       body: BlocProvider(
-        create: (context) => SelectHotelBloc()..add(RequestHotelsEvent()),
+        create: (context) => bloc..add(RequestHotelsEvent()),
         child: BlocConsumer<SelectHotelBloc, SelectHotelState>(
           listener: (context, state) {
             if (state.status == SelectHotelStatus.send) {

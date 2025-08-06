@@ -100,6 +100,7 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
               width: 0,
             ),
             labelWidget: Container(
+              width: widget.width! - 20,
               height: 44,
               padding: EdgeInsets.only(top: 10),
               child: Column(

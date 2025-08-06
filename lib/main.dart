@@ -58,7 +58,7 @@ class MyApp extends StatelessWidget {
                 body: CircularProgressIndicator(),
               );
             } else if (state.status == AuthStatus.authenticated) {
-              return const SelectHome();
+              return const ServicesPage();
             } else {
               return const Showers();
             }

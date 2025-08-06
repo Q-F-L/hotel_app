@@ -1,10 +1,15 @@
+import 'dart:developer';
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
+import 'package:m_softer_test_project/data/services.dart';
 
 import '../themes/themes.dart';
 import 'show_additional_services.dart';
 
 class ServiceTicket extends StatefulWidget {
-  const ServiceTicket({super.key});
+  const ServiceTicket({super.key, required this.service});
+  final Services service;
 
   @override
   State<ServiceTicket> createState() => _ServiceTicketState();
@@ -18,7 +23,7 @@ class _ServiceTicketState extends State<ServiceTicket> {
         showDialog(
             context: context,
             builder: (context) {
-              return ShowAdditoinalServices();
+              return ShowAdditionalServices();
             });
       },
       child: Container(
@@ -36,17 +41,22 @@ class _ServiceTicketState extends State<ServiceTicket> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(
-              "Уборка номера",
-              style: Theme.of(context).textTheme.bodySmall,
+            Flexible(
+              child: Text(
+                widget.service.name.toString(),
+                softWrap: true,
+                textAlign: TextAlign.center,
+                style: Theme.of(context).textTheme.bodySmall,
+              ),
             ),
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
+                //widget.service.icon
                 Image.asset('assets/images/hairdryer.png'),
                 Text(
-                  "500 р.",
+                  widget.service.price.toString(),
                   style: Theme.of(context).textTheme.labelSmall,
                 ),
               ],

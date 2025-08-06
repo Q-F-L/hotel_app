@@ -1,4 +1,5 @@
 part of 'services_bloc.dart';
 
-@immutable
-sealed class ServicesEvent {}
+abstract class ServicesEvent {}
+
+class ServicesInitialEvent extends ServicesEvent {}

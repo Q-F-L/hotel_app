@@ -1,10 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:m_softer_test_project/data/services.dart';
 import 'package:m_softer_test_project/elements/custom_drop_down_menu.dart';
 import 'package:m_softer_test_project/elements/text_input_form.dart';
 import 'package:m_softer_test_project/themes/themes.dart';
 
-class ShowAdditoinalServices extends StatelessWidget {
-  const ShowAdditoinalServices({super.key});
+class ShowAdditionalServices extends StatefulWidget {
+  const ShowAdditionalServices({super.key});
+
+  @override
+  State<ShowAdditionalServices> createState() => _ShowAdditionalServicesState();
+}
+
+class _ShowAdditionalServicesState extends State<ShowAdditionalServices> {
+  int counter = 0;
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +33,10 @@ class ShowAdditoinalServices extends StatelessWidget {
           height: 15,
         ),
         CustomDropDownMenu(
-          listString: ["dsa", 'dsa2 3', 'dsad'],
-          active: true,
-          text: "Выбрать",
-          width: MediaQuery.of(context).size.width * 0.58,
-        ),
+            listString: ["dsa", 'dsa2 3', 'dsad'],
+            active: true,
+            text: "Выбрать",
+            width: MediaQuery.of(context).size.width * 0.70),
         SizedBox(
           height: 30,
         ),
@@ -58,13 +65,23 @@ class ShowAdditoinalServices extends StatelessWidget {
               child: Row(
                 children: [
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        if (counter > 0) {
+                          --counter;
+                        }
+                      });
+                    },
                     icon:
                         Image.asset("assets/images/remove_circle_outline.png"),
                   ),
-                  Text("1"),
+                  Text("${counter}"),
                   IconButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      setState(() {
+                        ++counter;
+                      });
+                    },
                     icon: Image.asset("assets/images/add_circle_outline.png"),
                   ),
                 ],

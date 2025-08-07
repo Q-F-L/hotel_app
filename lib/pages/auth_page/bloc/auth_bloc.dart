@@ -79,6 +79,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
 
       final json = jsonDecode(response.body);
+      print(json);
 
       if (response.statusCode == 200 && json['success'] == true) {
         final token = json['token'] as String;

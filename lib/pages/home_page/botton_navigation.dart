@@ -3,20 +3,20 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:m_softer_test_project/elements/custom_appbar.dart';
 import 'package:m_softer_test_project/elements/custom_bottom_navigation_bar.dart';
 import 'package:m_softer_test_project/elements/gradient_floating_action_button.dart';
-import 'package:m_softer_test_project/pages/bottom_navigation/bloc/botton_navigation_bloc.dart';
+import 'package:m_softer_test_project/pages/home_page/bloc/botton_navigation_bloc.dart';
 import 'package:m_softer_test_project/pages/my_requests_page/my_requests_page.dart';
 import 'package:m_softer_test_project/pages/profile_page/profile_page.dart';
 import 'package:m_softer_test_project/pages/services_page/services_page.dart';
 import 'package:m_softer_test_project/themes/themes.dart';
 
-class BottonNavigation extends StatefulWidget {
-  const BottonNavigation({super.key});
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
 
   @override
-  State<BottonNavigation> createState() => _BottonNavigationState();
+  State<HomePage> createState() => _HomePageState();
 }
 
-class _BottonNavigationState extends State<BottonNavigation> {
+class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

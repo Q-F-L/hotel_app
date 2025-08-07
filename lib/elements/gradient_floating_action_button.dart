@@ -13,8 +13,6 @@ class GradientFloatingActionButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 56,
-      height: 56,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
         gradient: LinearGradient(colors: [firstColor, secondColor]),
@@ -22,6 +20,10 @@ class GradientFloatingActionButton extends StatelessWidget {
       child: FloatingActionButton(
         backgroundColor: Colors.transparent,
         elevation: 0,
+        focusElevation: 0,
+        hoverElevation: 0,
+        disabledElevation: 0,
+        highlightElevation: 0,
         onPressed: onPressed,
         child: Image.asset("assets/images/services.png"),
       ),

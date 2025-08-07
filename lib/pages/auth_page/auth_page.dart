@@ -7,6 +7,7 @@ import 'package:m_softer_test_project/data/token.dart';
 import 'package:m_softer_test_project/elements/gradient_button.dart';
 import 'package:m_softer_test_project/elements/icon_gradient.dart';
 import 'package:m_softer_test_project/pages/auth_page/bloc/auth_bloc.dart';
+import 'package:m_softer_test_project/utils/snackbar_helper.dart';
 
 import '../../elements/text_input_form.dart';
 import '../../themes/themes.dart';
@@ -21,40 +22,6 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage> {
   final _formKey = GlobalKey<FormState>();
   final fcmToken = ''; // Получите FCM токен из Firebase Messaging
-
-  void showSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(
-      backgroundColor: Colors.transparent,
-      elevation: 0,
-      behavior: SnackBarBehavior.floating,
-      width: min(message.length * 13, MediaQuery.of(context).size.width * 0.8),
-      content: Container(
-        padding: EdgeInsets.symmetric(
-          horizontal: 5,
-          vertical: 10,
-        ),
-        alignment: Alignment.center,
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: const Color.fromARGB(162, 59, 59, 59),
-              blurRadius: 10,
-              spreadRadius: 1,
-            ),
-          ],
-          borderRadius: BorderRadius.circular(6),
-          color: AppColors.white,
-        ),
-        child: Text(
-          message,
-          style: Theme.of(context).textTheme.labelSmall,
-          textAlign: TextAlign.center,
-        ),
-      ),
-    );
-
-    ScaffoldMessenger.of(context).showSnackBar(snackBar);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -83,7 +50,11 @@ class _AuthPageState extends State<AuthPage> {
                   state.emailError ??
                   state.passwordError ??
                   'Произошла ошибка';
-              showSnackBar(context, errorMessage);
+              showCustomSnackBar(context, errorMessage);
+            }
+
+            if (state.status == AuthStatus.authenticated) {
+              Navigator.pushNamed(context, "/select_home");
             }
           },
           builder: (context, state) {
@@ -140,8 +111,6 @@ class _AuthPageState extends State<AuthPage> {
                       onPressed: () => canClick
                           ? {
                               bloc.add(AuthLogin()),
-                              if (state.status == AuthStatus.authenticated)
-                                {Navigator.pushNamed(context, "/select_home")}
                             }
                           : {},
                       canClick: canClick,

@@ -53,7 +53,6 @@ class _ShowersState extends State<Showers> {
             children: List<Widget>.generate(
               3,
               (i) {
-                print(i);
                 return Shower(
                   image: listShowers[i]['image'],
                   description: listShowers[i]['description'],

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:m_softer_test_project/pages/bottom_navigation/bloc/botton_navigation_bloc.dart';
-import 'package:m_softer_test_project/pages/bottom_navigation/botton_navigation.dart';
+import 'package:m_softer_test_project/pages/home_page/bloc/botton_navigation_bloc.dart';
+import 'package:m_softer_test_project/themes/themes.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
   const CustomBottomNavigationBar({super.key});
@@ -14,17 +14,20 @@ class CustomBottomNavigationBar extends StatefulWidget {
 class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   @override
   Widget build(BuildContext context) {
+    int nowPage =
+        context.select((BottonNavigationBloc bloc) => bloc.state.nowPage);
+
     return Container(
-      margin: EdgeInsets.only(bottom: 10),
+      margin: EdgeInsets.only(bottom: 10, top: 5),
       height: 80,
-      padding: EdgeInsets.only(left: 10, right: 10, top: 10),
+      padding: EdgeInsets.only(left: 10, right: 10, top: 0),
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage(
             "assets/images/button_navigation.png",
           ),
           fit: BoxFit.cover,
-          scale: 0.96,
+          scale: 1,
         ),
         borderRadius: BorderRadius.circular(16),
       ),
@@ -43,13 +46,16 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
               icon: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Image.asset("assets/images/grey_bell.png"),
+                  Image.asset("assets/images/grey_bell.png",
+                      color:
+                          nowPage == 0 ? AppColors.textGreen : AppColors.black),
                   Text(
                     "Мои запросы",
-                    style: Theme.of(context)
-                        .textTheme
-                        .labelSmall
-                        ?.copyWith(fontSize: 12),
+                    style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                        fontSize: 12,
+                        color: nowPage == 0
+                            ? AppColors.textGreen
+                            : AppColors.black),
                   )
                 ],
               )),
@@ -68,10 +74,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
               children: [
                 Text(
                   "Сервисы",
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall
-                      ?.copyWith(fontSize: 12),
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      fontSize: 12,
+                      color:
+                          nowPage == 1 ? AppColors.textGreen : AppColors.black),
                 )
               ],
             ),
@@ -88,13 +94,15 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             icon: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Image.asset("assets/images/user.png"),
+                Image.asset("assets/images/user.png",
+                    color:
+                        nowPage == 2 ? AppColors.textGreen : AppColors.black),
                 Text(
                   "Профиль",
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall
-                      ?.copyWith(fontSize: 12),
+                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                      fontSize: 12,
+                      color:
+                          nowPage == 2 ? AppColors.textGreen : AppColors.black),
                 )
               ],
             ),

@@ -7,6 +7,7 @@ import 'package:m_softer_test_project/elements/custom_drop_down_menu_room.dart';
 import 'package:m_softer_test_project/elements/gradient_button.dart';
 import 'package:m_softer_test_project/elements/icon_gradient.dart';
 import 'package:m_softer_test_project/themes/themes.dart';
+import 'package:m_softer_test_project/utils/snackbar_helper.dart';
 
 import '../../elements/menu_select_date.dart';
 import 'bloc/select_hotel_bloc.dart';
@@ -19,14 +20,6 @@ class SelectHome extends StatefulWidget {
 }
 
 class _SelectHomeState extends State<SelectHome> {
-  late SelectHotelBloc bloc;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -48,15 +41,13 @@ class _SelectHomeState extends State<SelectHome> {
         ),
       ),
       body: BlocProvider(
-        create: (context) => bloc..add(RequestHotelsEvent()),
+        create: (context) => SelectHotelBloc()..add(RequestHotelsEvent()),
         child: BlocConsumer<SelectHotelBloc, SelectHotelState>(
           listener: (context, state) {
             if (state.status == SelectHotelStatus.send) {
               Navigator.pushNamed(context, '/services');
             } else if (state.status == SelectHotelStatus.failure) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Ошибка: ${state.errorMessage}")),
-              );
+              showCustomSnackBar(context, "Ошибка: ${state.errorMessage}");
             }
           },
           builder: (context, state) {

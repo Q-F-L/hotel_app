@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:m_softer_test_project/themes/themes.dart';
+import 'package:m_softer_test_project/utils/snackbar_helper.dart';
 
 class GradientButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -33,39 +34,33 @@ class GradientButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: canClick
-          ? onPressed
-          : () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(
-                  backgroundColor: AppColors.white,
-                  content: Text(
-                    errorMessage,
-                    style: Theme.of(context).textTheme.labelSmall,
-                  ),
-                  behavior: SnackBarBehavior.floating,
+    return Material(
+      color: Colors.transparent,
+      child: InkWell(
+        onTap: canClick
+            ? onPressed
+            : () {
+                showCustomSnackBar(context, errorMessage);
+              },
+        borderRadius: borderRadius,
+        child: Opacity(
+          opacity: canClick ? 1 : 0.5,
+          child: Container(
+            margin: margin,
+            padding: padding,
+            decoration: BoxDecoration(
+              gradient: gradient,
+              borderRadius: borderRadius,
+              border: border,
+              boxShadow: shadow,
+            ),
+            child: Material(
+              type: MaterialType.transparency,
+              child: Padding(
+                padding: padding,
+                child: Center(
+                  child: child,
                 ),
-              );
-            },
-      borderRadius: borderRadius,
-      child: Opacity(
-        opacity: canClick ? 1 : 0.5,
-        child: Container(
-          margin: margin,
-          padding: padding,
-          decoration: BoxDecoration(
-            gradient: gradient,
-            borderRadius: borderRadius,
-            border: border,
-            boxShadow: shadow,
-          ),
-          child: Material(
-            type: MaterialType.transparency,
-            child: Padding(
-              padding: padding,
-              child: Center(
-                child: child,
               ),
             ),
           ),

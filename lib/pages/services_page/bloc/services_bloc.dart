@@ -13,6 +13,8 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
 
   _requestAllServices(
       ServicesInitialEvent event, Emitter<ServicesState> emit) async {
+    state.copyWith(status: ServicesStatus.loading);
+
     final response = await http.get(
       Uri.parse('https://app.successhotel.ru/api/client/services'),
       headers: {

@@ -1,6 +1,6 @@
 part of 'select_hotel_bloc.dart';
 
-enum SelectHotelStatus { initial, loading, success, failure, send }
+enum SelectHotelStatus { initial, loading, success, failure, send, complited }
 
 class SelectHotelState {
   final Organizations? hotel;

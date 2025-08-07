@@ -1,17 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:m_softer_test_project/pages/home_page/botton_navigation.dart';
-import 'package:m_softer_test_project/pages/my_requests_page/my_requests_page.dart';
 import 'package:m_softer_test_project/pages/shower_new_page/showers_page.dart';
 
 import 'data/token.dart';
 import 'pages/auth_page/auth_page.dart';
 import 'pages/auth_page/bloc/auth_bloc.dart';
 import 'pages/auth_page/register_page.dart';
-import 'pages/profile_page/profile_page.dart';
 import 'pages/qr_code_page/qr_code_page.dart';
 import 'pages/select_hotel_page/select_hotel.dart';
-import 'pages/services_page/services_page.dart';
 import 'themes/themes.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
@@ -44,11 +41,9 @@ class MyApp extends StatelessWidget {
           '/auth': (context) => AuthPage(),
           '/registration': (context) => RegistrationPage(),
           '/select_home': (context) => SelectHome(),
-          '/services': (context) => ServicesPage(),
-          '/requsts': (context) => MyRequestsPage(),
-          '/profile': (context) => ProfilePage(),
           '/qr_code_page': (context) => QrCodePage(),
           '/shower': (context) => Showers(),
+          '/home': (context) => HomePage(),
         },
         home: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
@@ -58,7 +53,7 @@ class MyApp extends StatelessWidget {
                 body: CircularProgressIndicator(),
               );
             } else if (state.status == AuthStatus.authenticated) {
-              return const HomePage();
+              return const SelectHome();
             } else {
               return const Showers();
             }

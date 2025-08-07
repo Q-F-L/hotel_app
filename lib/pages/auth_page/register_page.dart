@@ -58,6 +58,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   'Произошла ошибка';
               showCustomSnackBar(context, errorMessage);
             }
+
+            if (state.status == AuthStatus.success) {
+              Navigator.pop(context);
+            }
           },
           builder: (context, state) {
             final bloc = context.read<AuthBloc>();

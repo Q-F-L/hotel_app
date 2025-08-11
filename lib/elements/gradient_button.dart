@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:m_softer_test_project/themes/themes.dart';
 import 'package:m_softer_test_project/utils/snackbar_helper.dart';
 
 class GradientButton extends StatelessWidget {
@@ -34,8 +33,8 @@ class GradientButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      color: Colors.transparent,
+    return Container(
+      margin: margin,
       child: InkWell(
         onTap: canClick
             ? onPressed
@@ -46,7 +45,7 @@ class GradientButton extends StatelessWidget {
         child: Opacity(
           opacity: canClick ? 1 : 0.5,
           child: Container(
-            margin: margin,
+            // margin: margin,
             padding: padding,
             decoration: BoxDecoration(
               gradient: gradient,

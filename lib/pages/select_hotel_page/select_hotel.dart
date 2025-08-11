@@ -49,6 +49,10 @@ class _SelectHomeState extends State<SelectHome> {
             } else if (state.status == SelectHotelStatus.failure) {
               showCustomSnackBar(context, "Ошибка: ${state.errorMessage}");
             }
+
+            if (state.status == SelectHotelStatus.complited) {
+              Navigator.pushNamed(context, '/home');
+            }
           },
           builder: (context, state) {
             final bloc = context.read<SelectHotelBloc>();

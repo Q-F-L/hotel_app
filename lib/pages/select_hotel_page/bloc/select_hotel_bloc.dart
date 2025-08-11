@@ -4,6 +4,8 @@ import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:m_softer_test_project/data/hotels.dart';
 import 'package:m_softer_test_project/data/rooms.dart';
+import 'package:m_softer_test_project/data/token.dart';
+import 'package:m_softer_test_project/data/user/user.dart';
 
 part 'select_hotel_event.dart';
 part 'select_hotel_state.dart';
@@ -20,12 +22,14 @@ class SelectHotelBloc extends Bloc<SelectHotelEvent, SelectHotelState> {
   }
 
   _send(SendEvent event, Emitter<SelectHotelState> emit) async {
+    final tokenRepository = TokenRepository();
+    final token = await tokenRepository.getToken();
     final response = await http.post(
       Uri.parse('https://app.successhotel.ru/api/client/check-in'),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer 96|r2BwEwOzCUsYqSbbNlP3iP74ZT8oaigvc65cE6yk'
+        'Authorization': 'Bearer $token'
       },
       body: jsonEncode({
         'room_id': state.rooms!.id,
@@ -52,13 +56,22 @@ class SelectHotelBloc extends Bloc<SelectHotelEvent, SelectHotelState> {
 
   _requestHotelsEvent(
       RequestHotelsEvent event, Emitter<SelectHotelState> emit) async {
+    await User.request();
+
+    if (User.checkedIn ?? false) {
+      emit(state.copyWith(status: SelectHotelStatus.complited));
+      return;
+    }
+
     try {
+      final tokenRepository = TokenRepository();
+      final token = await tokenRepository.getToken();
       final response = await http.get(
         Uri.parse('https://app.successhotel.ru/api/client/organizations'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer 96|r2BwEwOzCUsYqSbbNlP3iP74ZT8oaigvc65cE6yk'
+          'Authorization': 'Bearer $token'
         },
       );
 
@@ -89,13 +102,15 @@ class SelectHotelBloc extends Bloc<SelectHotelEvent, SelectHotelState> {
     emit(state.copyWith(hotel: event.hotel));
 
     try {
+      final tokenRepository = TokenRepository();
+      final token = await tokenRepository.getToken();
       final response = await http.get(
         Uri.parse(
             'https://app.successhotel.ru/api/client/organizations/${event.hotel!.id}/rooms'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer 96|r2BwEwOzCUsYqSbbNlP3iP74ZT8oaigvc65cE6yk'
+          'Authorization': 'Bearer $token'
         },
       );
 

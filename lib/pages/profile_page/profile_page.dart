@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:m_softer_test_project/data/user/user.dart';
+import 'package:m_softer_test_project/pages/profile_page/bloc/profile_bloc.dart';
 import 'package:m_softer_test_project/themes/themes.dart';
 
 import '../../elements/user_favorites_element.dart';
@@ -25,13 +27,7 @@ class _ProfilePageState extends State<ProfilePage> {
             borderRadius: BorderRadius.circular(16),
             color: AppColors.white,
             border: Border.all(color: AppColors.grey1),
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.shadow,
-                offset: Offset(0, 10),
-                blurRadius: 10,
-              ),
-            ],
+            boxShadow: [shadow],
           ),
           child: Column(
             children: [
@@ -42,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     width: 45,
                   ),
                   Text(
-                    "Diana Beppieva",
+                    "${User.firstName} ${User.lastName}",
                     style: Theme.of(context)
                         .textTheme
                         .headlineLarge
@@ -50,9 +46,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                   IconButton(
                     onPressed: () {
-                      setState(() {
-                        context.read<AuthBloc>().add(AuthLogout());
-                      });
+                      context.read<AuthBloc>().add(AuthLogout());
                     },
                     icon: Icon(
                       Icons.output_rounded,
@@ -62,7 +56,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
               Text(
-                "Почта: david@yandex.ru",
+                "Почта: ${User.email}",
                 style: Theme.of(context).textTheme.labelSmall,
               ),
               SizedBox(
@@ -76,7 +70,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                 ),
-                onPressed: () {},
+                onPressed: () {
+                  context.read<AuthBloc>().add(MoveOutEvent());
+                },
                 child: Text(
                   "Выселиться",
                   style: headline2_regular,
@@ -94,13 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
             color: AppColors.white,
-            boxShadow: [
-              BoxShadow(
-                color: AppColors.shadow,
-                offset: Offset(0, 10),
-                blurRadius: 10,
-              ),
-            ],
+            boxShadow: [shadow],
           ),
           child: Column(
             children: [
@@ -154,30 +144,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ],
             )),
-      ],
-    );
-  }
-}
-
-class UnorderedListItem extends StatelessWidget {
-  UnorderedListItem(this.text);
-  final String text;
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          "— ",
-          style: labelSmallManrope,
-        ),
-        Expanded(
-          child: Text(
-            text,
-            style: labelSmallManrope,
-          ),
-        ),
       ],
     );
   }

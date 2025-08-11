@@ -14,21 +14,16 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PreferredSize(
-      preferredSize: preferredSize,
+    return SafeArea(
+      bottom: false, // нам нужен только верхний отступ
       child: Column(
         children: [
-          SizedBox(
-            height: 20,
-          ),
           Image.asset(
             'assets/images/logo_mini.png',
             width: 60,
             height: 60,
           ),
-          SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           Text(
             title,
             style: Theme.of(context).textTheme.bodyLarge,

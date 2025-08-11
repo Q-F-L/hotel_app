@@ -50,69 +50,75 @@ class _QrCodePageState extends State<QrCodePage> {
           style: Theme.of(context).textTheme.bodyLarge,
         ),
       ),
-      body: Column(
-        children: [
-          SizedBox(
-            height: 300,
-            width: MediaQuery.of(context).size.width,
-            child: MobileScanner(
-              controller: controller,
-              onDetect: (capture) {
-                Future.delayed(Duration(milliseconds: 500)).then(
-                  (value) {
-                    final List<Barcode> barcodes = capture.barcodes;
-                    for (final barcode in barcodes) {
-                      debugPrint('QR Found! ${barcode.rawValue}');
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (context) {
-                            return Container(
-                              width: 100,
-                              height: 100,
-                              color: Colors.red,
-                              child: Text("Complited!!!"),
-                            );
-                          },
-                        ),
-                      ).then((value) => controller.start());
-                    }
-                    controller.stop();
-                  },
-                );
-              },
+      body: SafeArea(
+        child: Column(
+          children: [
+            SizedBox(
+              height: 300,
+              width: MediaQuery.of(context).size.width,
+              child: MobileScanner(
+                controller: controller,
+                onDetect: (capture) {
+                  Future.delayed(Duration(milliseconds: 500)).then(
+                    (value) {
+                      final List<Barcode> barcodes = capture.barcodes;
+                      for (final barcode in barcodes) {
+                        debugPrint('QR Found! ${barcode.rawValue}');
+                        Navigator.of(context).push(
+                          MaterialPageRoute(
+                            builder: (context) {
+                              return Container(
+                                width: 100,
+                                height: 100,
+                                color: Colors.red,
+                                child: Text("Complited!!!"),
+                              );
+                            },
+                          ),
+                        ).then((value) => controller.start());
+                      }
+                      controller.stop();
+                    },
+                  );
+                },
+              ),
             ),
-          ),
-          SizedBox(
-            height: 15,
-          ),
-          Text(
-            "Forrest Terrace Hotel, Владикавказ,\nВерхний Фиагдон",
-            textAlign: TextAlign.center,
-            style:
-                Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 16),
-          ),
-          SizedBox(
-            height: 6,
-          ),
-          Text(
-            "№ 301",
-            style:
-                Theme.of(context).textTheme.labelSmall?.copyWith(fontSize: 16),
-          ),
-          SizedBox(
-            height: 24,
-          ),
-          GradientButton(
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            onPressed: () {},
-            canClick: true,
-            borderRadius: BorderRadius.all(Radius.circular(16)),
-            child: Text(
-              "Готово",
-              style: whiteTextButton,
+            SizedBox(
+              height: 15,
             ),
-          ),
-        ],
+            Text(
+              "Forrest Terrace Hotel, Владикавказ,\nВерхний Фиагдон",
+              textAlign: TextAlign.center,
+              style: Theme.of(context)
+                  .textTheme
+                  .labelSmall
+                  ?.copyWith(fontSize: 16),
+            ),
+            SizedBox(
+              height: 6,
+            ),
+            Text(
+              "№ 301",
+              style: Theme.of(context)
+                  .textTheme
+                  .labelSmall
+                  ?.copyWith(fontSize: 16),
+            ),
+            SizedBox(
+              height: 24,
+            ),
+            GradientButton(
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              onPressed: () {},
+              canClick: true,
+              borderRadius: BorderRadius.all(Radius.circular(16)),
+              child: Text(
+                "Готово",
+                style: whiteTextButton,
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

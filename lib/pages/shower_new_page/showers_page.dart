@@ -47,23 +47,25 @@ class _ShowersState extends State<Showers> {
       child: BlocBuilder<ShowerNewPageBloc, ShowerNewPageState>(
         bloc: showerNewPageBloc,
         builder: (context, state) {
-          return PageView(
-            physics: const NeverScrollableScrollPhysics(),
-            controller: _pageController,
-            children: List<Widget>.generate(
-              3,
-              (i) {
-                return Shower(
-                  image: listShowers[i]['image'],
-                  description: listShowers[i]['description'],
-                  textButton: listShowers[i]['textButton'],
-                  onPressLast: 2 == i
-                      ? () {
-                          Navigator.pushNamed(context, "/auth");
-                        }
-                      : null,
-                );
-              },
+          return SafeArea(
+            child: PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: _pageController,
+              children: List<Widget>.generate(
+                3,
+                (i) {
+                  return Shower(
+                    image: listShowers[i]['image'],
+                    description: listShowers[i]['description'],
+                    textButton: listShowers[i]['textButton'],
+                    onPressLast: 2 == i
+                        ? () {
+                            Navigator.pushNamed(context, "/auth");
+                          }
+                        : null,
+                  );
+                },
+              ),
             ),
           );
         },

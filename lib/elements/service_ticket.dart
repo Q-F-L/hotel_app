@@ -31,8 +31,9 @@ class _ServiceTicketState extends State<ServiceTicket> {
             borderRadius: BorderRadius.all(Radius.circular(16)),
             color: AppColors.white,
             border: Border.all(
-              color: Color(0xF4F4F4F4),
+              color: AppColors.inputWhite,
             ),
+            boxShadow: [shadow],
           ),
           height: 91,
           padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),

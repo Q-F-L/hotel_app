@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:m_softer_test_project/pages/home_page/botton_navigation.dart';
+import 'package:m_softer_test_project/pages/home_page/home.dart';
 import 'package:m_softer_test_project/pages/shower_new_page/showers_page.dart';
 
 import 'data/token.dart';
@@ -34,29 +34,43 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => authBloc,
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         color: Colors.transparent,
         title: 'Flutter Demo',
         theme: createLightTheme(),
         routes: {
           '/auth': (context) => AuthPage(),
           '/registration': (context) => RegistrationPage(),
-          '/select_home': (context) => SelectHome(),
+          '/select_home': (context) => SelectHomePage(),
           '/qr_code_page': (context) => QrCodePage(),
           '/shower': (context) => Showers(),
           '/home': (context) => HomePage(),
         },
         home: BlocBuilder<AuthBloc, AuthState>(
           builder: (context, state) {
-            if (state.status == AuthStatus.initial ||
-                state.status == AuthStatus.loading) {
-              return Scaffold(
-                body: CircularProgressIndicator(),
-              );
-            } else if (state.status == AuthStatus.authenticated) {
-              return const SelectHome();
-            } else {
-              return const Showers();
+            switch (state.status) {
+              case AuthStatus.initial || AuthStatus.loading:
+                return Scaffold(
+                  body: CircularProgressIndicator(),
+                );
+              case AuthStatus.authenticated:
+                return HomePage();
+              case AuthStatus.unauthenticated:
+                return SelectHomePage();
+              default:
+                return const AuthPage();
             }
+
+            // if (state.status == AuthStatus.initial ||
+            //     state.status == AuthStatus.loading) {
+            //   return Scaffold(
+            //     body: CircularProgressIndicator(),
+            //   );
+            // } else if (state.status == AuthStatus.authenticated) {
+            //   return const SelectHome();
+            // } else if () else {
+            //   return const Showers();
+            // }
           },
         ),
       ),

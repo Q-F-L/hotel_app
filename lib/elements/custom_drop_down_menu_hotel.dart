@@ -134,7 +134,7 @@ class _CustomDropDownMenuHotelState extends State<CustomDropDownMenuHotel> {
                       ),
                       if (index != widget.list!.length - 1)
                         const Divider(
-                          color: Color(0xFFEEEEEE),
+                          color: AppColors.divider,
                           thickness: 2,
                           height: 10,
                         ),

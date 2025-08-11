@@ -12,13 +12,7 @@ void showCustomSnackBar(BuildContext context, String message) {
       padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 10),
       alignment: Alignment.center,
       decoration: BoxDecoration(
-        boxShadow: const [
-          BoxShadow(
-            color: Color.fromARGB(162, 59, 59, 59),
-            blurRadius: 10,
-            spreadRadius: 1,
-          ),
-        ],
+        boxShadow: const [shadow],
         borderRadius: BorderRadius.circular(6),
         color: AppColors.white,
       ),

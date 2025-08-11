@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:m_softer_test_project/elements/custom_appbar.dart';
 import 'package:m_softer_test_project/elements/custom_bottom_navigation_bar.dart';
 import 'package:m_softer_test_project/elements/gradient_floating_action_button.dart';
-import 'package:m_softer_test_project/pages/home_page/bloc/botton_navigation_bloc.dart';
+import 'package:m_softer_test_project/pages/home_page/bloc/home_bloc.dart';
 import 'package:m_softer_test_project/pages/my_requests_page/my_requests_page.dart';
 import 'package:m_softer_test_project/pages/profile_page/profile_page.dart';
 import 'package:m_softer_test_project/pages/services_page/services_page.dart';
@@ -21,14 +21,14 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => BottonNavigationBloc(),
-      child: BlocConsumer<BottonNavigationBloc, BottonNavigationState>(
+      child: BlocConsumer<BottonNavigationBloc, HomeState>(
         listener: (context, state) {},
         builder: (context, state) {
           return Scaffold(
             bottomSheet: CustomBottomNavigationBar(),
             appBar: CustomAppbar(
               title: ["Мои запросы", "Сервисы", "Мой профиль"][state.nowPage],
-              preferredSize: Size(MediaQuery.of(context).size.width, 100),
+              preferredSize: Size(MediaQuery.of(context).size.width, 124),
             ),
             floatingActionButton: GradientFloatingActionButton(
               onPressed: () => context
@@ -40,11 +40,13 @@ class _HomePageState extends State<HomePage> {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
             backgroundColor: AppColors.backgroundWhite,
-            body: [
-              MyRequestsPage(),
-              ServicesPage(),
-              ProfilePage()
-            ][state.nowPage],
+            body: SafeArea(
+                top: false,
+                child: [
+                  MyRequestsPage(),
+                  ServicesPage(),
+                  ProfilePage()
+                ][state.nowPage]),
           );
         },
       ),

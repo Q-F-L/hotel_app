@@ -2,6 +2,11 @@ part of '../themes.dart';
 
 ThemeData createLightTheme() {
   return ThemeData(
+    sliderTheme: SliderThemeData(
+      trackHeight: 10,
+      activeTrackColor: Colors.red,
+      thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 12),
+    ),
     bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.transparent),
     useMaterial3: true,
     appBarTheme: const AppBarTheme(

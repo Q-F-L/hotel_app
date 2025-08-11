@@ -42,6 +42,8 @@ class AuthLogin extends AuthSubmitted {
 
 class AuthRegister extends AuthSubmitted {}
 
+class MoveOutEvent extends AuthEvent {}
+
 class AuthCheckToken extends AuthEvent {}
 
 class AuthLogout extends AuthEvent {}

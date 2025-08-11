@@ -67,117 +67,127 @@ class _RegistrationPageState extends State<RegistrationPage> {
             final bloc = context.read<AuthBloc>();
             bool canClick = state.email.isNotEmpty && state.password.isNotEmpty;
 
-            return Form(
-              key: _formKey,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 33),
-                child: ListView(
-                  children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 30),
-                      child: TextInputForm(
-                        prefix: Image.asset('assets/images/prefix_user.png'),
-                        keyboardType: TextInputType.emailAddress,
-                        hintText: 'Имя',
-                        initialValue: state.name,
-                        errorText: state.errorName,
-                        onChanged: (value) => bloc.add(AuthNameChanged(value)),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 20),
-                      child: TextInputForm(
-                        prefix: Image.asset('assets/images/prefix_user.png'),
-                        keyboardType: TextInputType.emailAddress,
-                        hintText: 'Фамилия',
-                        initialValue: state.surname,
-                        errorText: state.surnameError,
-                        onChanged: (value) =>
-                            bloc.add(AuthSurnameChanged(value)),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 20),
-                      child: TextInputForm(
-                        prefix: IconGradient(icon: Icon(Icons.email), colors: [
-                          Color.fromARGB(255, 83, 232, 140),
-                          Color.fromARGB(255, 21, 190, 120),
-                        ]),
-                        keyboardType: TextInputType.emailAddress,
-                        hintText: 'Введите email',
-                        initialValue: state.email,
-                        errorText: state.emailError,
-                        onChanged: (value) => bloc.add(AuthEmailChanged(value)),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 20),
-                      child: TextInputForm(
-                        prefix: IconGradient(icon: Icon(Icons.lock), colors: [
-                          Color.fromARGB(255, 83, 232, 140),
-                          Color.fromARGB(255, 21, 190, 120),
-                        ]),
-                        isPassword: true,
-                        hintText: 'Введите пароль',
-                        initialValue: state.password,
-                        errorText: state.passwordError,
-                        onChanged: (value) =>
-                            bloc.add(AuthPasswordChanged(value)),
-                      ),
-                    ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 20, bottom: 20),
-                      child: RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          text: 'Нажимая сохранить я соглашаюсь с ',
-                          style: Theme.of(context).textTheme.labelSmall,
-                          children: <TextSpan>[
-                            TextSpan(
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    showCustomSnackBar(
-                                        context, "Правилам сервис");
-                                  },
-                                text: 'правилами сервиса ',
-                                style: TextStyle(
-                                    color: Color.fromARGB(255, 27, 194, 122))),
-                            TextSpan(text: 'и '),
-                            TextSpan(
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    showCustomSnackBar(
-                                        context, 'Политикой конфидециальности');
-                                  },
-                                text: 'политикой конфидециальности',
-                                style: TextStyle(
-                                    color: Color.fromARGB(255, 27, 194, 122))),
-                          ],
+            return SafeArea(
+              top: false,
+              child: Form(
+                key: _formKey,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 33),
+                  child: ListView(
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 30),
+                        child: TextInputForm(
+                          prefix: Image.asset('assets/images/prefix_user.png'),
+                          keyboardType: TextInputType.emailAddress,
+                          hintText: 'Имя',
+                          initialValue: state.name,
+                          errorText: state.errorName,
+                          onChanged: (value) =>
+                              bloc.add(AuthNameChanged(value)),
                         ),
                       ),
-                    ),
-                    GradientButton(
-                      onPressed: () => canClick
-                          ? {
-                              bloc.add(AuthRegister()),
-                              showCustomSnackBar(context, state.message ?? ''),
-                            }
-                          : {},
-                      canClick: canClick,
-                      borderRadius: const BorderRadius.all(Radius.circular(15)),
-                      margin: const EdgeInsets.symmetric(
-                          vertical: 0, horizontal: 40.0),
-                      child: Text(
-                        "Сохранить",
-                        style: const TextStyle(
-                          fontFamily: 'Philosopher',
-                          color: Color(0xFFFEFEFF),
-                          fontSize: 20.0,
-                          fontWeight: FontWeight.w700,
+                      Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child: TextInputForm(
+                          prefix: Image.asset('assets/images/prefix_user.png'),
+                          keyboardType: TextInputType.emailAddress,
+                          hintText: 'Фамилия',
+                          initialValue: state.surname,
+                          errorText: state.surnameError,
+                          onChanged: (value) =>
+                              bloc.add(AuthSurnameChanged(value)),
                         ),
                       ),
-                    ),
-                  ],
+                      Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child: TextInputForm(
+                          prefix:
+                              IconGradient(icon: Icon(Icons.email), colors: [
+                            Color.fromARGB(255, 83, 232, 140),
+                            Color.fromARGB(255, 21, 190, 120),
+                          ]),
+                          keyboardType: TextInputType.emailAddress,
+                          hintText: 'Введите email',
+                          initialValue: state.email,
+                          errorText: state.emailError,
+                          onChanged: (value) =>
+                              bloc.add(AuthEmailChanged(value)),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 20),
+                        child: TextInputForm(
+                          prefix: IconGradient(icon: Icon(Icons.lock), colors: [
+                            Color.fromARGB(255, 83, 232, 140),
+                            Color.fromARGB(255, 21, 190, 120),
+                          ]),
+                          isPassword: true,
+                          hintText: 'Введите пароль',
+                          initialValue: state.password,
+                          errorText: state.passwordError,
+                          onChanged: (value) =>
+                              bloc.add(AuthPasswordChanged(value)),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.only(top: 20, bottom: 20),
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: TextSpan(
+                            text: 'Нажимая сохранить я соглашаюсь с ',
+                            style: Theme.of(context).textTheme.labelSmall,
+                            children: <TextSpan>[
+                              TextSpan(
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      showCustomSnackBar(
+                                          context, "Правилам сервис");
+                                    },
+                                  text: 'правилами сервиса ',
+                                  style: TextStyle(
+                                      color:
+                                          Color.fromARGB(255, 27, 194, 122))),
+                              TextSpan(text: 'и '),
+                              TextSpan(
+                                  recognizer: TapGestureRecognizer()
+                                    ..onTap = () {
+                                      showCustomSnackBar(context,
+                                          'Политикой конфидециальности');
+                                    },
+                                  text: 'политикой конфидециальности',
+                                  style: TextStyle(
+                                      color:
+                                          Color.fromARGB(255, 27, 194, 122))),
+                            ],
+                          ),
+                        ),
+                      ),
+                      GradientButton(
+                        onPressed: () => canClick
+                            ? {
+                                bloc.add(AuthRegister()),
+                                showCustomSnackBar(
+                                    context, state.message ?? ''),
+                              }
+                            : {},
+                        canClick: canClick,
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(15)),
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 0, horizontal: 40.0),
+                        child: Text(
+                          "Сохранить",
+                          style: const TextStyle(
+                            fontFamily: 'Philosopher',
+                            color: Color(0xFFFEFEFF),
+                            fontSize: 20.0,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             );

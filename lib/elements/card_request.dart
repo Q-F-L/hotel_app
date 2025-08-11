@@ -37,14 +37,7 @@ class _CardRequestState extends State<CardRequest> {
           border: Border.all(
             color: AppColors.grey1,
           ),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.shadow,
-              spreadRadius: 0,
-              blurRadius: 20,
-              offset: Offset(0, 8), // changes position of shadow
-            ),
-          ],
+          boxShadow: [shadow],
           color: AppColors.white,
           borderRadius: BorderRadius.all(Radius.circular(16)),
         ),

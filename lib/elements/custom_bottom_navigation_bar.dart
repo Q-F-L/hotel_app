@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:m_softer_test_project/pages/home_page/bloc/botton_navigation_bloc.dart';
+import 'package:m_softer_test_project/pages/home_page/bloc/home_bloc.dart';
 import 'package:m_softer_test_project/themes/themes.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {

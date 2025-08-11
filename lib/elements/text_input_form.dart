@@ -65,10 +65,8 @@ class _TextInputFormState extends State<TextInputForm> {
     return BlocBuilder<TextInputBloc, TextInputState>(
       bloc: _bloc,
       builder: (context, state) {
-        return Material(
-          borderRadius: BorderRadius.circular(15),
-          elevation: 10.0,
-          shadowColor: Color.fromARGB(37, 26, 251, 255),
+        return Container(
+          decoration: BoxDecoration(boxShadow: [shadow]),
           child: TextFormField(
             onChanged: widget.onChanged,
             obscureText: state.obscureText,
@@ -92,14 +90,14 @@ class _TextInputFormState extends State<TextInputForm> {
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15),
                 borderSide: const BorderSide(
-                  color: Color(0xF4F4F4F4),
+                  color: AppColors.inputWhite,
                   width: 1,
                 ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(15),
                 borderSide: const BorderSide(
-                  color: Color(0xF4F4F4F4),
+                  color: AppColors.inputWhite,
                   width: 1,
                 ),
               ),

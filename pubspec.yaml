@@ -44,7 +44,7 @@ dependencies:
   mobile_scanner: ^6.0.10
   http: ^1.4.0
   shared_preferences: ^2.5.3
-  
+  fluttertoast: ^8.2.12
 
 dev_dependencies:
   flutter_test:

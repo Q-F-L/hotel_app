@@ -70,10 +70,18 @@ const labelSmallManrope = TextStyle(
     fontWeight: FontWeight.w500,
     color: AppColors.realBlack);
 
+const BoxShadow shadow = BoxShadow(
+  offset: Offset(12, 26),
+  blurRadius: 50,
+  spreadRadius: 0,
+  color: AppColors.shadow,
+);
+
 class AppColors {
   // LightTheme
   static const backgroundWhite = Color(0xFAFDFFFF);
   static const white = Colors.white;
+  static const divider = Color(0xFFEEEEEE);
   static const textWhite = Color(0xFFFEFEFF);
   static const inputWhite = Color(0xF4F4F4F4);
   static const grey = Color.fromARGB(255, 59, 59, 59);

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:m_softer_test_project/data/user/user.dart';
 import '../../../data/token.dart';
 import '../../../data/validators.dart';
 
@@ -19,6 +20,26 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthRegister>(_onRegister);
     on<AuthCheckToken>(_onCheckToken);
     on<AuthLogout>(_onLogout);
+    on<MoveOutEvent>(_moveOut);
+  }
+
+  Future<void> _moveOut(MoveOutEvent event, Emitter<AuthState> emit) async {
+    final tokenRepository = TokenRepository();
+    final token = await tokenRepository.getToken();
+    final response = await http.get(
+      Uri.parse('https://app.successhotel.ru/api/client/check-out'),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token'
+      },
+    );
+
+    final json = jsonDecode(response.body);
+    if (response.statusCode == 200 && json['success'] == true) {
+      User.checkedIn = false;
+      emit(state.copyWith(status: AuthStatus.unauthenticated));
+    } else {}
   }
 
   bool canClick = false;
@@ -107,7 +128,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
-  Future<void> _sendFcmToken(String authToken, String fcmToken) async {
+  _sendFcmToken(String authToken, String fcmToken) async {
     try {
       await http.post(
         Uri.parse('https://app.successhotel.ru/api/profile/fcm-token'),

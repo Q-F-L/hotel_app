@@ -1,7 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:m_softer_test_project/data/token.dart';
 import 'package:m_softer_test_project/data/user/profile.dart';
+import 'package:m_softer_test_project/data/user/request.dart';
 
 class User {
   static int? _id;
@@ -46,7 +46,7 @@ class User {
   static set ordersCount(int? value) => _ordersCount = value;
   static set activeOrdersCount(int? value) => _activeOrdersCount = value;
 
-  static void create(Profile profile) {
+  User(Profile profile) {
     User.id = profile.id;
     User.email = profile.email;
     User.firstName = profile.firstName;
@@ -61,45 +61,29 @@ class User {
     User.activeOrdersCount = profile.activeOrdersCount;
   }
 
-  static Future<void> request() async {
-    final tokenRepository = TokenRepository();
-    final token = await tokenRepository.getToken();
-    final response = await http.get(
-      Uri.parse('https://app.successhotel.ru/api/client/profile'),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token'
-      },
-    );
-
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.body);
-      final ProfileRequest profileRequest = ProfileRequest.fromJson(json);
-      User.create(profileRequest.profile ?? Profile());
-    } else {
-      print("Error: ${response.statusCode}");
-    }
+  static Future<void> create() async {
+    final ProfileModel profileRequest = await ProfileRequest.request();
+    User(profileRequest.profile ?? Profile());
   }
 
-  // Только для проверки заселения пользователя в номер отеля
-  Future<bool> userCheckIn() async {
-    final response = await http.post(
-      Uri.parse('https://app.successhotel.ru/api/client/login'),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-    );
+  // // Только для проверки заселения пользователя в номер отеля
+  // Future<bool> userCheckIn() async {
+  //   final response = await http.post(
+  //     Uri.parse('https://app.successhotel.ru/api/client/login'),
+  //     headers: {
+  //       'Accept': 'application/json',
+  //       'Content-Type': 'application/json',
+  //     },
+  //   );
 
-    if (response.statusCode == 200) {
-      final json = jsonDecode(response.body);
-      final ProfileRequest profileRequest = ProfileRequest.fromJson(json);
-      return profileRequest.profile?.checkedIn ?? false;
-    } else {
-      return false;
-    }
-  }
+  //   if (response.statusCode == 200) {
+  //     final json = jsonDecode(response.body);
+  //     final ProfileModel profileRequest = ProfileModel.fromJson(json);
+  //     return profileRequest.profile?.checkedIn ?? false;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 
   static void clear() {
     _id = null;

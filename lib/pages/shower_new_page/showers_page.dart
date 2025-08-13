@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:m_softer_test_project/pages/launch_bloc/launch_bloc.dart';
 
 import '../../elements/shower.dart';
 import 'bloc/shower_new_page_bloc.dart';
@@ -13,7 +14,7 @@ class Showers extends StatefulWidget {
 
 class _ShowersState extends State<Showers> {
   late PageController _pageController;
-  late ShowerNewPageBloc showerNewPageBloc;
+  late ShowerNewPageBloc bloc;
   static const List<Map> listShowers = [
     {
       "image": "assets/images/bell.png",
@@ -36,16 +37,29 @@ class _ShowersState extends State<Showers> {
   void initState() {
     // TODO: implement initState
     _pageController = PageController();
-    showerNewPageBloc = ShowerNewPageBloc(_pageController);
+    bloc = ShowerNewPageBloc(_pageController);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    bloc.close();
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: showerNewPageBloc,
-      child: BlocBuilder<ShowerNewPageBloc, ShowerNewPageState>(
-        bloc: showerNewPageBloc,
+      value: bloc,
+      child: BlocConsumer<ShowerNewPageBloc, ShowerNewPageState>(
+        listener: (context, state) {
+          if (state.seen == true) {
+            Navigator.pushNamed(context, '/auth');
+          }
+        },
+        bloc: bloc,
         builder: (context, state) {
           return SafeArea(
             child: PageView(
@@ -58,11 +72,13 @@ class _ShowersState extends State<Showers> {
                     image: listShowers[i]['image'],
                     description: listShowers[i]['description'],
                     textButton: listShowers[i]['textButton'],
-                    onPressLast: 2 == i
-                        ? () {
-                            Navigator.pushNamed(context, "/auth");
-                          }
-                        : null,
+                    onPress: () {
+                      if (i == 2) {
+                        context.read<LaunchBloc>().add(CompleteShowersEvent());
+                      } else {
+                        bloc.add(NewPage());
+                      }
+                    },
                   );
                 },
               ),

@@ -16,6 +16,7 @@ ThemeData createLightTheme() {
       shadowColor: Colors.transparent,
       systemOverlayStyle: SystemUiOverlayStyle(
         statusBarColor: Colors.transparent,
+        systemNavigationBarColor: Colors.transparent,
       ),
     ),
     inputDecorationTheme:

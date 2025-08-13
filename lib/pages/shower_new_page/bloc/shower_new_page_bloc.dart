@@ -8,20 +8,18 @@ class ShowerNewPageBloc extends Bloc<ShowerNewPageEvent, ShowerNewPageState> {
   PageController pageController;
 
   ShowerNewPageBloc(this.pageController) : super(ShowerNewPageInitial()) {
-    //Только для PageView
-    on<NewPage>((event, emit) async {
-      int nextPage = pageController.page!.toInt() + 1;
-      if (nextPage < 3) {
-        //Переход на следующую страницу PageView
-        await pageController.animateToPage(
-          nextPage,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeInOut,
-        );
-        emit(NextPage(nextPage));
-      } else {
-        //Переход на страницу авторизации в случае оканчания PageView
-      }
-    });
+    on<NewPage>(_newPage);
+  }
+
+  _newPage(NewPage event, Emitter<ShowerNewPageState> emit) async {
+    int nextPage = pageController.page!.toInt() + 1;
+    if (nextPage < 3) {
+      await pageController.animateToPage(
+        nextPage,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
+      emit(NextPage(nextPage));
+    }
   }
 }

@@ -56,7 +56,15 @@ class SelectHotelBloc extends Bloc<SelectHotelEvent, SelectHotelState> {
 
   _requestHotelsEvent(
       RequestHotelsEvent event, Emitter<SelectHotelState> emit) async {
-    await User.request();
+    // if (User.id == null) {
+    //   await User.create();
+    // }
+//Экспиремент
+    emit(state.copyWith(status: SelectHotelStatus.loading));
+    print("USer id = ${User.id}");
+
+    User.id ?? await User.create();
+    print("USer id = ${User.id}");
 
     if (User.checkedIn ?? false) {
       emit(state.copyWith(status: SelectHotelStatus.complited));

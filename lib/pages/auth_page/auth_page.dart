@@ -5,6 +5,7 @@ import 'package:m_softer_test_project/data/token.dart';
 import 'package:m_softer_test_project/elements/gradient_button.dart';
 import 'package:m_softer_test_project/elements/icon_gradient.dart';
 import 'package:m_softer_test_project/pages/auth_page/bloc/auth_bloc.dart';
+import 'package:m_softer_test_project/pages/select_hotel_page/select_hotel.dart';
 import 'package:m_softer_test_project/utils/snackbar_helper.dart';
 
 import '../../elements/text_input_form.dart';
@@ -53,7 +54,10 @@ class _AuthPageState extends State<AuthPage> {
             }
 
             if (state.status == AuthStatus.authenticated) {
-              Navigator.pushNamed(context, "/select_home");
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => SelectHomePage()),
+              );
             }
           },
           builder: (context, state) {

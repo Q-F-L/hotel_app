@@ -152,63 +152,6 @@ class _MenuSelectDateState extends State<MenuSelectDate> {
           ),
         ),
       ),
-      // child: Material(
-      //   borderRadius: BorderRadius.circular(16),
-      //   elevation: 18.0,
-      //   type: MaterialType.button,
-      //   color: AppColors.textWhite,
-      //   shadowColor: Color.fromARGB(38, 26, 251, 255),
-      //   child: DropdownMenu<DateTime>(
-      //     controller: dropdownController,
-      //     enabled: false,
-      //     width: MediaQuery.of(context).size.width * 0.90,
-      //     requestFocusOnTap: false,
-      //     leadingIcon: Image.asset("assets/images/prefix_date.png"),
-      //     trailingIcon: Icon(
-      //       Icons.keyboard_arrow_down_rounded,
-      //       color: Color.fromARGB(255, 72, 218, 128),
-      //       size: 26,
-      //     ),
-      //     selectedTrailingIcon: Icon(
-      //       Icons.keyboard_arrow_down_rounded,
-      //       color: Color.fromARGB(255, 72, 218, 128),
-      //     ),
-      //     hintText: "Дата заезда",
-      //     inputDecorationTheme: InputDecorationTheme(
-      //       hintStyle: Theme.of(context).textTheme.labelSmall,
-      //       border: OutlineInputBorder(
-      //         borderRadius: BorderRadius.circular(16.0),
-      //         borderSide:
-      //             BorderSide(color: const Color.fromARGB(255, 255, 0, 0)),
-      //       ),
-      //       enabledBorder: OutlineInputBorder(
-      //         borderRadius: BorderRadius.circular(16.0),
-      //         borderSide: BorderSide(color: const Color.fromARGB(0, 255, 0, 0)),
-      //       ),
-      //       focusedBorder: OutlineInputBorder(
-      //         borderRadius: BorderRadius.circular(16.0),
-      //         borderSide: BorderSide(color: Colors.blue, width: 2),
-      //       ),
-      //       contentPadding: const EdgeInsets.symmetric(vertical: 18.0),
-      //     ),
-      //     menuStyle: MenuStyle(
-      //       side: WidgetStatePropertyAll(BorderSide.none),
-      //       backgroundColor: WidgetStateProperty.all(AppColors.textWhite),
-      //       elevation: WidgetStateProperty.all(8),
-      //       shape: WidgetStateProperty.all(
-      //         RoundedRectangleBorder(
-      //           borderRadius: BorderRadius.only(
-      //             topLeft: Radius.circular(16),
-      //             topRight: Radius.circular(16),
-      //             bottomLeft: Radius.circular(16),
-      //             bottomRight: Radius.circular(16),
-      //           ),
-      //         ),
-      //       ),
-      //     ),
-      //     dropdownMenuEntries: [],
-      //   ),
-      // ),
     );
   }
 }

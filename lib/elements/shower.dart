@@ -11,13 +11,13 @@ class Shower extends StatelessWidget {
     required this.image,
     required this.description,
     required this.textButton,
-    this.onPressLast,
+    this.onPress,
   });
 
   final String image;
   final String description;
   final String textButton;
-  final VoidCallback? onPressLast;
+  final VoidCallback? onPress;
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +44,7 @@ class Shower extends StatelessWidget {
             padding: EdgeInsets.only(left: 25, right: 40),
             child: GradientButton(
               canClick: true,
-              onPressed: onPressLast ??
+              onPressed: onPress ??
                   () => context.read<ShowerNewPageBloc>().add(NewPage()),
               borderRadius: const BorderRadius.all(Radius.circular(15)),
               margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 40.0),

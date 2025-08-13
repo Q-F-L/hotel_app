@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:bloc/bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:m_softer_test_project/data/user/user.dart';
+import 'package:m_softer_test_project/utils/userCreate.dart';
 import '../../../data/token.dart';
 import '../../../data/validators.dart';
 
@@ -20,29 +21,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthRegister>(_onRegister);
     on<AuthCheckToken>(_onCheckToken);
     on<AuthLogout>(_onLogout);
-    on<MoveOutEvent>(_moveOut);
   }
-
-  Future<void> _moveOut(MoveOutEvent event, Emitter<AuthState> emit) async {
-    final tokenRepository = TokenRepository();
-    final token = await tokenRepository.getToken();
-    final response = await http.get(
-      Uri.parse('https://app.successhotel.ru/api/client/check-out'),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token'
-      },
-    );
-
-    final json = jsonDecode(response.body);
-    if (response.statusCode == 200 && json['success'] == true) {
-      User.checkedIn = false;
-      emit(state.copyWith(status: AuthStatus.unauthenticated));
-    } else {}
-  }
-
-  bool canClick = false;
 
   void _onEmailChanged(AuthEmailChanged event, Emitter<AuthState> emit) {
     emit(state.copyWith(
@@ -143,7 +122,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       );
     } catch (e) {
       print(e);
-      // Игнорируем ошибку отправки FCM токена, так как это не критично
     }
   }
 
@@ -213,6 +191,14 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _onCheckToken(AuthCheckToken event, Emitter<AuthState> emit) async {
     emit(state.copyWith(status: AuthStatus.loading));
+    await userCreate();
+    if (User.deviceToken != null) {
+      emit(state.copyWith(
+        status: AuthStatus.authenticated,
+        token: User.deviceToken,
+      ));
+      return;
+    }
 
     final token = await tokenRepository.getToken();
 
@@ -228,6 +214,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _onLogout(AuthLogout event, Emitter<AuthState> emit) async {
     await tokenRepository.deleteToken();
+    User.clear;
     emit(state.copyWith(
       status: AuthStatus.unauthenticated,
       token: null,

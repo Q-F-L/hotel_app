@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../pages/text_input_form/bloc/text_input_form_bloc.dart';
@@ -15,6 +16,7 @@ class TextInputForm extends StatefulWidget {
     this.onChanged,
     this.hintText,
     this.errorText,
+    this.controller,
   });
 
   final Widget? prefix;
@@ -25,6 +27,7 @@ class TextInputForm extends StatefulWidget {
   final void Function(String)? onChanged;
   final String? hintText;
   String? errorText;
+  final TextEditingController? controller;
 
   @override
   State<TextInputForm> createState() => _TextInputFormState();
@@ -68,6 +71,7 @@ class _TextInputFormState extends State<TextInputForm> {
         return Container(
           decoration: BoxDecoration(boxShadow: [shadow]),
           child: TextFormField(
+            controller: widget.controller,
             onChanged: widget.onChanged,
             obscureText: state.obscureText,
             decoration: InputDecoration(

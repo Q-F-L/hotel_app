@@ -10,11 +10,11 @@ class IconGradient extends StatelessWidget {
     return ShaderMask(
         blendMode: BlendMode.srcIn,
         shaderCallback: (Rect bounds) => RadialGradient(
-              center: Alignment.centerLeft, // near the top right
+              center: Alignment.centerLeft,
               radius: 0.7,
               colors: <Color>[
-                colors[0], // yellow sun
-                colors[1], // blue sky
+                colors[0],
+                colors[1],
               ],
               stops: <double>[0.5, 1.0],
             ).createShader(bounds),

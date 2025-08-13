@@ -15,7 +15,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      bottom: false, // нам нужен только верхний отступ
+      bottom: false,
       child: Column(
         children: [
           Image.asset(

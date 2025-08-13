@@ -1,13 +1,22 @@
-class ProfileRequest {
+import 'dart:convert';
+
+ProfileModel profileRequestFromJson(String str) =>
+    ProfileModel.fromJson(json.decode(str));
+
+String profileRequestToJson(ProfileModel data) => json.encode(data.toJson());
+
+class ProfileModel {
   bool? success;
   Profile? profile;
+  String? message;
 
-  ProfileRequest({this.success, this.profile});
+  ProfileModel({this.success, this.profile, this.message});
 
-  ProfileRequest.fromJson(Map<String, dynamic> json) {
+  ProfileModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
     profile =
         json['profile'] != null ? Profile.fromJson(json['profile']) : null;
+    message = json['message'];
   }
 
   Map<String, dynamic> toJson() {

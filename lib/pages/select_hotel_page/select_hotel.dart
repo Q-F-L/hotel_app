@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:m_softer_test_project/data/rooms.dart';
+import 'package:m_softer_test_project/data/user/user.dart';
 import 'package:m_softer_test_project/elements/custom_drop_down_menu_hotel.dart';
 import 'package:m_softer_test_project/elements/custom_drop_down_menu_room.dart';
 import 'package:m_softer_test_project/elements/gradient_button.dart';
 import 'package:m_softer_test_project/elements/icon_gradient.dart';
+import 'package:m_softer_test_project/pages/home_page/home.dart';
 import 'package:m_softer_test_project/themes/themes.dart';
 import 'package:m_softer_test_project/utils/snackbar_helper.dart';
 
@@ -94,7 +96,11 @@ class _SelectHomePageState extends State<SelectHomePage> {
                   ),
                   GradientButton(
                     onPressed: () async {
-                      bloc.add(SendEvent());
+                      User.checkedIn = true;
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(builder: (_) => HomePage()),
+                      );
                     },
                     canClick: bloc.canClick,
                     borderRadius: BorderRadius.all(Radius.circular(16)),

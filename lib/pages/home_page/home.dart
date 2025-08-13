@@ -41,12 +41,11 @@ class _HomePageState extends State<HomePage> {
                 FloatingActionButtonLocation.centerDocked,
             backgroundColor: AppColors.backgroundWhite,
             body: SafeArea(
-                top: false,
                 child: [
-                  MyRequestsPage(),
-                  ServicesPage(),
-                  ProfilePage()
-                ][state.nowPage]),
+              MyRequestsPage(),
+              ServicesPage(),
+              ProfilePage()
+            ][state.nowPage]),
           );
         },
       ),

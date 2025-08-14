@@ -15,8 +15,10 @@ ThemeData createLightTheme() {
       surfaceTintColor: Colors.transparent,
       shadowColor: Colors.transparent,
       systemOverlayStyle: SystemUiOverlayStyle(
+        systemNavigationBarDividerColor: Colors.transparent,
         statusBarColor: Colors.transparent,
         systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarContrastEnforced: false,
       ),
     ),
     inputDecorationTheme:

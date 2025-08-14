@@ -33,6 +33,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+        overlays: [SystemUiOverlay.top]);
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
@@ -43,20 +45,27 @@ class MyApp extends StatelessWidget {
               LaunchBloc()..add(CheckFirstLaunchEvent()),
         ),
       ],
-      child: MaterialApp(
-        debugShowCheckedModeBanner: false,
-        color: Colors.transparent,
-        title: 'Flutter Demo',
-        theme: createLightTheme(),
-        routes: {
-          '/auth': (context) => AuthPage(),
-          '/registration': (context) => RegistrationPage(),
-          '/select_home': (context) => SelectHomePage(),
-          '/qr_code_page': (context) => QrCodePage(),
-          '/shower': (context) => Showers(),
-          '/home': (context) => HomePage(),
+      child: Listener(
+        onPointerDown: (_) {
+          // Принудительно скрываем навигацию при любом касании
+          SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
+              overlays: [SystemUiOverlay.top]);
         },
-        home: LoadingPage(),
+        child: MaterialApp(
+          debugShowCheckedModeBanner: false,
+          color: Colors.transparent,
+          title: 'Flutter Demo',
+          theme: createLightTheme(),
+          routes: {
+            '/auth': (context) => AuthPage(),
+            '/registration': (context) => RegistrationPage(),
+            '/select_home': (context) => SelectHomePage(),
+            '/qr_code_page': (context) => QrCodePage(),
+            '/shower': (context) => Showers(),
+            '/home': (context) => HomePage(),
+          },
+          home: LoadingPage(),
+        ),
       ),
     );
   }

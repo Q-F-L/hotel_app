@@ -42,9 +42,6 @@ class _QrCodePageState extends State<QrCodePage> {
         backgroundColor: const Color(0xFFF6FBFB),
         surfaceTintColor: Colors.transparent,
         elevation: 0,
-        systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-        ),
         title: Text(
           "Сканировать QR",
           style: Theme.of(context).textTheme.bodyLarge,

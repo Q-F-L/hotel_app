@@ -33,9 +33,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
         backgroundColor: const Color(0xFFF6FBFB),
         surfaceTintColor: Colors.transparent,
         elevation: 0,
-        systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-        ),
         title: Text(
           "Регистрация",
           style: Theme.of(context).textTheme.bodyLarge,

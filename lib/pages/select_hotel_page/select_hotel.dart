@@ -34,9 +34,6 @@ class _SelectHomePageState extends State<SelectHomePage> {
         backgroundColor: const Color(0xFFF6FBFB),
         surfaceTintColor: Colors.transparent,
         elevation: 0,
-        systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-        ),
         title: Text(
           "Заезд",
           style: Theme.of(context).textTheme.titleLarge,

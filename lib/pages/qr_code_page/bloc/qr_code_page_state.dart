@@ -1,6 +1,13 @@
 part of 'qr_code_page_bloc.dart';
 
-@immutable
-sealed class QrCodePageState {}
+class QrCodeState {
+  final String? response;
 
-final class QrCodePageInitial extends QrCodePageState {}
+  QrCodeState({this.response});
+
+  QrCodeState copyWith({String? response}) {
+    return QrCodeState(response: response ?? this.response);
+  }
+}
+
+class QrCodePageInitial extends QrCodeState {}

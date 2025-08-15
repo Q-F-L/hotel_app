@@ -38,9 +38,10 @@ class SelectHotelBloc extends Bloc<SelectHotelEvent, SelectHotelState> {
     );
 
     final json = jsonDecode(response.body);
-
+    print(json);
     try {
       if (response.statusCode == 200 && json['success'] == true) {
+        User.checkedIn = true;
         emit(state.copyWith(status: SelectHotelStatus.send));
       } else {
         emit(state.copyWith(status: SelectHotelStatus.loading));
@@ -56,15 +57,9 @@ class SelectHotelBloc extends Bloc<SelectHotelEvent, SelectHotelState> {
 
   _requestHotelsEvent(
       RequestHotelsEvent event, Emitter<SelectHotelState> emit) async {
-    // if (User.id == null) {
-    //   await User.create();
-    // }
-//Экспиремент
     emit(state.copyWith(status: SelectHotelStatus.loading));
-    print("USer id = ${User.id}");
 
     User.id ?? await User.create();
-    print("USer id = ${User.id}");
 
     if (User.checkedIn ?? false) {
       emit(state.copyWith(status: SelectHotelStatus.complited));

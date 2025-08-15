@@ -63,7 +63,11 @@ class User {
 
   static Future<void> create() async {
     final ProfileModel profileRequest = await ProfileRequest.request();
-    User(profileRequest.profile ?? Profile());
+
+    if (profileRequest.message?.isEmpty ?? true) {
+      print("User create complited");
+      User(profileRequest.profile ?? Profile());
+    }
   }
 
   // // Только для проверки заселения пользователя в номер отеля

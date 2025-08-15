@@ -27,7 +27,7 @@ class _SelectHomePageState extends State<SelectHomePage> {
     return Scaffold(
       appBar: AppBar(
         leading: IconButton(
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => Navigator.popAndPushNamed(context, '/auth'),
           icon: Image.asset('assets/images/left_arrow.png'),
         ),
         centerTitle: true,
@@ -44,9 +44,12 @@ class _SelectHomePageState extends State<SelectHomePage> {
         child: BlocConsumer<SelectHotelBloc, SelectHotelState>(
           listener: (context, state) {
             if (state.status == SelectHotelStatus.send) {
-              Navigator.pushNamed(context, '/home');
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (_) => HomePage()),
+              );
             } else if (state.status == SelectHotelStatus.failure) {
-              showCustomSnackBar(context, "Ошибка: ${state.errorMessage}");
+              showToast(context, "Ошибка: ${state.errorMessage}");
             }
 
             if (state.status == SelectHotelStatus.complited) {
@@ -93,11 +96,9 @@ class _SelectHomePageState extends State<SelectHomePage> {
                   ),
                   GradientButton(
                     onPressed: () async {
-                      User.checkedIn = true;
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(builder: (_) => HomePage()),
-                      );
+                      if (bloc.canClick) {
+                        bloc.add(SendEvent());
+                      }
                     },
                     canClick: bloc.canClick,
                     borderRadius: BorderRadius.all(Radius.circular(16)),

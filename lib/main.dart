@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:m_softer_test_project/pages/home_page/home.dart';
 import 'package:m_softer_test_project/pages/launch_bloc/launch_bloc.dart';
 import 'package:m_softer_test_project/pages/loading_page/loading_page.dart';
@@ -52,6 +53,7 @@ class MyApp extends StatelessWidget {
               overlays: [SystemUiOverlay.top]);
         },
         child: MaterialApp(
+          builder: FToastBuilder(),
           debugShowCheckedModeBanner: false,
           color: Colors.transparent,
           title: 'Flutter Demo',

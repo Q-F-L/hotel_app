@@ -19,14 +19,22 @@ class _ServicesPageState extends State<ServicesPage> {
       child: BlocConsumer<ServicesBloc, ServicesState>(
         listener: (context, state) {
           if (state.status == ServicesStatus.failure) {
-            showCustomSnackBar(context, "Error message: ${state.errorMessage}");
+            showToast(context, "Error message: ${state.errorMessage}");
           }
         },
         builder: (context, state) {
-          if (state.status == ServicesStatus.loading ||
-              (state.listServices == null || state.listServices!.isEmpty)) {
+          if (state.status == ServicesStatus.loading) {
             return Center(
               child: CircularProgressIndicator(),
+            );
+          }
+
+          if ((state.listServices == null || state.listServices!.isEmpty)) {
+            return Center(
+              child: Text(
+                "Тут пусто!",
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
             );
           }
 

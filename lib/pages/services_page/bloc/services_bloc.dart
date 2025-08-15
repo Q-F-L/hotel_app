@@ -14,7 +14,9 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
 
   _requestAllServices(
       ServicesInitialEvent event, Emitter<ServicesState> emit) async {
-    state.copyWith(status: ServicesStatus.loading);
+    emit(state.copyWith(
+      status: ServicesStatus.loading,
+    ));
 
     final tokenRepository = TokenRepository();
     final token = await tokenRepository.getToken();
@@ -29,10 +31,6 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
 
     final json = jsonDecode(response.body);
     ServicesRequest servicesRequest = ServicesRequest.fromJson(json);
-
-    emit(state.copyWith(
-      status: ServicesStatus.loading,
-    ));
 
     try {
       if (response.statusCode == 200) {

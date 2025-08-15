@@ -53,7 +53,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   state.emailError ??
                   state.passwordError ??
                   'Произошла ошибка';
-              showCustomSnackBar(context, errorMessage);
+              showToast(context, errorMessage);
             }
 
             if (state.status == AuthStatus.success) {
@@ -138,8 +138,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               TextSpan(
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      showCustomSnackBar(
-                                          context, "Правилам сервис");
+                                      showToast(context, "Правилам сервис");
                                     },
                                   text: 'правилами сервиса ',
                                   style: TextStyle(
@@ -149,7 +148,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               TextSpan(
                                   recognizer: TapGestureRecognizer()
                                     ..onTap = () {
-                                      showCustomSnackBar(context,
+                                      showToast(context,
                                           'Политикой конфидециальности');
                                     },
                                   text: 'политикой конфидециальности',
@@ -164,10 +163,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         onPressed: () => canClick
                             ? {
                                 bloc.add(AuthRegister()),
-                                showCustomSnackBar(
-                                    context, state.message ?? ''),
+                                showToast(context, state.message ?? ''),
                               }
-                            : {},
+                            : {showToast(context, "Заполните данные!")},
                         canClick: canClick,
                         borderRadius:
                             const BorderRadius.all(Radius.circular(15)),

@@ -6,6 +6,7 @@ import 'package:m_softer_test_project/data/user/profile.dart';
 
 class ProfileRequest {
   static Future<ProfileModel> request() async {
+    print("create request USER");
     try {
       final tokenRepository = TokenRepository();
       final token = await tokenRepository.getToken();
@@ -19,6 +20,8 @@ class ProfileRequest {
       );
 
       final json = jsonDecode(response.body);
+
+      print(json);
 
       if (response.statusCode == 200 && json['success'] == true) {
         return profileRequestFromJson(response.body);

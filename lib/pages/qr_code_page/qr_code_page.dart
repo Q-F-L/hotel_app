@@ -1,5 +1,8 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:m_softer_test_project/pages/qr_code_page/bloc/qr_code_page_bloc.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../../elements/gradient_button.dart';
@@ -17,10 +20,13 @@ class _QrCodePageState extends State<QrCodePage> {
     formats: const [BarcodeFormat.qrCode],
     detectionSpeed: DetectionSpeed.noDuplicates,
   );
+  late final QrCodeBloc bloc;
 
   @override
   void initState() {
     controller.start();
+
+    bloc = QrCodeBloc();
     super.initState();
   }
 
@@ -47,76 +53,128 @@ class _QrCodePageState extends State<QrCodePage> {
           style: Theme.of(context).textTheme.bodyLarge,
         ),
       ),
-      body: SafeArea(
-        child: Column(
-          children: [
-            SizedBox(
-              height: 300,
-              width: MediaQuery.of(context).size.width,
-              child: MobileScanner(
-                controller: controller,
-                onDetect: (capture) {
-                  Future.delayed(Duration(milliseconds: 500)).then(
-                    (value) {
-                      final List<Barcode> barcodes = capture.barcodes;
-                      for (final barcode in barcodes) {
-                        debugPrint('QR Found! ${barcode.rawValue}');
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return Container(
-                                width: 100,
-                                height: 100,
-                                color: Colors.red,
-                                child: Text("Complited!!!"),
-                              );
-                            },
+      body: BlocProvider(
+        create: (context) => bloc,
+        child: BlocBuilder<QrCodeBloc, QrCodeState>(
+          builder: (context, state) {
+            return SafeArea(
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 300,
+                    width: MediaQuery.of(context).size.width,
+                    child: MobileScanner(
+                      overlayBuilder: (context, constraints) {
+                        return CustomPaint(
+                          painter: QrScannerOverlay(
+                            borderColor: Colors.white,
+                            borderWidth: 3.0,
+                            borderRadius: 20.0,
+                            borderLength: 35.0,
+                            cutOutSize: MediaQuery.of(context).size.width * 0.5,
                           ),
-                        ).then((value) => controller.start());
-                      }
-                      controller.stop();
-                    },
-                  );
-                },
+                        );
+                      },
+                      controller: controller,
+                      onDetect: (capture) {
+                        final List<Barcode> barcodes = capture.barcodes;
+                        print("barcode.rawValue ${capture}");
+
+                        for (final barcode in barcodes) {
+                          print("barcode.rawValue ${barcode.rawValue}");
+                          bloc.add(ScanQrCodeEvent(response: barcode.rawValue));
+                        }
+                      },
+                    ),
+                  ),
+                  SizedBox(
+                    height: 15,
+                  ),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: (state.response ?? "")
+                        .split('(/n)') // Разбиваем текст по переносам
+                        .map((line) => Text(
+                              line,
+                              textAlign: TextAlign.center,
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .labelSmall
+                                  ?.copyWith(fontSize: 16),
+                            ))
+                        .toList(),
+                  ),
+                  SizedBox(
+                    height: 24,
+                  ),
+                  GradientButton(
+                    margin: EdgeInsets.symmetric(horizontal: 20),
+                    onPressed: () {},
+                    canClick: true,
+                    borderRadius: BorderRadius.all(Radius.circular(16)),
+                    child: Text(
+                      "Готово",
+                      style: whiteTextButton,
+                    ),
+                  ),
+                ],
               ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Text(
-              "Forrest Terrace Hotel, Владикавказ,\nВерхний Фиагдон",
-              textAlign: TextAlign.center,
-              style: Theme.of(context)
-                  .textTheme
-                  .labelSmall
-                  ?.copyWith(fontSize: 16),
-            ),
-            SizedBox(
-              height: 6,
-            ),
-            Text(
-              "№ 301",
-              style: Theme.of(context)
-                  .textTheme
-                  .labelSmall
-                  ?.copyWith(fontSize: 16),
-            ),
-            SizedBox(
-              height: 24,
-            ),
-            GradientButton(
-              margin: EdgeInsets.symmetric(horizontal: 20),
-              onPressed: () {},
-              canClick: true,
-              borderRadius: BorderRadius.all(Radius.circular(16)),
-              child: Text(
-                "Готово",
-                style: whiteTextButton,
-              ),
-            ),
-          ],
+            );
+          },
         ),
       ),
     );
   }
+}
+
+class QrScannerOverlay extends CustomPainter {
+  final Color borderColor;
+  final double borderWidth;
+  final double borderRadius;
+  final double borderLength;
+  final double cutOutSize;
+
+  QrScannerOverlay({
+    this.borderColor = Colors.white,
+    this.borderWidth = 4.0,
+    this.borderRadius = 12.0,
+    this.borderLength = 30.0,
+    required this.cutOutSize,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = borderColor
+      ..style = PaintingStyle.stroke
+      ..strokeWidth = borderWidth
+      ..strokeJoin = StrokeJoin.round;
+
+    final centerX = size.width / 2;
+    final centerY = size.height / 2;
+    final halfSize = cutOutSize / 2;
+
+    _drawCorner(canvas, paint, centerX - halfSize, centerY - halfSize, 0);
+    _drawCorner(canvas, paint, centerX + halfSize, centerY - halfSize, 90);
+    _drawCorner(canvas, paint, centerX + halfSize, centerY + halfSize, 180);
+    _drawCorner(canvas, paint, centerX - halfSize, centerY + halfSize, 270);
+  }
+
+  void _drawCorner(
+      Canvas canvas, Paint paint, double x, double y, double rotation) {
+    canvas.save();
+    canvas.translate(x, y);
+    canvas.rotate(rotation * pi / 180);
+
+    final cornerPath = Path()
+      ..moveTo(0, borderLength)
+      ..lineTo(0, 0)
+      ..lineTo(borderLength, 0);
+
+    canvas.drawPath(cornerPath, paint);
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }

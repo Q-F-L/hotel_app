@@ -1,13 +1,15 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 
 part 'qr_code_page_event.dart';
 part 'qr_code_page_state.dart';
 
-class QrCodePageBloc extends Bloc<QrCodePageEvent, QrCodePageState> {
-  QrCodePageBloc() : super(QrCodePageInitial()) {
-    on<QrCodePageEvent>((event, emit) {
-      // TODO: implement event handler
-    });
+class QrCodeBloc extends Bloc<QrCodeEvent, QrCodeState> {
+  QrCodeBloc() : super(QrCodePageInitial()) {
+    on<QrCodeEvent>((ev, et) {});
+    on<ScanQrCodeEvent>(_scanQrCodeEvent);
+  }
+
+  _scanQrCodeEvent(ScanQrCodeEvent event, Emitter<QrCodeState> emit) {
+    emit(state.copyWith(response: event.response));
   }
 }

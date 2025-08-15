@@ -36,11 +36,7 @@ class GradientButton extends StatelessWidget {
     return Container(
       margin: margin,
       child: InkWell(
-        onTap: canClick
-            ? onPressed
-            : () {
-                showCustomSnackBar(context, errorMessage);
-              },
+        onTap: onPressed,
         borderRadius: borderRadius,
         child: Opacity(
           opacity: canClick ? 1 : 0.5,

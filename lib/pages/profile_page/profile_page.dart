@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:m_softer_test_project/data/user/user.dart';
+import 'package:m_softer_test_project/pages/auth_page/auth_page.dart';
 import 'package:m_softer_test_project/pages/profile_page/bloc/profile_bloc.dart';
+import 'package:m_softer_test_project/pages/select_hotel_page/select_hotel.dart';
 import 'package:m_softer_test_project/themes/themes.dart';
 
 import '../../elements/user_favorites_element.dart';
@@ -29,7 +31,15 @@ class _ProfilePageState extends State<ProfilePage> {
     return BlocProvider(
       create: (context) => bloc..add(CreateProfileEvent()),
       child: BlocConsumer<ProfileBloc, ProfileState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          if (state is MoveOutState) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => SelectHomePage()),
+              (Route<dynamic> route) => false,
+            );
+          }
+        },
         builder: (context, state) {
           return ListView(
             children: [

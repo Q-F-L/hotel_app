@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:m_softer_test_project/data/token.dart';
 import 'package:m_softer_test_project/elements/gradient_button.dart';
 import 'package:m_softer_test_project/elements/icon_gradient.dart';
@@ -47,7 +48,8 @@ class _AuthPageState extends State<AuthPage> {
                   state.emailError ??
                   state.passwordError ??
                   'Произошла ошибка';
-              showCustomSnackBar(context, errorMessage);
+
+              showToast(context, errorMessage);
             }
 
             if (state.status == AuthStatus.authenticated) {
@@ -108,17 +110,25 @@ class _AuthPageState extends State<AuthPage> {
                           child: Text("Регистрация", style: link)),
                     ),
                     GradientButton(
+                      canClick: canClick,
                       onPressed: () => canClick
                           ? {
                               bloc.add(AuthLogin()),
                             }
-                          : {},
-                      canClick: canClick,
+                          : {showToast(context, "Заполните данные")},
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
                       margin: const EdgeInsets.symmetric(
                           vertical: 0, horizontal: 40.0),
                       child: state.status == AuthStatus.loading
-                          ? const CircularProgressIndicator()
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor:
+                                    AlwaysStoppedAnimation<Color>(Colors.white),
+                              ),
+                            )
                           : Text(
                               "Войти",
                               style: whiteTextButton,

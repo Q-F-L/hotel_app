@@ -20,6 +20,9 @@ class _MyRequestsPageState extends State<MyRequestsPage> {
           CardRequest(),
           CardRequest(),
           CardRequest(),
+          SizedBox(
+            height: 160,
+          ),
         ],
       ),
     );

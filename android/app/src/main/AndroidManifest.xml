@@ -3,14 +3,12 @@
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
     <application
-    android:label="Success Hotel"
-    android:icon="@mipmap/ic_launcher">
-        </application>
-    <application
-        android:label="m_softer_test_project"
+        android:label="Success Hotel"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:theme="@style/Theme.App.Starting">
 
         <activity
             android:name=".MainActivity"
@@ -18,7 +16,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:taskAffinity=""
-            android:theme="@style/LaunchTheme"
+            android:theme="@style/Theme.App.Starting"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
             android:hardwareAccelerated="true"
             android:windowSoftInputMode="adjustResize">

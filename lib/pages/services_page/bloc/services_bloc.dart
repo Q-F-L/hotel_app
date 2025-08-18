@@ -18,14 +18,12 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
       status: ServicesStatus.loading,
     ));
 
-    final tokenRepository = TokenRepository();
-    final token = await tokenRepository.getToken();
     final response = await http.get(
       Uri.parse('https://app.successhotel.ru/api/client/services'),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token'
+        'Authorization': 'Bearer ${TokenRepository.token}'
       },
     );
 

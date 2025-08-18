@@ -39,7 +39,7 @@ class _AuthPageState extends State<AuthPage> {
         ),
       ),
       body: BlocProvider(
-        create: (context) => AuthBloc(tokenRepository: TokenRepository()),
+        create: (context) => AuthBloc(),
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state.status == AuthStatus.failure ||

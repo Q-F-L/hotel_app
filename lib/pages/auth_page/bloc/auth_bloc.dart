@@ -1,18 +1,17 @@
-import 'dart:convert';
 import 'package:bloc/bloc.dart';
-import 'package:http/http.dart' as http;
+import 'package:m_softer_test_project/data/auth/registration_model.dart';
+import 'package:m_softer_test_project/data/auth/request.dart';
+import 'package:m_softer_test_project/data/auth/token_model.dart';
 import 'package:m_softer_test_project/data/user/user.dart';
 import 'package:m_softer_test_project/utils/userCreate.dart';
 import '../../../data/token.dart';
-import '../../../data/validators.dart';
+import '../../../data/auth/validators.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
 
 class AuthBloc extends Bloc<AuthEvent, AuthState> {
-  final TokenRepository tokenRepository;
-
-  AuthBloc({required this.tokenRepository}) : super(AuthInitial()) {
+  AuthBloc() : super(AuthInitial()) {
     on<AuthEmailChanged>(_onEmailChanged);
     on<AuthNameChanged>(_onNameChanged);
     on<AuthSurnameChanged>(_onSurnameChanged);
@@ -66,27 +65,28 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(state.copyWith(status: AuthStatus.loading));
 
     try {
-      final response = await http.post(
-        Uri.parse('https://app.successhotel.ru/api/client/login'),
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({
-          'email': state.email,
-          'password': state.password,
-        }),
-      );
+      // final response = await http.post(
+      //   Uri.parse('https://app.successhotel.ru/api/client/login'),
+      //   headers: {
+      //     'Accept': 'application/json',
+      //     'Content-Type': 'application/json',
+      //   },
+      //   body: jsonEncode({
+      //     'email': state.email,
+      //     'password': state.password,
+      //   }),
+      // );
 
-      final json = jsonDecode(response.body);
-
-      if (response.statusCode == 200 && json['success'] == true) {
-        final token = json['token'] as String;
-        await tokenRepository.saveToken(token);
+      // final json = jsonDecode(response.body);
+      final MyFeedbackListModel login =
+          await AuthRequest.login(state.email, state.password);
+      if (login.status == true) {
+        String token = login.token ?? "Ошибка: Пустой токен";
+        await TokenRepository.saveToken(token);
 
         // Отправляем FCM токен после успешной авторизации
         if (event.fcmToken != null) {
-          await _sendFcmToken(token, event.fcmToken!);
+          await AuthRequest.sendFcmToken(token, event.fcmToken!);
         }
 
         emit(state.copyWith(
@@ -96,7 +96,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } else {
         emit(state.copyWith(
           status: AuthStatus.failure,
-          errorMessage: json['error'] ?? 'Ошибка авторизации',
+          errorMessage: login.error ?? 'Ошибка авторизации',
         ));
       }
     } catch (e) {
@@ -104,24 +104,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         status: AuthStatus.failure,
         errorMessage: 'Ошибка соединения',
       ));
-    }
-  }
-
-  _sendFcmToken(String authToken, String fcmToken) async {
-    try {
-      await http.post(
-        Uri.parse('https://app.successhotel.ru/api/profile/fcm-token'),
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer $authToken',
-        },
-        body: jsonEncode({
-          'device_token': fcmToken,
-        }),
-      );
-    } catch (e) {
-      print(e);
     }
   }
 
@@ -152,33 +134,18 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(state.copyWith(status: AuthStatus.loading));
 
     try {
-      final response = await http.post(
-        Uri.parse('https://app.successhotel.ru/api/client/register'),
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({
-          'firstName': state.name,
-          'lastName': state.surname,
-          'email': state.email,
-          'password': state.password,
-          'confirmPassword': state.password,
-          'guard': 'client',
-        }),
-      );
+      final RegistrationModel json = await AuthRequest.registration(
+          state.name, state.surname, state.email, state.password);
 
-      final json = jsonDecode(response.body);
-
-      if (response.statusCode == 200 && json['success'] == true) {
+      if (json.success == true) {
         emit(state.copyWith(
           status: AuthStatus.success,
-          message: json['message'],
+          message: json.message,
         ));
       } else {
         emit(state.copyWith(
           status: AuthStatus.failure,
-          errorMessage: json['message'] ?? 'Ошибка регистрации',
+          errorMessage: json.error ?? 'Ошибка регистрации',
         ));
       }
     } catch (e) {
@@ -200,12 +167,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       return;
     }
 
-    final token = await tokenRepository.getToken();
-
-    if (token != null) {
+    if (TokenRepository.token.isNotEmpty) {
       emit(state.copyWith(
         status: AuthStatus.authenticated,
-        token: token,
+        token: TokenRepository.token,
       ));
     } else {
       emit(state.copyWith(status: AuthStatus.unauthenticated));
@@ -213,7 +178,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _onLogout(AuthLogout event, Emitter<AuthState> emit) async {
-    await tokenRepository.deleteToken();
+    await TokenRepository.deleteToken();
     User.clear;
     emit(state.copyWith(
       status: AuthStatus.unauthenticated,

@@ -18,8 +18,8 @@ import 'package:intl/date_symbol_data_local.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  final authBloc = AuthBloc(tokenRepository: TokenRepository());
+  TokenRepository.loadToken();
+  final authBloc = AuthBloc();
 
   authBloc.add(AuthCheckToken());
 

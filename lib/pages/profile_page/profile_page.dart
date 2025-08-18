@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:m_softer_test_project/data/user/user.dart';
-import 'package:m_softer_test_project/pages/auth_page/auth_page.dart';
 import 'package:m_softer_test_project/pages/profile_page/bloc/profile_bloc.dart';
 import 'package:m_softer_test_project/pages/select_hotel_page/select_hotel.dart';
 import 'package:m_softer_test_project/themes/themes.dart';
@@ -21,7 +20,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     bloc = ProfileBloc();
     super.initState();
   }
@@ -33,6 +31,14 @@ class _ProfilePageState extends State<ProfilePage> {
       child: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {
           if (state is MoveOutState) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => SelectHomePage()),
+              (Route<dynamic> route) => false,
+            );
+          }
+
+          if (state is LogoutState) {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => SelectHomePage()),
@@ -70,7 +76,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                         IconButton(
                           onPressed: () {
-                            context.read<AuthBloc>().add(AuthLogout());
+                            bloc.add(LogoutEvent());
                           },
                           icon: Icon(
                             Icons.output_rounded,

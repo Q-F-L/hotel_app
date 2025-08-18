@@ -1,20 +1,26 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TokenRepository {
+  static String _token = '';
   static const _tokenKey = 'auth_token';
 
-  Future<void> saveToken(String token) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_tokenKey, token);
+  static String get token => _token;
+
+  static Future<void> saveToken(String token) async {
+    if (token.isNotEmpty) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setString(_tokenKey, token);
+    }
   }
 
-  Future<String?> getToken() async {
+  static Future<void> loadToken() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_tokenKey);
+    _token = prefs.getString(_tokenKey) ?? '';
   }
 
-  Future<void> deleteToken() async {
+  static Future<void> deleteToken() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_tokenKey);
+    _token = '';
   }
 }

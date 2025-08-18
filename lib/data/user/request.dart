@@ -8,23 +8,19 @@ class ProfileRequest {
   static Future<ProfileModel> request() async {
     print("create request USER");
     try {
-      final tokenRepository = TokenRepository();
-      final token = await tokenRepository.getToken();
       final response = await http.get(
         Uri.parse('https://app.successhotel.ru/api/client/profile'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token'
+          'Authorization': 'Bearer ${TokenRepository.token}'
         },
       );
 
-      final json = jsonDecode(response.body);
+      final jsonModel = profileRequestFromJson(response.body);
 
-      print(json);
-
-      if (response.statusCode == 200 && json['success'] == true) {
-        return profileRequestFromJson(response.body);
+      if (response.statusCode == 200) {
+        return jsonModel;
       } else {
         return ProfileModel(message: "Неизвестная ошибка");
       }

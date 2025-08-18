@@ -13,6 +13,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<CreateProfileEvent>(_createProfile);
 
     on<MoveOutEvent>(_moveOut);
+    on<LogoutEvent>(_onLogout);
   }
 
   _createProfile(ProfileEvent event, Emitter emit) async {
@@ -20,25 +21,26 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   }
 
   Future<void> _moveOut(MoveOutEvent event, Emitter<ProfileState> emit) async {
-    final tokenRepository = TokenRepository();
-    final token = await tokenRepository.getToken();
-    print(" token  ${token}");
     final response = await http.get(
       Uri.parse('https://app.successhotel.ru/api/client/check-out'),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token'
+        'Authorization': 'Bearer ${TokenRepository.token}'
       },
     );
 
     final json = jsonDecode(response.body);
 
-    print(json);
-
     if (response.statusCode == 200 && json['success'] == true) {
       emit(MoveOutState());
       User.checkedIn = false;
     } else {}
+  }
+
+  void _onLogout(LogoutEvent event, Emitter<ProfileState> emit) async {
+    await TokenRepository.deleteToken();
+    User.clear;
+    emit(LogoutState());
   }
 }

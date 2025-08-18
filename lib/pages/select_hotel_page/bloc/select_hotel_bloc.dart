@@ -22,14 +22,12 @@ class SelectHotelBloc extends Bloc<SelectHotelEvent, SelectHotelState> {
   }
 
   _send(SendEvent event, Emitter<SelectHotelState> emit) async {
-    final tokenRepository = TokenRepository();
-    final token = await tokenRepository.getToken();
     final response = await http.post(
       Uri.parse('https://app.successhotel.ru/api/client/check-in'),
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token'
+        'Authorization': 'Bearer ${TokenRepository.token}'
       },
       body: jsonEncode({
         'room_id': state.rooms!.id,
@@ -67,14 +65,12 @@ class SelectHotelBloc extends Bloc<SelectHotelEvent, SelectHotelState> {
     }
 
     try {
-      final tokenRepository = TokenRepository();
-      final token = await tokenRepository.getToken();
       final response = await http.get(
         Uri.parse('https://app.successhotel.ru/api/client/organizations'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token'
+          'Authorization': 'Bearer ${TokenRepository.token}'
         },
       );
 
@@ -105,15 +101,13 @@ class SelectHotelBloc extends Bloc<SelectHotelEvent, SelectHotelState> {
     emit(state.copyWith(hotel: event.hotel));
 
     try {
-      final tokenRepository = TokenRepository();
-      final token = await tokenRepository.getToken();
       final response = await http.get(
         Uri.parse(
             'https://app.successhotel.ru/api/client/organizations/${event.hotel!.id}/rooms'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
-          'Authorization': 'Bearer $token'
+          'Authorization': 'Bearer ${TokenRepository.token}'
         },
       );
 

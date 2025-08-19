@@ -32,6 +32,7 @@ class GradientButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       margin: margin,
+      height: 57,
       child: InkWell(
         onTap: onPressed,
         borderRadius: borderRadius,

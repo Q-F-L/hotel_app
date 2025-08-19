@@ -40,12 +40,11 @@ class _HomePageState extends State<HomePage> {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
             backgroundColor: AppColors.backgroundWhite,
-            body: SafeArea(
-                child: [
+            body: [
               MyRequestsPage(),
               ServicesPage(),
               ProfilePage()
-            ][state.nowPage]),
+            ][state.nowPage],
           );
         },
       ),

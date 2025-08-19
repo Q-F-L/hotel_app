@@ -18,7 +18,32 @@ class AuthPage extends StatefulWidget {
 
 class _AuthPageState extends State<AuthPage> {
   final _formKey = GlobalKey<FormState>();
-  final fcmToken = ''; // Получите FCM токен из Firebase Messaging
+
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  bool _canClick = false;
+
+  void _wireCanClick() {
+    setState(() {
+      _canClick = _emailController.text.isNotEmpty &&
+          _passwordController.text.isNotEmpty;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _emailController.addListener(_wireCanClick);
+    _passwordController.addListener(_wireCanClick);
+  }
+
+  @override
+  void dispose() {
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,25 +55,22 @@ class _AuthPageState extends State<AuthPage> {
         backgroundColor: const Color(0xFFF6FBFB),
         surfaceTintColor: Colors.transparent,
         elevation: 0,
-        title: Text(
-          "Авторизация",
-          style: Theme.of(context).textTheme.bodyLarge,
-        ),
+        title:
+            Text("Авторизация", style: Theme.of(context).textTheme.bodyLarge),
       ),
       body: BlocProvider(
         create: (context) => AuthBloc(),
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state.status == AuthStatus.failure ||
-                (state.emailError != null || state.passwordError != null)) {
+                state.emailError != null ||
+                state.passwordError != null) {
               final errorMessage = state.errorMessage ??
                   state.emailError ??
                   state.passwordError ??
                   'Произошла ошибка';
-
               showToast(context, errorMessage);
             }
-
             if (state.status == AuthStatus.authenticated) {
               Navigator.pushReplacement(
                 context,
@@ -58,78 +80,61 @@ class _AuthPageState extends State<AuthPage> {
           },
           builder: (context, state) {
             final bloc = context.read<AuthBloc>();
-            bool canClick = state.email.isNotEmpty && state.password.isNotEmpty;
 
             return Form(
               key: _formKey,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 33),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 30),
-                      child: TextInputForm(
-                        prefix: IconGradient(icon: Icon(Icons.email), colors: [
-                          Color.fromARGB(255, 83, 232, 140),
-                          Color.fromARGB(255, 21, 190, 120),
-                        ]),
-                        keyboardType: TextInputType.emailAddress,
-                        hintText: 'Введите email',
-                        initialValue: state.email,
-                        errorText: state.emailError,
-                        onChanged: (value) => bloc.add(AuthEmailChanged(value)),
-                      ),
+                    const SizedBox(height: 30),
+                    TextInputForm(
+                      controller: _emailController,
+                      prefix: IconGradient(icon: Icon(Icons.email), colors: [
+                        Color.fromARGB(255, 83, 232, 140),
+                        Color.fromARGB(255, 21, 190, 120),
+                      ]),
+                      keyboardType: TextInputType.emailAddress,
+                      hintText: 'Введите email',
+                      errorText: state.emailError,
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 20),
-                      child: TextInputForm(
-                        prefix: IconGradient(icon: Icon(Icons.lock), colors: [
-                          Color.fromARGB(255, 83, 232, 140),
-                          Color.fromARGB(255, 21, 190, 120),
-                        ]),
-                        isPassword: true,
-                        hintText: 'Введите пароль',
-                        initialValue: state.password,
-                        errorText: state.passwordError,
-                        onChanged: (value) =>
-                            bloc.add(AuthPasswordChanged(value)),
-                      ),
+                    const SizedBox(height: 20),
+                    TextInputForm(
+                      controller: _passwordController,
+                      prefix: IconGradient(icon: Icon(Icons.lock), colors: [
+                        Color.fromARGB(255, 83, 232, 140),
+                        Color.fromARGB(255, 21, 190, 120),
+                      ]),
+                      isPassword: true,
+                      hintText: 'Введите пароль',
+                      errorText: state.passwordError,
                     ),
                     Container(
-                      margin: EdgeInsets.only(bottom: 10),
+                      margin: const EdgeInsets.only(bottom: 10),
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                          onPressed: () {
-                            Navigator.pushNamed(context, "/registration");
-                          },
-                          child: Text("Регистрация", style: link)),
+                        onPressed: () =>
+                            Navigator.pushNamed(context, "/registration"),
+                        child: Text("Регистрация", style: link),
+                      ),
                     ),
                     GradientButton(
-                      canClick: canClick,
-                      onPressed: () => canClick
+                      canClick: _canClick,
+                      onPressed: () => _canClick
                           ? {
-                              bloc.add(AuthLogin()),
+                              bloc.add(AuthLogin(
+                                email: _emailController.text,
+                                password: _passwordController.text,
+                              )),
                             }
                           : {showToast(context, "Заполните данные")},
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
                       margin: const EdgeInsets.symmetric(
                           vertical: 0, horizontal: 40.0),
                       child: state.status == AuthStatus.loading
-                          ? const SizedBox(
-                              height: 20,
-                              width: 20,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                valueColor:
-                                    AlwaysStoppedAnimation<Color>(Colors.white),
-                              ),
-                            )
-                          : Text(
-                              "Войти",
-                              style: whiteTextButton,
-                            ),
+                          ? CircularProgressIndicator(strokeWidth: 2)
+                          : Text("Войти", style: whiteTextButton),
                     ),
                   ],
                 ),

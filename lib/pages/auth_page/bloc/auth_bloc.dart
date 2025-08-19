@@ -49,30 +49,27 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _onLogin(AuthLogin event, Emitter<AuthState> emit) async {
-    final emailError = Validators.validateEmail(state.email);
+    final String? emailError = Validators.validateEmail(event.email);
+    print("Login");
 
     emit(state.copyWith(
       emailError: emailError,
       isFormValid: emailError == null,
+      status: AuthStatus.loading,
     ));
-
-    if (emailError != null) {
-      return;
-    }
-
-    emit(state.copyWith(status: AuthStatus.loading));
+    print("emailError $emailError");
+    if (emailError != null) return;
 
     try {
       final LoginModel jsonModel =
-          await AuthRequest.login(state.email, state.password);
+          await AuthRequest.login(event.email, event.password);
+      print("jsonModel.token ${jsonModel.token}");
       if (jsonModel.status == true) {
-        String token = jsonModel.token ?? "Ошибка: Пустой токен";
+        final token = jsonModel.token ?? "Ошибка: Пустой токен";
+
         await TokenRepository.saveToken(token);
 
-        // Отправляем FCM токен после успешной авторизации
-        if (event.fcmToken != null) {
-          await AuthRequest.sendFcmToken(token, event.fcmToken!);
-        }
+        await AuthRequest.sendFcmToken(token, event.fcmToken!);
 
         emit(state.copyWith(
           status: AuthStatus.authenticated,
@@ -84,7 +81,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           errorMessage: jsonModel.error ?? 'Ошибка авторизации',
         ));
       }
-    } catch (e) {
+    } catch (_) {
       emit(state.copyWith(
         status: AuthStatus.failure,
         errorMessage: 'Ошибка соединения',
@@ -92,11 +89,55 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     }
   }
 
+  // void _onLogin(AuthLogin event, Emitter<AuthState> emit) async {
+  //   final emailError = Validators.validateEmail(state.email);
+
+  //   emit(state.copyWith(
+  //     emailError: emailError,
+  //     isFormValid: emailError == null,
+  //   ));
+
+  //   if (emailError != null) {
+  //     return;
+  //   }
+
+  //   emit(state.copyWith(status: AuthStatus.loading));
+
+  //   try {
+  //     final LoginModel jsonModel =
+  //         await AuthRequest.login(state.email, state.password);
+  //     if (jsonModel.status == true) {
+  //       String token = jsonModel.token ?? "Ошибка: Пустой токен";
+  //       await TokenRepository.saveToken(token);
+
+  //       // Отправляем FCM токен после успешной авторизации
+  //       if (event.fcmToken != null) {
+  //         await AuthRequest.sendFcmToken(token, event.fcmToken!);
+  //       }
+
+  //       emit(state.copyWith(
+  //         status: AuthStatus.authenticated,
+  //         token: token,
+  //       ));
+  //     } else {
+  //       emit(state.copyWith(
+  //         status: AuthStatus.failure,
+  //         errorMessage: jsonModel.error ?? 'Ошибка авторизации',
+  //       ));
+  //     }
+  //   } catch (e) {
+  //     emit(state.copyWith(
+  //       status: AuthStatus.failure,
+  //       errorMessage: 'Ошибка соединения',
+  //     ));
+  //   }
+  // }
+
   void _onRegister(AuthRegister event, Emitter<AuthState> emit) async {
-    final passwordError = Validators.validatePassword(state.password);
-    final emailError = Validators.validateEmail(state.email);
-    final nameError = Validators.validateName(state.name);
-    final surnameError = Validators.validateSurname(state.surname);
+    final passwordError = Validators.validatePassword(event.password);
+    final emailError = Validators.validateEmail(event.email);
+    final nameError = Validators.validateName(event.name);
+    final surnameError = Validators.validateSurname(event.surname);
 
     emit(state.copyWith(
       errorName: nameError,
@@ -120,7 +161,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
     try {
       final RegistrationModel json = await AuthRequest.registration(
-          state.name, state.surname, state.email, state.password);
+        event.name,
+        event.surname,
+        event.email,
+        event.password,
+      );
 
       if (json.success == true) {
         emit(state.copyWith(
@@ -133,13 +178,62 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           errorMessage: json.error ?? 'Ошибка регистрации',
         ));
       }
-    } catch (e) {
+    } catch (_) {
       emit(state.copyWith(
         status: AuthStatus.failure,
         errorMessage: 'Ошибка соединения',
       ));
     }
   }
+
+  // void _onRegister(AuthRegister event, Emitter<AuthState> emit) async {
+  //   final passwordError = Validators.validatePassword(state.password);
+  //   final emailError = Validators.validateEmail(state.email);
+  //   final nameError = Validators.validateName(state.name);
+  //   final surnameError = Validators.validateSurname(state.surname);
+
+  //   emit(state.copyWith(
+  //     errorName: nameError,
+  //     surnameError: surnameError,
+  //     emailError: emailError,
+  //     passwordError: passwordError,
+  //     isFormValid: emailError == null &&
+  //         passwordError == null &&
+  //         nameError == null &&
+  //         surnameError == null,
+  //   ));
+
+  //   if (emailError != null ||
+  //       passwordError != null ||
+  //       nameError != null ||
+  //       surnameError != null) {
+  //     return;
+  //   }
+
+  //   emit(state.copyWith(status: AuthStatus.loading));
+
+  //   try {
+  //     final RegistrationModel json = await AuthRequest.registration(
+  //         state.name, state.surname, state.email, state.password);
+
+  //     if (json.success == true) {
+  //       emit(state.copyWith(
+  //         status: AuthStatus.success,
+  //         message: json.message,
+  //       ));
+  //     } else {
+  //       emit(state.copyWith(
+  //         status: AuthStatus.failure,
+  //         errorMessage: json.error ?? 'Ошибка регистрации',
+  //       ));
+  //     }
+  //   } catch (e) {
+  //     emit(state.copyWith(
+  //       status: AuthStatus.failure,
+  //       errorMessage: 'Ошибка соединения',
+  //     ));
+  //   }
+  // }
 
   void _onCheckToken(AuthCheckToken event, Emitter<AuthState> emit) async {
     emit(state.copyWith(status: AuthStatus.loading));

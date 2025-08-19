@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../pages/text_input_form/bloc/text_input_form_bloc.dart';
@@ -71,6 +70,7 @@ class _TextInputFormState extends State<TextInputForm> {
         return Container(
           decoration: BoxDecoration(boxShadow: [shadow]),
           child: TextFormField(
+            keyboardType: widget.keyboardType,
             controller: widget.controller,
             onChanged: widget.onChanged,
             obscureText: state.obscureText,

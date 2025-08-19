@@ -110,7 +110,6 @@ class _QrCodePageState extends State<QrCodePage> {
                   GradientButton(
                     margin: EdgeInsets.symmetric(horizontal: 20),
                     onPressed: () {},
-                    canClick: true,
                     borderRadius: BorderRadius.all(Radius.circular(16)),
                     child: Text(
                       "Готово",

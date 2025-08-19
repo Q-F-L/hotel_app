@@ -1,15 +1,23 @@
+import 'dart:convert';
+
+Hotel hotelFromJson(String str) => Hotel.fromJson(json.decode(str));
+
+String hotelToJson(Hotel data) => json.encode(data.toJson());
+
 class Hotel {
   bool? success;
-  List<Organizations>? organizations;
+  List<Organization>? organizations;
+  String? message;
 
-  Hotel({this.success, this.organizations});
+  Hotel({this.success, this.organizations, this.message});
 
   Hotel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
+    message = json['message'];
     if (json['organizations'] != null) {
-      organizations = <Organizations>[];
+      organizations = <Organization>[];
       json['organizations'].forEach((v) {
-        organizations!.add(Organizations.fromJson(v));
+        organizations!.add(Organization.fromJson(v));
       });
     }
   }
@@ -24,7 +32,7 @@ class Hotel {
   }
 }
 
-class Organizations {
+class Organization {
   int? id;
   String? email;
   String? phone;
@@ -38,7 +46,7 @@ class Organizations {
   String? firstName;
   String? lastName;
 
-  Organizations(
+  Organization(
       {this.id,
       this.email,
       this.phone,
@@ -52,7 +60,7 @@ class Organizations {
       this.firstName,
       this.lastName});
 
-  Organizations.fromJson(Map<String, dynamic> json) {
+  Organization.fromJson(Map<String, dynamic> json) {
     id = json['id'];
     email = json['email'];
     phone = json['phone'];

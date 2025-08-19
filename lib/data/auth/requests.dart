@@ -1,16 +1,16 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:m_softer_test_project/themes/themes.dart';
 
-import 'registration_model.dart';
-import 'token_model.dart';
+import 'models/registration_model.dart';
+import 'models/login_model.dart';
 
 class AuthRequest {
-  static Future<MyFeedbackListModel> login(
-      String email, String password) async {
+  static Future<LoginModel> login(String email, String password) async {
     try {
       final response = await http.post(
-        Uri.parse('https://app.successhotel.ru/api/client/login'),
+        Uri.parse('$urlDomain/api/client/login'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
@@ -21,17 +21,17 @@ class AuthRequest {
         }),
       );
 
-      final jsonModel = myFeedbackListModelFromJson(response.body);
+      final jsonModel = loginModelFromJson(response.body);
 
       if (response.statusCode == 200) {
         return jsonModel;
       } else {
-        return MyFeedbackListModel(
+        return LoginModel(
             error: jsonModel.error ??
                 "Неизвестная ошибка: ${response.statusCode}");
       }
     } catch (e) {
-      return MyFeedbackListModel(error: e.toString());
+      return LoginModel(error: e.toString());
     }
   }
 
@@ -39,7 +39,7 @@ class AuthRequest {
       String name, String surname, String email, String password) async {
     try {
       final response = await http.post(
-        Uri.parse('https://app.successhotel.ru/api/client/register'),
+        Uri.parse('$urlDomain/api/client/register'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
@@ -74,7 +74,7 @@ class AuthRequest {
   static Future<void> sendFcmToken(String authToken, String fcmToken) async {
     try {
       await http.post(
-        Uri.parse('https://app.successhotel.ru/api/profile/fcm-token'),
+        Uri.parse('$urlDomain/api/profile/fcm-token'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',

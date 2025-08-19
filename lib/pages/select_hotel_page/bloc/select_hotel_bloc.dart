@@ -1,11 +1,11 @@
-import 'dart:convert';
-
 import 'package:bloc/bloc.dart';
-import 'package:http/http.dart' as http;
-import 'package:m_softer_test_project/data/hotels.dart';
-import 'package:m_softer_test_project/data/rooms.dart';
-import 'package:m_softer_test_project/data/token.dart';
-import 'package:m_softer_test_project/data/user/user.dart';
+import 'package:m_softer_test_project/data/organizations/model.dart';
+import 'package:m_softer_test_project/data/organizations/requests.dart';
+import 'package:m_softer_test_project/data/rooms/model.dart';
+import 'package:m_softer_test_project/data/rooms/requests.dart';
+import 'package:m_softer_test_project/data/user/models/check_model.dart';
+import 'package:m_softer_test_project/data/user/models/user.dart';
+import 'package:m_softer_test_project/data/user/requests.dart';
 
 part 'select_hotel_event.dart';
 part 'select_hotel_state.dart';
@@ -22,34 +22,24 @@ class SelectHotelBloc extends Bloc<SelectHotelEvent, SelectHotelState> {
   }
 
   _send(SendEvent event, Emitter<SelectHotelState> emit) async {
-    final response = await http.post(
-      Uri.parse('https://app.successhotel.ru/api/client/check-in'),
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer ${TokenRepository.token}'
-      },
-      body: jsonEncode({
-        'room_id': state.rooms!.id,
-        'chek_in_date': state.date,
-      }),
-    );
+    final CheckModel jsonModel = await ProfileRequest.checkIn(
+        state.rooms?.id ?? 0, state.date ?? 'Нет даты');
 
-    final json = jsonDecode(response.body);
-    print(json);
     try {
-      if (response.statusCode == 200 && json['success'] == true) {
+      if (jsonModel.success == true) {
         User.checkedIn = true;
         emit(state.copyWith(status: SelectHotelStatus.send));
       } else {
-        emit(state.copyWith(status: SelectHotelStatus.loading));
+        emit(state.copyWith(
+          status: SelectHotelStatus.failure,
+          errorMessage: jsonModel.error ?? jsonModel.message,
+        ));
       }
     } catch (e) {
       emit(state.copyWith(
         status: SelectHotelStatus.failure,
-        errorMessage: json['message'],
+        errorMessage: e.toString(),
       ));
-      print("Error ${e}");
     }
   }
 
@@ -65,33 +55,23 @@ class SelectHotelBloc extends Bloc<SelectHotelEvent, SelectHotelState> {
     }
 
     try {
-      final response = await http.get(
-        Uri.parse('https://app.successhotel.ru/api/client/organizations'),
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${TokenRepository.token}'
-        },
-      );
+      final Hotel jsonModel = await OrganizationsRequest.create();
 
-      final json = jsonDecode(response.body);
-      Hotel hotel = Hotel.fromJson(json);
-
-      if (response.statusCode == 200 && json['success'] == true) {
+      if (jsonModel.success == true) {
         emit(state.copyWith(
           status: SelectHotelStatus.success,
-          listHotel: hotel.organizations,
+          listHotel: jsonModel.organizations,
         ));
       } else {
         emit(state.copyWith(
           status: SelectHotelStatus.failure,
-          errorMessage: json['message'],
+          errorMessage: jsonModel.message,
         ));
       }
     } catch (e) {
       emit(state.copyWith(
         status: SelectHotelStatus.failure,
-        errorMessage: 'Ошибка соединения',
+        errorMessage: e.toString(),
       ));
     }
   }
@@ -100,31 +80,26 @@ class SelectHotelBloc extends Bloc<SelectHotelEvent, SelectHotelState> {
       SelectedHotelEvent event, Emitter<SelectHotelState> emit) async {
     emit(state.copyWith(hotel: event.hotel));
 
-    try {
-      final response = await http.get(
-        Uri.parse(
-            'https://app.successhotel.ru/api/client/organizations/${event.hotel!.id}/rooms'),
-        headers: {
-          'Accept': 'application/json',
-          'Content-Type': 'application/json',
-          'Authorization': 'Bearer ${TokenRepository.token}'
-        },
-      );
+    final RoomsModel jsonModel =
+        await RoomsRequest.create(event.hotel?.id ?? 0);
 
-      final json = jsonDecode(response.body);
-      RoomsRequest roomsRequest = RoomsRequest.fromJson(json);
-      if (response.statusCode == 200 && json['success'] == true) {
+    try {
+      if (jsonModel.success == true) {
         emit(state.copyWith(
           status: SelectHotelStatus.success,
-          listRooms: roomsRequest.rooms,
+          listRooms: jsonModel.rooms,
         ));
       } else {
-        print("Error ${response.statusCode}");
+        emit(state.copyWith(
+          status: SelectHotelStatus.failure,
+          errorMessage: jsonModel.message,
+        ));
       }
     } catch (e) {
-      print(e);
-
-      // errorMessage: 'Ошибка соединения',
+      emit(state.copyWith(
+        status: SelectHotelStatus.failure,
+        errorMessage: jsonModel.message,
+      ));
     }
   }
 

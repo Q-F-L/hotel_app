@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:m_softer_test_project/data/rooms.dart';
-import 'package:m_softer_test_project/data/user/user.dart';
+import 'package:m_softer_test_project/data/rooms/model.dart';
 import 'package:m_softer_test_project/elements/custom_drop_down_menu_hotel.dart';
 import 'package:m_softer_test_project/elements/custom_drop_down_menu_room.dart';
 import 'package:m_softer_test_project/elements/gradient_button.dart';

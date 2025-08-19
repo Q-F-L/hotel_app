@@ -3,7 +3,7 @@ part of 'select_hotel_bloc.dart';
 sealed class SelectHotelEvent {}
 
 class SelectedHotelEvent extends SelectHotelEvent {
-  final Organizations? hotel;
+  final Organization? hotel;
   SelectedHotelEvent(this.hotel);
 }
 

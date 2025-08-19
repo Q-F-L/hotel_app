@@ -1,31 +1,30 @@
-import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:m_softer_test_project/data/token.dart';
-import 'package:m_softer_test_project/data/user/profile.dart';
+import 'package:m_softer_test_project/themes/themes.dart';
 
-class ProfileRequest {
-  static Future<ProfileModel> request() async {
-    print("create request USER");
+import 'model.dart';
+
+class ServicesRequest {
+  static Future<ServicesModel> create() async {
     try {
       final response = await http.get(
-        Uri.parse('https://app.successhotel.ru/api/client/profile'),
+        Uri.parse('$urlDomain/api/client/services'),
         headers: {
           'Accept': 'application/json',
           'Content-Type': 'application/json',
           'Authorization': 'Bearer ${TokenRepository.token}'
         },
       );
-
-      final jsonModel = profileRequestFromJson(response.body);
+      final jsonModel = servicesModelFromJson(response.body);
 
       if (response.statusCode == 200) {
         return jsonModel;
       } else {
-        return ProfileModel(message: "Неизвестная ошибка");
+        return ServicesModel(
+            message: "Ошибка: ${response.statusCode} ${jsonModel.message}");
       }
     } catch (e) {
-      return ProfileModel(message: e.toString());
+      return ServicesModel(message: e.toString());
     }
   }
 }

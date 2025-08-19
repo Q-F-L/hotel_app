@@ -41,7 +41,6 @@ class _ShowRatingState extends State<ShowRating> {
         ),
         GradientButton(
           onPressed: () {},
-          canClick: true,
           borderRadius: BorderRadius.all(Radius.circular(16)),
           child: Text(
             "Готово",

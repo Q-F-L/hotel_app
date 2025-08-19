@@ -4,6 +4,6 @@ sealed class ProfileEvent {}
 
 class CreateProfileEvent extends ProfileEvent {}
 
-class MoveOutEvent extends ProfileEvent {}
+class CheckOutEvent extends ProfileEvent {}
 
 class LogoutEvent extends ProfileEvent {}

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:m_softer_test_project/data/rooms.dart';
+import 'package:m_softer_test_project/data/rooms/model.dart';
 
 import '../themes/themes.dart';
 import 'icon_gradient.dart';

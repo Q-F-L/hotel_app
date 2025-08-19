@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:m_softer_test_project/data/user/user.dart';
+import 'package:m_softer_test_project/data/user/models/user.dart';
 import 'package:m_softer_test_project/pages/profile_page/bloc/profile_bloc.dart';
 import 'package:m_softer_test_project/pages/select_hotel_page/select_hotel.dart';
 import 'package:m_softer_test_project/themes/themes.dart';
+import 'package:m_softer_test_project/utils/snackbar_helper.dart';
 
 import '../../elements/user_favorites_element.dart';
 import '../auth_page/bloc/auth_bloc.dart';
@@ -30,7 +31,7 @@ class _ProfilePageState extends State<ProfilePage> {
       create: (context) => bloc..add(CreateProfileEvent()),
       child: BlocConsumer<ProfileBloc, ProfileState>(
         listener: (context, state) {
-          if (state is MoveOutState) {
+          if (state is CheckOutState) {
             Navigator.pushAndRemoveUntil(
               context,
               MaterialPageRoute(builder: (context) => SelectHomePage()),
@@ -44,6 +45,10 @@ class _ProfilePageState extends State<ProfilePage> {
               MaterialPageRoute(builder: (context) => SelectHomePage()),
               (Route<dynamic> route) => false,
             );
+          }
+
+          if (state is ProfileErrorState) {
+            showToast(context, state.message);
           }
         },
         builder: (context, state) {
@@ -101,7 +106,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ),
                       ),
                       onPressed: () {
-                        bloc.add(MoveOutEvent());
+                        bloc.add(CheckOutEvent());
                       },
                       child: Text(
                         "Выселиться",

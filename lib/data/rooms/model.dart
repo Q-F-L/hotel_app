@@ -1,11 +1,20 @@
-class RoomsRequest {
+import 'dart:convert';
+
+RoomsModel roomsModelFromJson(String str) =>
+    RoomsModel.fromJson(json.decode(str));
+
+String roomsModelToJson(RoomsModel data) => json.encode(data.toJson());
+
+class RoomsModel {
   bool? success;
   List<Rooms>? rooms;
+  String? message;
 
-  RoomsRequest({this.success, this.rooms});
+  RoomsModel({this.success, this.rooms, this.message});
 
-  RoomsRequest.fromJson(Map<String, dynamic> json) {
+  RoomsModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
+    message = json['message'];
     if (json['rooms'] != null) {
       rooms = <Rooms>[];
       json['rooms'].forEach((v) {

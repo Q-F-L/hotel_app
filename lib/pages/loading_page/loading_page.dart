@@ -3,7 +3,7 @@ import 'package:m_softer_test_project/pages/auth_page/auth_page.dart';
 import 'package:m_softer_test_project/pages/auth_page/bloc/auth_bloc.dart';
 import 'package:m_softer_test_project/pages/error_page/error_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:m_softer_test_project/data/user/user.dart';
+import 'package:m_softer_test_project/data/user/models/user.dart';
 import 'package:m_softer_test_project/pages/home_page/home.dart';
 import 'package:m_softer_test_project/pages/launch_bloc/launch_bloc.dart';
 import 'package:m_softer_test_project/pages/select_hotel_page/select_hotel.dart';

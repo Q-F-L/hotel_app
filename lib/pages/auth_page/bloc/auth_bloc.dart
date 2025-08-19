@@ -1,11 +1,10 @@
 import 'package:bloc/bloc.dart';
-import 'package:m_softer_test_project/data/auth/registration_model.dart';
-import 'package:m_softer_test_project/data/auth/request.dart';
-import 'package:m_softer_test_project/data/auth/token_model.dart';
-import 'package:m_softer_test_project/data/user/user.dart';
-import 'package:m_softer_test_project/utils/userCreate.dart';
+import 'package:m_softer_test_project/data/auth/models/registration_model.dart';
+import 'package:m_softer_test_project/data/auth/requests.dart';
+import 'package:m_softer_test_project/data/auth/models/login_model.dart';
+import 'package:m_softer_test_project/data/user/models/user.dart';
 import '../../../data/token.dart';
-import '../../../data/auth/validators.dart';
+import '../../../utils/validators.dart';
 
 part 'auth_event.dart';
 part 'auth_state.dart';
@@ -65,23 +64,10 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     emit(state.copyWith(status: AuthStatus.loading));
 
     try {
-      // final response = await http.post(
-      //   Uri.parse('https://app.successhotel.ru/api/client/login'),
-      //   headers: {
-      //     'Accept': 'application/json',
-      //     'Content-Type': 'application/json',
-      //   },
-      //   body: jsonEncode({
-      //     'email': state.email,
-      //     'password': state.password,
-      //   }),
-      // );
-
-      // final json = jsonDecode(response.body);
-      final MyFeedbackListModel login =
+      final LoginModel jsonModel =
           await AuthRequest.login(state.email, state.password);
-      if (login.status == true) {
-        String token = login.token ?? "Ошибка: Пустой токен";
+      if (jsonModel.status == true) {
+        String token = jsonModel.token ?? "Ошибка: Пустой токен";
         await TokenRepository.saveToken(token);
 
         // Отправляем FCM токен после успешной авторизации
@@ -96,7 +82,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       } else {
         emit(state.copyWith(
           status: AuthStatus.failure,
-          errorMessage: login.error ?? 'Ошибка авторизации',
+          errorMessage: jsonModel.error ?? 'Ошибка авторизации',
         ));
       }
     } catch (e) {
@@ -158,7 +144,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _onCheckToken(AuthCheckToken event, Emitter<AuthState> emit) async {
     emit(state.copyWith(status: AuthStatus.loading));
-    await userCreate();
+    await User.create();
     if (User.deviceToken != null) {
       emit(state.copyWith(
         status: AuthStatus.authenticated,

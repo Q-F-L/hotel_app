@@ -7,7 +7,6 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:m_softer_test_project/data/token.dart';
 
 import 'package:m_softer_test_project/main.dart';
 import 'package:m_softer_test_project/pages/auth_page/bloc/auth_bloc.dart';
@@ -16,7 +15,7 @@ void main() {
   testWidgets('Counter increments smoke test', (WidgetTester tester) async {
     // Build our app and trigger a frame.
     await tester.pumpWidget(MyApp(
-      authBloc: AuthBloc(tokenRepository: TokenRepository()),
+      authBloc: AuthBloc(),
     ));
 
     // Verify that our counter starts at 0.

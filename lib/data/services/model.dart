@@ -1,11 +1,20 @@
-class ServicesRequest {
+import 'dart:convert';
+
+ServicesModel servicesModelFromJson(String str) =>
+    ServicesModel.fromJson(json.decode(str));
+
+String servicesModelToJson(ServicesModel data) => json.encode(data.toJson());
+
+class ServicesModel {
   bool? success;
   List<Services>? services;
+  String? message;
 
-  ServicesRequest({this.success, this.services});
+  ServicesModel({this.success, this.services, this.message});
 
-  ServicesRequest.fromJson(Map<String, dynamic> json) {
+  ServicesModel.fromJson(Map<String, dynamic> json) {
     success = json['success'];
+    message = json['message'];
     if (json['services'] != null) {
       services = <Services>[];
       json['services'].forEach((v) {

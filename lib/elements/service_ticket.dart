@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:m_softer_test_project/data/services.dart';
+import 'package:m_softer_test_project/data/services/model.dart';
 
 import '../themes/themes.dart';
 import 'show_additional_services.dart';

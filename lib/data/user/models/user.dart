@@ -1,7 +1,5 @@
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-import 'package:m_softer_test_project/data/user/profile.dart';
-import 'package:m_softer_test_project/data/user/request.dart';
+import 'package:m_softer_test_project/data/user/models/profile.dart';
+import 'package:m_softer_test_project/data/user/requests.dart';
 
 class User {
   static int? _id;
@@ -62,32 +60,12 @@ class User {
   }
 
   static Future<void> create() async {
-    final ProfileModel profileRequest = await ProfileRequest.request();
+    final ProfileModel profileRequest = await ProfileRequest.profileRequest();
 
     if (profileRequest.message?.isEmpty ?? true) {
-      print("User create complited");
       User(profileRequest.profile ?? Profile());
     }
   }
-
-  // // Только для проверки заселения пользователя в номер отеля
-  // Future<bool> userCheckIn() async {
-  //   final response = await http.post(
-  //     Uri.parse('https://app.successhotel.ru/api/client/login'),
-  //     headers: {
-  //       'Accept': 'application/json',
-  //       'Content-Type': 'application/json',
-  //     },
-  //   );
-
-  //   if (response.statusCode == 200) {
-  //     final json = jsonDecode(response.body);
-  //     final ProfileModel profileRequest = ProfileModel.fromJson(json);
-  //     return profileRequest.profile?.checkedIn ?? false;
-  //   } else {
-  //     return false;
-  //   }
-  // }
 
   static void clear() {
     _id = null;

@@ -69,8 +69,8 @@ class _AuthPageState extends State<AuthPage> {
                       padding: EdgeInsets.only(top: 30),
                       child: TextInputForm(
                         prefix: IconGradient(icon: Icon(Icons.email), colors: [
-                          Color.fromARGB(255, 83, 232, 140),
-                          Color.fromARGB(255, 21, 190, 120),
+                          AppColors.grandColorFirst,
+                          AppColors.grandColorSecond,
                         ]),
                         keyboardType: TextInputType.emailAddress,
                         hintText: 'Введите email',
@@ -83,8 +83,8 @@ class _AuthPageState extends State<AuthPage> {
                       padding: EdgeInsets.only(top: 20),
                       child: TextInputForm(
                         prefix: IconGradient(icon: Icon(Icons.lock), colors: [
-                          Color.fromARGB(255, 83, 232, 140),
-                          Color.fromARGB(255, 21, 190, 120),
+                          AppColors.grandColorFirst,
+                          AppColors.grandColorFirst,
                         ]),
                         isPassword: true,
                         hintText: 'Введите пароль',

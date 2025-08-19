@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:m_softer_test_project/elements/gradient_button.dart';
 import 'package:m_softer_test_project/elements/icon_gradient.dart';
 import 'package:m_softer_test_project/pages/auth_page/bloc/auth_bloc.dart';
+import 'package:m_softer_test_project/themes/themes.dart';
 
 import '../../elements/text_input_form.dart';
 
@@ -33,7 +34,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               borderRadius: BorderRadius.circular(8),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black26,
+                  color: AppColors.realBlack,
                   blurRadius: 8,
                   offset: Offset(2, 2),
                 ),
@@ -43,7 +44,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
               child: Text(
                 message,
                 textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black),
+                style: TextStyle(color: AppColors.realBlack),
               ),
             ),
           ),
@@ -98,7 +99,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   backgroundColor: Color.fromARGB(255, 255, 255, 255),
                   content: Text(
                     errorMessage,
-                    style: TextStyle(color: Colors.black),
+                    style: TextStyle(color: AppColors.realBlack),
                   ),
                   behavior: SnackBarBehavior.floating,
                 ),
@@ -142,8 +143,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       padding: EdgeInsets.only(top: 20),
                       child: TextInputForm(
                         prefix: IconGradient(icon: Icon(Icons.email), colors: [
-                          Color.fromARGB(255, 83, 232, 140),
-                          Color.fromARGB(255, 21, 190, 120),
+                          AppColors.grandColorFirst,
+                          AppColors.grandColorFirst,
                         ]),
                         keyboardType: TextInputType.emailAddress,
                         hintText: 'Введите email',
@@ -156,8 +157,8 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       padding: EdgeInsets.only(top: 20),
                       child: TextInputForm(
                         prefix: IconGradient(icon: Icon(Icons.lock), colors: [
-                          Color.fromARGB(255, 83, 232, 140),
-                          Color.fromARGB(255, 21, 190, 120),
+                          AppColors.grandColorFirst,
+                          AppColors.grandColorSecond,
                         ]),
                         isPassword: true,
                         hintText: 'Введите пароль',

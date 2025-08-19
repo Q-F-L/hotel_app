@@ -27,8 +27,8 @@ class _ServicesPageState extends State<ServicesPage> {
       // bottomNavigationBar: CustomBottomNabigationBar(),
       floatingActionButton: GradientFloatingActionButton(
         onPressed: () => Navigator.pushNamed(context, "/services"),
-        firstColor: Color.fromARGB(255, 83, 232, 140),
-        secondColor: Color.fromARGB(255, 21, 190, 120),
+        firstColor: AppColors.grandColorFirst,
+        secondColor: AppColors.grandColorFirst,
         textColor: AppColors.white,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,

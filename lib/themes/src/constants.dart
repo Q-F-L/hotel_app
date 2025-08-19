@@ -86,4 +86,6 @@ class AppColors {
   static const shadow = Color.fromARGB(40, 90, 108, 234);
   static const lightYellow = Color.fromARGB(255, 255, 237, 144);
   static const yellow = Color.fromARGB(195, 252, 255, 101);
+  static const grandColorSecond = Color.fromARGB(255, 21, 190, 120);
+  static const grandColorFirst = Color.fromARGB(255, 83, 232, 140);
 }

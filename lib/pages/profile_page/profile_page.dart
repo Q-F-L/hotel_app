@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:m_softer_test_project/data/user/models/user.dart';
+import 'package:m_softer_test_project/pages/auth_page/auth_page.dart';
 import 'package:m_softer_test_project/pages/profile_page/bloc/profile_bloc.dart';
 import 'package:m_softer_test_project/pages/select_hotel_page/select_hotel.dart';
 import 'package:m_softer_test_project/themes/themes.dart';
 import 'package:m_softer_test_project/utils/snackbar_helper.dart';
 
 import '../../elements/user_favorites_element.dart';
-import '../auth_page/bloc/auth_bloc.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -42,7 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
           if (state is LogoutState) {
             Navigator.pushAndRemoveUntil(
               context,
-              MaterialPageRoute(builder: (context) => SelectHomePage()),
+              MaterialPageRoute(builder: (context) => AuthPage()),
               (Route<dynamic> route) => false,
             );
           }

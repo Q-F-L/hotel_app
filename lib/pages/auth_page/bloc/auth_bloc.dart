@@ -18,7 +18,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthLogin>(_onLogin);
     on<AuthRegister>(_onRegister);
     on<AuthCheckToken>(_onCheckToken);
-    on<AuthLogout>(_onLogout);
   }
 
   void _onEmailChanged(AuthEmailChanged event, Emitter<AuthState> emit) {
@@ -161,14 +160,5 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     } else {
       emit(state.copyWith(status: AuthStatus.unauthenticated));
     }
-  }
-
-  void _onLogout(AuthLogout event, Emitter<AuthState> emit) async {
-    await TokenRepository.deleteToken();
-    User.clear;
-    emit(state.copyWith(
-      status: AuthStatus.unauthenticated,
-      token: null,
-    ));
   }
 }

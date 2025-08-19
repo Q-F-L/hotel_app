@@ -5,6 +5,7 @@ import 'package:m_softer_test_project/elements/custom_drop_down_menu_hotel.dart'
 import 'package:m_softer_test_project/elements/custom_drop_down_menu_room.dart';
 import 'package:m_softer_test_project/elements/gradient_button.dart';
 import 'package:m_softer_test_project/elements/icon_gradient.dart';
+import 'package:m_softer_test_project/pages/auth_page/auth_page.dart';
 import 'package:m_softer_test_project/pages/home_page/home.dart';
 import 'package:m_softer_test_project/themes/themes.dart';
 import 'package:m_softer_test_project/utils/snackbar_helper.dart';
@@ -24,10 +25,16 @@ class _SelectHomePageState extends State<SelectHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.popAndPushNamed(context, '/auth'),
-          icon: Image.asset('assets/images/left_arrow.png'),
-        ),
+        leading: Navigator.canPop(context)
+            ? IconButton(
+                onPressed: () => Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(builder: (context) => AuthPage()),
+                  (Route<dynamic> route) => false,
+                ),
+                icon: Image.asset('assets/images/left_arrow.png'),
+              )
+            : null,
         centerTitle: true,
         backgroundColor: const Color(0xFFF6FBFB),
         surfaceTintColor: Colors.transparent,

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:m_softer_test_project/pages/auth_page/auth_page.dart';
 import 'package:m_softer_test_project/pages/launch_bloc/launch_bloc.dart';
 
 import '../../elements/shower.dart';
@@ -56,7 +57,11 @@ class _ShowersState extends State<Showers> {
       child: BlocConsumer<ShowerNewPageBloc, ShowerNewPageState>(
         listener: (context, state) {
           if (state.seen == true) {
-            Navigator.pushNamed(context, '/auth');
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => AuthPage()),
+              (Route<dynamic> route) => false,
+            );
           }
         },
         bloc: bloc,

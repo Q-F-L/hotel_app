@@ -49,27 +49,35 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
   }
 
   void _onLogin(AuthLogin event, Emitter<AuthState> emit) async {
+    emit(state.copyWith(
+      status: AuthStatus.loading,
+    ));
     final String? emailError = Validators.validateEmail(event.email);
     print("Login");
 
-    emit(state.copyWith(
-      emailError: emailError,
-      isFormValid: emailError == null,
-      status: AuthStatus.loading,
-    ));
     print("emailError $emailError");
-    if (emailError != null) return;
+    if (emailError != null) {
+      emit(state.copyWith(
+        emailError: emailError,
+        isFormValid: true,
+        status: AuthStatus.failure,
+      ));
+      return;
+    }
 
     try {
       final LoginModel jsonModel =
           await AuthRequest.login(event.email, event.password);
-      print("jsonModel.token ${jsonModel.token}");
+
       if (jsonModel.status == true) {
         final token = jsonModel.token ?? "Ошибка: Пустой токен";
 
         await TokenRepository.saveToken(token);
 
-        await AuthRequest.sendFcmToken(token, event.fcmToken!);
+        await TokenRepository.loadToken();
+
+        // Нужно для firbase
+        await AuthRequest.sendFcmToken(token, token);
 
         emit(state.copyWith(
           status: AuthStatus.authenticated,
@@ -81,10 +89,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
           errorMessage: jsonModel.error ?? 'Ошибка авторизации',
         ));
       }
-    } catch (_) {
+    } catch (e) {
+      print(e);
       emit(state.copyWith(
         status: AuthStatus.failure,
-        errorMessage: 'Ошибка соединения',
+        errorMessage: e.toString(),
       ));
     }
   }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:m_softer_test_project/pages/auth_page/auth_page.dart';
 import 'package:m_softer_test_project/pages/launch_bloc/launch_bloc.dart';
+import 'package:m_softer_test_project/themes/themes.dart';
 
 import '../../elements/shower.dart';
 import 'bloc/shower_new_page_bloc.dart';
@@ -18,17 +19,17 @@ class _ShowersState extends State<Showers> {
   late ShowerNewPageBloc bloc;
   static const List<Map> listShowers = [
     {
-      "image": "assets/images/bell.png",
+      "image": "$pathForImage${AppImage.shower1}",
       "description": "Заказывайте услуги отеля из любого места онлайн",
       "textButton": "Понятно",
     },
     {
-      "image": "assets/images/payment_card.png",
+      "image": "$pathForImage${AppImage.shower2}",
       "description": "Оплачивайте прямо в приложении",
       "textButton": "Хорошо",
     },
     {
-      "image": "assets/images/key.png",
+      "image": "$pathForImage${AppImage.shower3}",
       "description": "Оплачивайте прямо в приложении",
       "textButton": "Поехаели!",
     },

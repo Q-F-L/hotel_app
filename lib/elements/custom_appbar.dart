@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:m_softer_test_project/themes/themes.dart';
 
 class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
   const CustomAppbar({
@@ -19,7 +20,7 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
       child: Column(
         children: [
           Image.asset(
-            'assets/images/logo_mini.png',
+            '$pathForImage${AppImage.icon}',
             width: 60,
             height: 60,
           ),

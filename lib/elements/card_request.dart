@@ -66,7 +66,7 @@ class _CardRequestState extends State<CardRequest> {
                 SizedBox(
                   child: Row(
                     children: [
-                      Image.asset("assets/images/${stateIconMap[state]}.png"),
+                      Image.asset("$pathForImage${stateIconMap[state]}.png"),
                       SizedBox(
                         width: 8,
                       ),

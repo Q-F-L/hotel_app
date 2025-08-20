@@ -71,8 +71,7 @@ class _ShowAdditionalServicesState extends State<ShowAdditionalServices> {
                         }
                       });
                     },
-                    icon:
-                        Image.asset("assets/images/remove_circle_outline.png"),
+                    icon: Image.asset("$pathForImageremove_circle_outline.png"),
                   ),
                   Text("${counter}"),
                   IconButton(
@@ -81,7 +80,7 @@ class _ShowAdditionalServicesState extends State<ShowAdditionalServices> {
                         ++counter;
                       });
                     },
-                    icon: Image.asset("assets/images/add_circle_outline.png"),
+                    icon: Image.asset("$pathForImageadd_circle_outline.png"),
                   ),
                 ],
               ),

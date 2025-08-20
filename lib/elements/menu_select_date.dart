@@ -130,7 +130,7 @@ class _MenuSelectDateState extends State<MenuSelectDate> {
                   SizedBox(
                     width: 20,
                   ),
-                  Image.asset("assets/images/prefix_date.png"),
+                  Image.asset("$pathForImage${AppImage.calendar}"),
                   SizedBox(
                     width: 10,
                   ),

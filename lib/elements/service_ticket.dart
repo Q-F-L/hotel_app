@@ -53,7 +53,7 @@ class _ServiceTicketState extends State<ServiceTicket> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   //widget.service.icon
-                  Image.asset('assets/images/hairdryer.png'),
+                  Image.asset('$pathForImagehairdryer.png'),
                   Text(
                     widget.service.price.toString(),
                     style: Theme.of(context).textTheme.labelSmall,

@@ -15,12 +15,12 @@ class RoomByCodeModel {
 
   RoomByCodeModel({this.success, this.room, this.error, this.message});
 
-  factory RoomByCodeModel.fromJson(Map<String, dynamic> json) =>
+  factory RoomByCodeModel.fromJson(Map<String?, dynamic> json) =>
       RoomByCodeModel(
         success: json["success"],
         error: json["error"],
         message: json["message"],
-        room: Room.fromJson(json["room"]),
+        room: json["room"] != null ? Room.fromJson(json["room"]) : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -30,27 +30,27 @@ class RoomByCodeModel {
 }
 
 class Room {
-  final int id;
-  final int organizationId;
-  final String name;
-  final String description;
-  final String qrCode;
-  final bool isActive;
-  final List<dynamic> gallery;
-  final Organization organization;
+  final int? id;
+  final int? organizationId;
+  final String? name;
+  final String? description;
+  final String? qrCode;
+  final bool? isActive;
+  final List<dynamic>? gallery;
+  final Organization? organization;
 
   Room({
-    required this.id,
-    required this.organizationId,
-    required this.name,
-    required this.description,
-    required this.qrCode,
-    required this.isActive,
-    required this.gallery,
-    required this.organization,
+    this.id,
+    this.organizationId,
+    this.name,
+    this.description,
+    this.qrCode,
+    this.isActive,
+    this.gallery,
+    this.organization,
   });
 
-  factory Room.fromJson(Map<String, dynamic> json) => Room(
+  factory Room.fromJson(Map<String?, dynamic> json) => Room(
         id: json["id"],
         organizationId: json["organization_id"],
         name: json["name"],
@@ -58,7 +58,9 @@ class Room {
         qrCode: json["qr_code"],
         isActive: json["is_active"],
         gallery: List<dynamic>.from(json["gallery"].map((x) => x)),
-        organization: Organization.fromJson(json["organization"]),
+        organization: json["organization"] != null
+            ? Organization.fromJson(json["organization"])
+            : null,
       );
 
   Map<String, dynamic> toJson() => {
@@ -68,7 +70,7 @@ class Room {
         "description": description,
         "qr_code": qrCode,
         "is_active": isActive,
-        "gallery": List<dynamic>.from(gallery.map((x) => x)),
-        "organization": organization.toJson(),
+        "gallery": List<dynamic>.from(gallery?.map((x) => x) ?? []),
+        "organization": organization?.toJson(),
       };
 }

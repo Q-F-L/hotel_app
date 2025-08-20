@@ -13,6 +13,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
     on<CheckOutEvent>(_checkOut);
     on<LogoutEvent>(_onLogout);
+    on<DeleteUser>(_deleteUser);
   }
 
   _createProfile(ProfileEvent event, Emitter emit) async {
@@ -30,6 +31,13 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       emit(ProfileErrorState(
           message: jsonModel.message ?? "Неизвестная ошибка"));
     }
+  }
+
+  Future<void> _deleteUser(DeleteUser event, Emitter<ProfileState> emit) async {
+    await ProfileRequest.deleteUser();
+    await TokenRepository.deleteToken();
+    User.clear;
+    emit(LogoutState());
   }
 
   void _onLogout(LogoutEvent event, Emitter<ProfileState> emit) async {

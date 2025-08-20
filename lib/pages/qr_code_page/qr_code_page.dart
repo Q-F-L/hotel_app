@@ -2,7 +2,10 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:m_softer_test_project/pages/qr_code_page/bloc/qr_code_page_bloc.dart';
+import 'package:m_softer_test_project/data/room_by_code/model.dart';
+import 'package:m_softer_test_project/pages/home_page/home.dart';
+import 'package:m_softer_test_project/pages/qr_code_page/bloc/qr_code_bloc.dart';
+import 'package:m_softer_test_project/utils/snackbar_helper.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 
 import '../../elements/gradient_button.dart';
@@ -17,8 +20,10 @@ class QrCodePage extends StatefulWidget {
 
 class _QrCodePageState extends State<QrCodePage> {
   final controller = MobileScannerController(
-    formats: const [BarcodeFormat.qrCode],
-    detectionSpeed: DetectionSpeed.noDuplicates,
+    useNewCameraSelector: true,
+    returnImage: true,
+    autoStart: true,
+    formats: [BarcodeFormat.qrCode],
   );
   late final QrCodeBloc bloc;
 
@@ -33,6 +38,7 @@ class _QrCodePageState extends State<QrCodePage> {
   @override
   Future<void> dispose() async {
     controller.dispose();
+    bloc.close();
     super.dispose();
   }
 
@@ -55,7 +61,23 @@ class _QrCodePageState extends State<QrCodePage> {
       ),
       body: BlocProvider(
         create: (context) => bloc,
-        child: BlocBuilder<QrCodeBloc, QrCodeState>(
+        child: BlocConsumer<QrCodeBloc, QrCodeState>(
+          listener: (context, state) {
+            if (state is CheckInSuccess) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => HomePage()),
+                (Route<dynamic> route) => false,
+              );
+            }
+
+            if (state.status == QrCodeStatus.failure) {
+              showToast(context, state.errorMessage ?? "Error null");
+            }
+            if (state.status == QrCodeStatus.success) {
+              showToast(context, "Success");
+            }
+          },
           builder: (context, state) {
             return SafeArea(
               child: Column(
@@ -64,24 +86,27 @@ class _QrCodePageState extends State<QrCodePage> {
                     height: 300,
                     width: MediaQuery.of(context).size.width,
                     child: MobileScanner(
+                      key: ValueKey(DateTime.now()
+                          .millisecondsSinceEpoch), // для разработчика удалить при сборке продакшена.
                       overlayBuilder: (context, constraints) {
-                        return CustomPaint(
-                          painter: QrScannerOverlay(
-                            borderColor: Colors.white,
-                            borderWidth: 3.0,
-                            borderRadius: 20.0,
-                            borderLength: 35.0,
-                            cutOutSize: MediaQuery.of(context).size.width * 0.5,
-                          ),
-                        );
+                        return state.status != QrCodeStatus.loading
+                            ? CustomPaint(
+                                painter: QrScannerOverlay(
+                                  borderColor: Colors.white,
+                                  borderWidth: 3.0,
+                                  borderRadius: 20.0,
+                                  borderLength: 35.0,
+                                  cutOutSize:
+                                      MediaQuery.of(context).size.width * 0.5,
+                                ),
+                              )
+                            : CircularProgressIndicator(strokeWidth: 2);
                       },
                       controller: controller,
                       onDetect: (capture) {
                         final List<Barcode> barcodes = capture.barcodes;
-                        print("barcode.rawValue ${capture}");
 
                         for (final barcode in barcodes) {
-                          print("barcode.rawValue ${barcode.rawValue}");
                           bloc.add(ScanQrCodeEvent(response: barcode.rawValue));
                         }
                       },
@@ -90,26 +115,19 @@ class _QrCodePageState extends State<QrCodePage> {
                   SizedBox(
                     height: 15,
                   ),
-                  Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: (state.response ?? "")
-                        .split('(/n)') // Разбиваем текст по переносам
-                        .map((line) => Text(
-                              line,
-                              textAlign: TextAlign.center,
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .labelSmall
-                                  ?.copyWith(fontSize: 16),
-                            ))
-                        .toList(),
-                  ),
+                  columnTextResponse(state),
                   SizedBox(
                     height: 24,
                   ),
                   GradientButton(
+                    canClick: state.oraganizationIfno?.success ?? false,
                     margin: EdgeInsets.symmetric(horizontal: 20),
-                    onPressed: () {},
+                    onPressed: () {
+                      bloc.add(CheckIn(
+                        roomId: state.oraganizationIfno!.room!.id!,
+                        date: DateTime.now().toString(),
+                      ));
+                    },
                     borderRadius: BorderRadius.all(Radius.circular(16)),
                     child: Text(
                       "Готово",
@@ -123,6 +141,34 @@ class _QrCodePageState extends State<QrCodePage> {
         ),
       ),
     );
+  }
+
+  Widget columnTextResponse(QrCodeState state) {
+    return state.oraganizationIfno?.success ?? false
+        ? SizedBox(
+            height: 50,
+            child: Column(
+              children: [
+                Text(
+                  '${state.oraganizationIfno?.room?.organization?.title ?? 'Нет названия организации'}, ${state.oraganizationIfno?.room?.organization?.physicalAddress ?? 'Нет адреса'}, ',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelSmall
+                      ?.copyWith(fontSize: 16),
+                ),
+                Text(
+                  "№ ${state.oraganizationIfno?.room?.name ?? 'Нет комнаты'}",
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context)
+                      .textTheme
+                      .labelSmall
+                      ?.copyWith(fontSize: 16),
+                ),
+              ],
+            ),
+          )
+        : SizedBox();
   }
 }
 

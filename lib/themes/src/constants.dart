@@ -96,3 +96,23 @@ class AppColors {
   static const lightYellow = Color.fromARGB(255, 255, 237, 144);
   static const yellow = Color.fromARGB(195, 252, 255, 101);
 }
+
+const pathForImage = "assets/images/";
+
+class AppImage {
+  static const buttonNavigationRequest = "svg/buttonNavigationRequest.svg";
+  static const buttonNavigationPanel = "svg/buttonNavigationPanel.svg";
+  static const buttonNavigationProfile = "svg/buttonNavigationProfile.svg";
+  static const floatButtonServises = "svg/floatButtonServises.svg";
+  static const icon = "svg/icon.svg";
+  static const requestInProcesses = "svg/requestInProcesses.svg";
+  static const requestComplited = "svg/requestComplited.svg";
+  static const requestNotAccepted = "svg/requestNotAccepted.svg";
+  static const shower1 = "svg/shower1.svg";
+  static const shower2 = "svg/shower2.svg";
+  static const shower3 = "svg/shower3.svg";
+  static const profile = "svg/profile.svg";
+  static const key = "svg/key.svg";
+  static const calendar = "svg/calendar.svg";
+  static const qrCode = "svg/qrCode.svg";
+}

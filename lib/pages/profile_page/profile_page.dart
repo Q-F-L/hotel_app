@@ -119,47 +119,49 @@ class _ProfilePageState extends State<ProfilePage> {
               SizedBox(
                 height: 20,
               ),
-              Container(
-                padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
-                margin: EdgeInsets.symmetric(horizontal: 20),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  color: AppColors.white,
-                  boxShadow: [shadow],
-                ),
-                child: Column(
-                  children: [
-                    Text(
-                      "ВАШИ ПРЕДПОЧТЕНИЯ",
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineLarge
-                          ?.copyWith(fontSize: 20),
-                    ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    UserFavoritesElement(
-                      unorderedList: [
-                        'Матрас — средней жесткости',
-                        'Подушки — перо '
-                      ],
-                      name: "СОН",
-                      icon: Image.asset('assets\images\sleep_bad.png'),
-                    ),
-                    SizedBox(
-                      height: 24,
-                    ),
-                    UserFavoritesElement(
-                      unorderedList: ['С видом на горы', 'Для некурящих'],
-                      name: "Номер",
-                      icon: Image.asset('assets\images\room.png'),
-                    ),
-                  ],
-                ),
-              ),
+              // Container(
+              //   padding: EdgeInsets.symmetric(vertical: 16, horizontal: 20),
+              //   margin: EdgeInsets.symmetric(horizontal: 20),
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.circular(16),
+              //     color: AppColors.white,
+              //     boxShadow: [shadow],
+              //   ),
+              //   child: Column(
+              //     children: [
+              //       Text(
+              //         "ВАШИ ПРЕДПОЧТЕНИЯ",
+              //         style: Theme.of(context)
+              //             .textTheme
+              //             .headlineLarge
+              //             ?.copyWith(fontSize: 20),
+              //       ),
+              //       SizedBox(
+              //         height: 20,
+              //       ),
+              //       UserFavoritesElement(
+              //         unorderedList: [
+              //           'Матрас — средней жесткости',
+              //           'Подушки — перо '
+              //         ],
+              //         name: "СОН",
+              //         icon: Image.asset('assets\images\sleep_bad.png'),
+              //       ),
+              //       SizedBox(
+              //         height: 24,
+              //       ),
+              //       UserFavoritesElement(
+              //         unorderedList: ['С видом на горы', 'Для некурящих'],
+              //         name: "Номер",
+              //         icon: Image.asset('assets\images\room.png'),
+              //       ),
+              //     ],
+              //   ),
+              // ),
               IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    bloc.add(DeleteUser());
+                  },
                   icon: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [

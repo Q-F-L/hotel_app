@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:m_softer_test_project/themes/themes.dart';
 
 class GradientFloatingActionButton extends StatelessWidget {
   const GradientFloatingActionButton(
@@ -25,7 +26,7 @@ class GradientFloatingActionButton extends StatelessWidget {
         disabledElevation: 0,
         highlightElevation: 0,
         onPressed: onPressed,
-        child: Image.asset("assets/images/services.png"),
+        child: Image.asset("$pathForImage${AppImage.floatButtonServises}"),
       ),
     );
   }

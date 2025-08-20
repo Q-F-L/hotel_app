@@ -30,7 +30,7 @@ ThemeData createLightTheme() {
       secondary: AppColors.grey,
       onSecondary: AppColors.grey,
       surface: AppColors.lightGreen,
-      onSurface: AppColors.lightGreen,
+      onSurface: AppColors.black,
       error: AppColors.grey,
       onError: AppColors.grey,
     ),

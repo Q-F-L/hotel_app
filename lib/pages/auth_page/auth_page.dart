@@ -71,6 +71,7 @@ class _AuthPageState extends State<AuthPage> {
                   'Произошла ошибка';
               showToast(context, errorMessage);
             }
+
             if (state.status == AuthStatus.authenticated) {
               Navigator.pushReplacement(
                 context,

@@ -7,6 +7,7 @@ class TokenRepository {
   static String get token => _token;
 
   static Future<void> saveToken(String token) async {
+    print("token $token");
     if (token.isNotEmpty) {
       final prefs = await SharedPreferences.getInstance();
       await prefs.setString(_tokenKey, token);

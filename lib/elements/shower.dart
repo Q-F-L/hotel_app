@@ -36,7 +36,7 @@ class Shower extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(),
-          Image.asset("assets/images/logo_mini.png"),
+          Image.asset("$pathForImage${AppImage.icon}"),
           Image.asset(image),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50),

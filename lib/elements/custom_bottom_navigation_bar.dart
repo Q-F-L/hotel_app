@@ -24,7 +24,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage(
-            "assets/images/button_navigation.png",
+            "$pathForImage${AppImage.buttonNavigationPanel}",
           ),
           fit: BoxFit.cover,
           scale: 1,
@@ -46,7 +46,8 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
               icon: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Image.asset("assets/images/grey_bell.png",
+                  Image.asset(
+                      "$pathForImage${AppImage.buttonNavigationRequest}",
                       color:
                           nowPage == 0 ? AppColors.textGreen : AppColors.black),
                   Text(
@@ -94,7 +95,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             icon: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Image.asset("assets/images/user.png",
+                Image.asset("$pathForImage${AppImage.buttonNavigationProfile}",
                     color:
                         nowPage == 2 ? AppColors.textGreen : AppColors.black),
                 Text(

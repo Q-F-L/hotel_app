@@ -83,7 +83,6 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
         ),
         onSelected: widget.onSelected,
         dropdownMenuEntries: widget.listString.asMap().entries.map((entry) {
-          int index = entry.key;
           String? menu = entry.value;
 
           return DropdownMenuEntry<String?>(
@@ -103,6 +102,13 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
               width: widget.width! - 20,
               height: 44,
               padding: EdgeInsets.only(top: 10),
+              decoration: BoxDecoration(
+                border: BoxBorder.fromLTRB(
+                  top: BorderSide(
+                    color: AppColors.divider,
+                  ),
+                ),
+              ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.start,
@@ -128,12 +134,6 @@ class _CustomDropDownMenuState extends State<CustomDropDownMenu> {
                       ),
                     ],
                   ),
-                  if (index != widget.listString.length - 1)
-                    const Divider(
-                      color: AppColors.divider,
-                      thickness: 2,
-                      height: 10,
-                    ),
                 ],
               ),
             ),

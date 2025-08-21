@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:m_softer_test_project/elements/gradient_button.dart';
 
 import '../pages/shower_new_page/bloc/shower_new_page_bloc.dart';
@@ -36,8 +37,8 @@ class Shower extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(),
-          Image.asset("$pathForImage${AppImage.icon}"),
-          Image.asset(image),
+          SvgPicture.asset("$pathForImage${AppImage.icon}"),
+          SvgPicture.asset(image),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50),
             child: Text(

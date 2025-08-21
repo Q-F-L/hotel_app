@@ -73,9 +73,9 @@ const labelSmallManrope = TextStyle(
 
 const BoxShadow shadow = BoxShadow(
   offset: Offset(12, 26),
-  blurRadius: 50,
+  blurRadius: 30,
   spreadRadius: 0,
-  color: AppColors.shadow,
+  color: Color.fromARGB(20, 90, 107, 234),
 );
 
 class AppColors {
@@ -101,7 +101,7 @@ const pathForImage = "assets/images/";
 
 class AppImage {
   static const buttonNavigationRequest = "svg/buttonNavigationRequest.svg";
-  static const buttonNavigationPanel = "svg/buttonNavigationPanel.svg";
+  static const buttonNavigationPanel = "button_navigation.png";
   static const buttonNavigationProfile = "svg/buttonNavigationProfile.svg";
   static const floatButtonServises = "svg/floatButtonServises.svg";
   static const icon = "svg/icon.svg";
@@ -115,4 +115,6 @@ class AppImage {
   static const key = "svg/key.svg";
   static const calendar = "svg/calendar.svg";
   static const qrCode = "svg/qrCode.svg";
+  static const outline_plus = "svg/outline_plus.svg";
+  static const outline_minus = "svg/outline_minus.svg";
 }

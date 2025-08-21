@@ -25,6 +25,7 @@ class _HomePageState extends State<HomePage> {
         listener: (context, state) {},
         builder: (context, state) {
           return Scaffold(
+            resizeToAvoidBottomInset: false,
             bottomSheet: CustomBottomNavigationBar(),
             appBar: CustomAppbar(
               title: ["Мои запросы", "Сервисы", "Мой профиль"][state.nowPage],

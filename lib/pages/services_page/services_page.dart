@@ -12,10 +12,26 @@ class ServicesPage extends StatefulWidget {
 }
 
 class _ServicesPageState extends State<ServicesPage> {
+  late ServicesBloc bloc;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    bloc = ServicesBloc();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    bloc.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ServicesBloc()..add(ServicesInitialEvent()),
+      create: (context) => bloc..add(ServicesInitialEvent()),
       child: BlocConsumer<ServicesBloc, ServicesState>(
         listener: (context, state) {
           if (state.status == ServicesStatus.failure) {
@@ -50,6 +66,7 @@ class _ServicesPageState extends State<ServicesPage> {
           return Padding(
             padding: EdgeInsets.symmetric(horizontal: 30),
             child: ListView.builder(
+              clipBehavior: Clip.none,
               itemCount: state.listServices?.length ?? 1,
               itemBuilder: (context, index) => ServiceTicket(
                 service: state.listServices![index],

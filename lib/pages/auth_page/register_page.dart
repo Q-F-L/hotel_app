@@ -1,9 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:m_softer_test_project/elements/gradient_button.dart';
 import 'package:m_softer_test_project/elements/icon_gradient.dart';
 import 'package:m_softer_test_project/pages/auth_page/bloc/auth_bloc.dart';
+import 'package:m_softer_test_project/themes/themes.dart';
 import 'package:m_softer_test_project/utils/snackbar_helper.dart';
 
 import '../../elements/text_input_form.dart';
@@ -96,11 +98,15 @@ class _RegistrationPageState extends State<RegistrationPage> {
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 33),
                 child: ListView(
+                  clipBehavior: Clip.none,
                   children: [
                     const SizedBox(height: 30),
                     TextInputForm(
                       controller: _nameController,
-                      prefix: Image.asset('assets/images/prefix_user.png'),
+                      prefix: SvgPicture.asset(
+                        '$pathForImage${AppImage.profile}',
+                        fit: BoxFit.scaleDown,
+                      ),
                       keyboardType: TextInputType.text,
                       hintText: 'Имя',
                       errorText: state.errorName,
@@ -108,7 +114,10 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     const SizedBox(height: 20),
                     TextInputForm(
                       controller: _surnameController,
-                      prefix: Image.asset('assets/images/prefix_user.png'),
+                      prefix: SvgPicture.asset(
+                        '$pathForImage${AppImage.profile}',
+                        fit: BoxFit.scaleDown,
+                      ),
                       keyboardType: TextInputType.text,
                       hintText: 'Фамилия',
                       errorText: state.surnameError,

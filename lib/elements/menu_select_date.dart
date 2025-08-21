@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:scroll_datetime_picker/scroll_datetime_picker.dart';
 import '../themes/themes.dart';
@@ -130,7 +131,7 @@ class _MenuSelectDateState extends State<MenuSelectDate> {
                   SizedBox(
                     width: 20,
                   ),
-                  Image.asset("$pathForImage${AppImage.calendar}"),
+                  SvgPicture.asset("$pathForImage${AppImage.calendar}"),
                   SizedBox(
                     width: 10,
                   ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:m_softer_test_project/elements/show_rating.dart';
 
 import '../themes/themes.dart';
@@ -11,14 +12,6 @@ class CardRequest extends StatefulWidget {
 }
 
 class _CardRequestState extends State<CardRequest> {
-  var stateIconMap = <String, String>{
-    'complated': 'check_mark',
-    'inProcess': 'time_mark',
-    'unaccepted': 'grey_time_mark'
-  };
-
-  String state = 'inProcess';
-
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -66,7 +59,8 @@ class _CardRequestState extends State<CardRequest> {
                 SizedBox(
                   child: Row(
                     children: [
-                      Image.asset("$pathForImage${stateIconMap[state]}.png"),
+                      SvgPicture.asset(
+                          "$pathForImage${AppImage.requestComplited}"),
                       SizedBox(
                         width: 8,
                       ),

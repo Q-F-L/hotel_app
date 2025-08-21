@@ -66,6 +66,7 @@ class _SelectHomePageState extends State<SelectHomePage> {
 
             return SafeArea(
               child: ListView(
+                clipBehavior: Clip.none,
                 padding:
                     const EdgeInsets.symmetric(vertical: 50, horizontal: 20),
                 children: [

@@ -15,6 +15,7 @@ class _MyRequestsPageState extends State<MyRequestsPage> {
     return Padding(
       padding: EdgeInsets.symmetric(horizontal: 20),
       child: ListView(
+        clipBehavior: Clip.none,
         children: [
           CardRequest(),
           CardRequest(),

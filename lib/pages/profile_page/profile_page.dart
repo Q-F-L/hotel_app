@@ -53,6 +53,7 @@ class _ProfilePageState extends State<ProfilePage> {
         },
         builder: (context, state) {
           return ListView(
+            clipBehavior: Clip.none,
             children: [
               Container(
                 padding: EdgeInsets.symmetric(vertical: 16),

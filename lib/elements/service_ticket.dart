@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:m_softer_test_project/data/services/model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:m_softer_test_project/data/services/models/services.dart';
+import 'package:m_softer_test_project/pages/services_page/bloc/services_bloc.dart';
 
 import '../themes/themes.dart';
 import 'show_additional_services.dart';
@@ -17,26 +19,31 @@ class _ServiceTicketState extends State<ServiceTicket> {
   Widget build(BuildContext context) {
     return Material(
       color: Colors.transparent,
-      child: InkWell(
-        onTap: () {
-          showDialog(
-              context: context,
-              builder: (context) {
-                return ShowAdditionalServices();
-              });
-        },
-        child: Container(
-          margin: EdgeInsets.only(bottom: 16),
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.all(Radius.circular(16)),
-            color: AppColors.white,
-            border: Border.all(
-              color: AppColors.inputWhite,
-            ),
-            boxShadow: [shadow],
+      child: Container(
+        margin: EdgeInsets.only(bottom: 16),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.all(Radius.circular(16)),
+          color: AppColors.white,
+          border: Border.all(
+            color: AppColors.inputWhite,
           ),
-          height: 91,
-          padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+          boxShadow: [shadow],
+        ),
+        height: 91,
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
+        child: InkWell(
+          onTap: () {
+            showDialog(
+                context: context,
+                builder: (dialogContext) {
+                  return BlocProvider.value(
+                    value: context.read<ServicesBloc>(),
+                    child: ShowAdditionalServices(
+                      options: widget.service.options ?? [],
+                    ),
+                  );
+                });
+          },
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -53,7 +60,11 @@ class _ServiceTicketState extends State<ServiceTicket> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   //widget.service.icon
-                  Image.asset('$pathForImagehairdryer.png'),
+                  Image.asset(
+                    'assets/images/${widget.service.icon}',
+                    width: 25,
+                    height: 25,
+                  ),
                   Text(
                     widget.service.price.toString(),
                     style: Theme.of(context).textTheme.labelSmall,

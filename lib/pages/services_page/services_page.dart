@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:m_softer_test_project/elements/service_ticket.dart';
 import 'package:m_softer_test_project/pages/services_page/bloc/services_bloc.dart';
+import 'package:m_softer_test_project/pages/web_pay_page/web_pay_page.dart';
 import 'package:m_softer_test_project/utils/snackbar_helper.dart';
 
 class ServicesPage extends StatefulWidget {
@@ -16,14 +17,12 @@ class _ServicesPageState extends State<ServicesPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     bloc = ServicesBloc();
     super.initState();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     bloc.close();
     super.dispose();
   }
@@ -36,6 +35,17 @@ class _ServicesPageState extends State<ServicesPage> {
         listener: (context, state) {
           if (state.status == ServicesStatus.failure) {
             showToast(context, "Error message: ${state.errorMessage}");
+          }
+
+          if (state.status == ServicesStatus.order) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => PaymentWebViewScreen(
+                  url: state.url ?? "",
+                ),
+              ),
+            );
           }
         },
         builder: (context, state) {

@@ -90,7 +90,7 @@ class _CustomDropDownMenuHotelState extends State<CustomDropDownMenuHotel> {
 
               return DropdownMenuEntry<Organization?>(
                 value: menu,
-                label: menu?.firstName ?? '',
+                label: menu?.title ?? '',
                 style: ButtonStyle(
                   visualDensity: VisualDensity.compact,
                   padding: WidgetStatePropertyAll(EdgeInsets.all(0)),
@@ -121,7 +121,7 @@ class _CustomDropDownMenuHotelState extends State<CustomDropDownMenuHotel> {
                           const SizedBox(width: 16),
                           Expanded(
                             child: Text(
-                              menu?.firstName ?? "Не указано",
+                              menu?.title ?? "Не указано",
                               style: Theme.of(context)
                                   .textTheme
                                   .labelSmall

@@ -14,26 +14,26 @@ class CardRequest extends StatefulWidget {
 class _CardRequestState extends State<CardRequest> {
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return ShowRating();
-            });
-      },
-      child: Container(
-        height: 100,
-        margin: EdgeInsets.only(bottom: 15),
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: AppColors.grey1,
-          ),
-          boxShadow: [shadow],
-          color: AppColors.white,
-          borderRadius: BorderRadius.all(Radius.circular(16)),
+    return Container(
+      height: 100,
+      margin: EdgeInsets.only(bottom: 15),
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: AppColors.grey1,
         ),
+        boxShadow: [shadow],
+        color: AppColors.white,
+        borderRadius: BorderRadius.all(Radius.circular(16)),
+      ),
+      child: InkWell(
+        onTap: () {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return ShowRating();
+              });
+        },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [

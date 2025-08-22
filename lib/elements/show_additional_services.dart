@@ -9,7 +9,13 @@ import 'package:m_softer_test_project/pages/services_page/bloc/services_bloc.dar
 import 'package:m_softer_test_project/themes/themes.dart';
 
 class ShowAdditionalServices extends StatefulWidget {
-  const ShowAdditionalServices({super.key, required this.options});
+  const ShowAdditionalServices({
+    super.key,
+    required this.options,
+    required this.serviccesId,
+  });
+
+  final int serviccesId;
   final List<Options> options;
 
   @override
@@ -17,8 +23,60 @@ class ShowAdditionalServices extends StatefulWidget {
 }
 
 class _ShowAdditionalServicesState extends State<ShowAdditionalServices> {
-  // для хранения состояния счётчиков
   final Map<String, int> counters = {};
+  final Map<String, TextEditingController> textControllers = {};
+  final Map<String, String> dropdownValues = {};
+
+  @override
+  void initState() {
+    super.initState();
+
+    // инициализация текстовых контроллеров
+    for (var opt in widget.options) {
+      if (opt.type == 1) {
+        textControllers[opt.name ?? ""] =
+            TextEditingController(text: opt.values ?? "");
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    for (var c in textControllers.values) {
+      c.dispose();
+    }
+    super.dispose();
+  }
+
+  void onSubmit() {
+    final List<Options> updatedOptions = widget.options.map((opt) {
+      String newValue = "";
+
+      if (opt.type == 1) {
+        newValue = textControllers[opt.name]?.text ?? "";
+      } else if (opt.type == 2) {
+        newValue = counters[opt.name]?.toString() ?? "0";
+      } else if (opt.type == 3) {
+        newValue = dropdownValues[opt.name] ?? "";
+      }
+
+      return Options(
+        name: opt.name,
+        type: opt.type,
+        values: newValue,
+      );
+    }).toList();
+
+    debugPrint(
+        "Отправляем заказ: ${updatedOptions.map((e) => '${e.name}: ${e.values}').join(', ')}");
+
+    context.read<ServicesBloc>().add(
+          CreateOrder(
+            servicesId: widget.serviccesId,
+            options: widget.options,
+          ),
+        );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,11 +95,7 @@ class _ShowAdditionalServicesState extends State<ShowAdditionalServices> {
             )),
         GradientButton(
           canClick: true,
-          onPressed: () {
-            context
-                .read<ServicesBloc>()
-                .add(CreateOrder(servicesId: 0, options: widget.options));
-          },
+          onPressed: () => onSubmit(),
           borderRadius: const BorderRadius.all(Radius.circular(15)),
           child: Text("Готово", style: whiteTextButton),
         ),
@@ -50,6 +104,7 @@ class _ShowAdditionalServicesState extends State<ShowAdditionalServices> {
   }
 
   Widget _buildOption(Options option) {
+    print(option.values);
     switch (option.type) {
       case 1:
         return _textOption(option);
@@ -69,7 +124,8 @@ class _ShowAdditionalServicesState extends State<ShowAdditionalServices> {
         Text(option.name ?? "", style: Theme.of(context).textTheme.labelSmall),
         const SizedBox(height: 10),
         TextInputForm(
-          hintText: option.values ?? "Введите значение",
+          controller: textControllers[option.name],
+          hintText: "Введите значение",
         ),
       ],
     );
@@ -78,6 +134,7 @@ class _ShowAdditionalServicesState extends State<ShowAdditionalServices> {
   Widget _counterOption(Options option) {
     counters.putIfAbsent(
         option.name ?? "", () => int.tryParse(option.values ?? "0") ?? 0);
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
@@ -119,6 +176,9 @@ class _ShowAdditionalServicesState extends State<ShowAdditionalServices> {
         .map((e) => e.trim())
         .where((e) => e.isNotEmpty)
         .toList();
+    print("items");
+    print(items);
+    print(option.values);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,8 +188,11 @@ class _ShowAdditionalServicesState extends State<ShowAdditionalServices> {
         CustomDropDownMenu(
           listString: items,
           active: true,
-          text: "Выбрать",
+          text: dropdownValues[option.name] ?? "Выбрать",
           width: MediaQuery.of(context).size.width * 0.70,
+          onSelected: (value) {
+            dropdownValues[option.name ?? ""] = value ?? "";
+          },
         ),
       ],
     );

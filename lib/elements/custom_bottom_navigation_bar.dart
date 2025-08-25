@@ -19,7 +19,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         context.select((BottonNavigationBloc bloc) => bloc.state.nowPage);
 
     return Container(
-      margin: EdgeInsets.only(bottom: 10, top: 5),
+      margin: EdgeInsets.only(top: 5),
       height: 80,
       padding: EdgeInsets.only(left: 10, right: 10, top: 0),
       decoration: BoxDecoration(

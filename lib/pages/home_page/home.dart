@@ -17,20 +17,39 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late PageController _pageController;
+
+  @override
+  void initState() {
+    _pageController = PageController(
+      initialPage: 1,
+    );
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _pageController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => BottonNavigationBloc(),
       child: BlocConsumer<BottonNavigationBloc, HomeState>(
-        listener: (context, state) {},
+        listener: (context, state) {
+          _pageController.animateToPage(
+            state.nowPage,
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          );
+        },
         builder: (context, state) {
           return Scaffold(
             resizeToAvoidBottomInset: false,
             bottomSheet: CustomBottomNavigationBar(),
-            appBar: CustomAppbar(
-              title: ["Мои запросы", "Сервисы", "Мой профиль"][state.nowPage],
-              preferredSize: Size(MediaQuery.of(context).size.width, 124),
-            ),
             floatingActionButton: GradientFloatingActionButton(
               onPressed: () => context
                   .read<BottonNavigationBloc>()
@@ -41,11 +60,11 @@ class _HomePageState extends State<HomePage> {
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
             backgroundColor: AppColors.backgroundWhite,
-            body: [
-              MyRequestsPage(),
-              ServicesPage(),
-              ProfilePage()
-            ][state.nowPage],
+            body: PageView(
+              physics: const NeverScrollableScrollPhysics(),
+              controller: _pageController,
+              children: const [MyRequestsPage(), ServicesPage(), ProfilePage()],
+            ),
           );
         },
       ),

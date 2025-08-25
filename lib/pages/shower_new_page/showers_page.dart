@@ -17,7 +17,7 @@ class Showers extends StatefulWidget {
 class _ShowersState extends State<Showers> {
   late PageController _pageController;
   late ShowerNewPageBloc bloc;
-  static const List<Map> listShowers = [
+  List<Map> listShowers = [
     {
       "image": "$pathForImage${AppImage.shower1}",
       "description": "Заказывайте услуги отеля из любого места онлайн",
@@ -37,7 +37,6 @@ class _ShowersState extends State<Showers> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _pageController = PageController();
     bloc = ShowerNewPageBloc(_pageController);
     super.initState();

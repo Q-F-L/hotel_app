@@ -1,7 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'package:m_softer_test_project/data/rooms/model.dart';
 import 'package:m_softer_test_project/data/token.dart';
-import 'package:m_softer_test_project/themes/themes.dart';
+import 'package:m_softer_test_project/utils/constants.dart';
 
 class RoomsRequest {
   static Future<RoomsModel> create(int organizationsId) async {

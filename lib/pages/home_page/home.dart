@@ -21,10 +21,11 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
+    super.initState();
+
     _pageController = PageController(
       initialPage: 1,
     );
-    super.initState();
   }
 
   @override
@@ -61,7 +62,6 @@ class _HomePageState extends State<HomePage> {
                 FloatingActionButtonLocation.centerDocked,
             backgroundColor: AppColors.backgroundWhite,
             body: PageView(
-              physics: const NeverScrollableScrollPhysics(),
               controller: _pageController,
               children: const [MyRequestsPage(), ServicesPage(), ProfilePage()],
             ),

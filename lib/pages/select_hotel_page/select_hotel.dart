@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:m_softer_test_project/data/rooms/model.dart';
 import 'package:m_softer_test_project/elements/custom_drop_down_menu_hotel.dart';
 import 'package:m_softer_test_project/elements/custom_drop_down_menu_room.dart';
@@ -134,7 +135,7 @@ class _SelectHomePageState extends State<SelectHomePage> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Image.asset("assets/images/prefix_qr-code.png"),
+                        SvgPicture.asset("$pathForImage${AppImage.qrCode}"),
                         Text(
                           "Cканировать QR",
                           style: whiteTextButton,

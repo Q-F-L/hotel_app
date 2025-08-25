@@ -5,7 +5,7 @@ import 'package:m_softer_test_project/data/token.dart';
 import 'package:m_softer_test_project/data/user/models/check_model.dart';
 import 'package:m_softer_test_project/data/user/models/profile.dart';
 import 'package:m_softer_test_project/data/user/models/remove_model.dart';
-import 'package:m_softer_test_project/themes/themes.dart';
+import 'package:m_softer_test_project/utils/constants.dart';
 
 class ProfileRequest {
   static Future<ProfileModel> profileRequest() async {

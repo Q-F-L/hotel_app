@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:m_softer_test_project/themes/themes.dart';
+import 'package:m_softer_test_project/utils/constants.dart';
 
 import 'models/registration_model.dart';
 import 'models/login_model.dart';

@@ -2,7 +2,6 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:m_softer_test_project/data/room_by_code/model.dart';
 import 'package:m_softer_test_project/pages/home_page/home.dart';
 import 'package:m_softer_test_project/pages/qr_code_page/bloc/qr_code_bloc.dart';
 import 'package:m_softer_test_project/utils/snackbar_helper.dart';
@@ -20,9 +19,8 @@ class QrCodePage extends StatefulWidget {
 
 class _QrCodePageState extends State<QrCodePage> {
   final controller = MobileScannerController(
-    useNewCameraSelector: true,
-    returnImage: true,
-    autoStart: true,
+    useNewCameraSelector: false,
+    autoStart: false,
     formats: [BarcodeFormat.qrCode],
   );
   late final QrCodeBloc bloc;

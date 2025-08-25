@@ -1,6 +1,5 @@
 part of '../themes.dart';
 
-const String urlDomain = "https://app.successhotel.ru";
 const titleLarge = TextStyle(
   fontFamily: 'Philosopher',
   color: AppColors.black,

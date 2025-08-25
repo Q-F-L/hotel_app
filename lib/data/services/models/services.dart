@@ -93,11 +93,11 @@ class Services {
     sunday = json['Sunday'];
     isActive = json['is_active'];
     name = json['name'];
-    if (json['options'] != null) {
+    if (json['options'] != null && (json['options'] as List).isNotEmpty) {
       options = <Options>[];
-      json['options'].forEach((v) {
+      for (var v in json['options']) {
         options!.add(Options.fromJson(v));
-      });
+      }
     }
     icon = json['icon'];
   }

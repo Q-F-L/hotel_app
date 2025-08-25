@@ -31,7 +31,7 @@ class LoadingPage extends StatelessWidget {
                   body: Center(child: CircularProgressIndicator()),
                 );
               } else if (authState.status == AuthStatus.authenticated) {
-                if (User.checkedIn ?? false) {
+                if (User.checkedIn ?? true) {
                   return HomePage();
                 } else {
                   return SelectHomePage();

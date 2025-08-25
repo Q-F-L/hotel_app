@@ -9,7 +9,7 @@ class User {
   static String? _middleName;
   static String? _phone;
   static String? _deviceToken;
-  static bool? _checkedIn;
+  static bool? _checkedIn = true;
   static String? _fullName;
   static CurrentClientRoom? _currentClientRoom;
   static int? _ordersCount;

@@ -31,6 +31,64 @@ class ServicesModel {
     }
     return data;
   }
+
+  List<Services> filterServices() {
+    int dayOfWeek = DateTime.now().weekday;
+    int currentMinutes = DateTime.now().hour * 60 + DateTime.now().minute;
+
+    // Преобразуем текущее время в минуты
+    int toMinutes(String? time) {
+      if (time == null || time.isEmpty) return 0;
+      final parts = time.split(":");
+      return int.parse(parts[0]) * 60 + int.parse(parts[1]);
+    }
+
+    return services!.where((service) {
+      // Проверка активности по isActive
+      if (service.isActive != true) {
+        return false;
+      }
+
+      // Проверка активности по дню недели
+      bool dayAllowed = false;
+      switch (dayOfWeek) {
+        case 1:
+          dayAllowed = service.monday ?? false;
+          break;
+        case 2:
+          dayAllowed = service.tuesday ?? false;
+          break;
+        case 3:
+          dayAllowed = service.wednesday ?? false;
+          break;
+        case 4:
+          dayAllowed = service.thursday ?? false;
+          break;
+        case 5:
+          dayAllowed = service.friday ?? false;
+          break;
+        case 6:
+          dayAllowed = service.saturday ?? false;
+          break;
+        case 7:
+          dayAllowed = service.sunday ?? false;
+          break;
+      }
+      if (!dayAllowed) return false;
+
+      // Проверка доступности по времени
+      int fromMinutes = toMinutes(service.availableFrom);
+      int toMinutesVal = toMinutes(service.availableTo);
+
+      if (fromMinutes != 0 && toMinutesVal != 0) {
+        if (currentMinutes < fromMinutes || currentMinutes > toMinutesVal) {
+          return false;
+        }
+      }
+
+      return true;
+    }).toList();
+  }
 }
 
 class Services {

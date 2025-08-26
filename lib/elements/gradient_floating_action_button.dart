@@ -20,6 +20,7 @@ class GradientFloatingActionButton extends StatelessWidget {
         gradient: LinearGradient(colors: [firstColor, secondColor]),
       ),
       child: FloatingActionButton(
+        splashColor: Colors.transparent,
         backgroundColor: Colors.transparent,
         elevation: 0,
         focusElevation: 0,

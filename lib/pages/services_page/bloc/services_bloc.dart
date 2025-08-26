@@ -47,7 +47,7 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
     try {
       if (jsonModel.success == true) {
         emit(state.copyWith(
-          listServices: jsonModel.services,
+          listServices: jsonModel.filterServices(),
           status: ServicesStatus.success,
         ));
       } else {

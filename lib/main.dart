@@ -34,8 +34,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-        overlays: [SystemUiOverlay.top]);
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
     return MultiBlocProvider(
       providers: [
         BlocProvider<AuthBloc>(
@@ -46,27 +45,21 @@ class MyApp extends StatelessWidget {
               LaunchBloc()..add(CheckFirstLaunchEvent()),
         ),
       ],
-      child: Listener(
-        onPointerDown: (_) {
-          SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
-              overlays: [SystemUiOverlay.top]);
+      child: MaterialApp(
+        builder: FToastBuilder(),
+        debugShowCheckedModeBanner: false,
+        color: Colors.transparent,
+        title: 'Flutter Demo',
+        theme: createLightTheme(),
+        routes: {
+          '/auth': (context) => AuthPage(),
+          '/registration': (context) => RegistrationPage(),
+          '/select_home': (context) => SelectHomePage(),
+          '/qr_code_page': (context) => QrCodePage(),
+          '/shower': (context) => Showers(),
+          '/home': (context) => HomePage(),
         },
-        child: MaterialApp(
-          builder: FToastBuilder(),
-          debugShowCheckedModeBanner: false,
-          color: Colors.transparent,
-          title: 'Flutter Demo',
-          theme: createLightTheme(),
-          routes: {
-            '/auth': (context) => AuthPage(),
-            '/registration': (context) => RegistrationPage(),
-            '/select_home': (context) => SelectHomePage(),
-            '/qr_code_page': (context) => QrCodePage(),
-            '/shower': (context) => Showers(),
-            '/home': (context) => HomePage(),
-          },
-          home: LoadingPage(),
-        ),
+        home: LoadingPage(),
       ),
     );
   }

@@ -2,17 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:m_softer_test_project/themes/themes.dart';
 
-class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppbar extends StatelessWidget {
   const CustomAppbar({
     super.key,
-    required this.preferredSize,
     required this.title,
   });
 
   final String title;
-
-  @override
-  final Size preferredSize;
 
   @override
   Widget build(BuildContext context) {
@@ -20,6 +16,9 @@ class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
       bottom: false,
       child: Column(
         children: [
+          SizedBox(
+            height: 5,
+          ),
           SvgPicture.asset(
             "$pathForImage${AppImage.icon}",
             width: 60,

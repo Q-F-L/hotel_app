@@ -74,28 +74,38 @@ class _ServicesPageState extends State<ServicesPage> {
             );
           }
 
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                CustomAppbar(
-                  title: "Сервисы",
-                  preferredSize: Size(MediaQuery.of(context).size.width, 124),
-                ),
-                SizedBox(
-                  height: MediaQuery.of(context).size.height - 132,
-                  child: ListView.builder(
-                    clipBehavior: Clip.none,
-                    itemCount: state.listServices?.length ?? 1,
-                    itemBuilder: (context, index) => ServiceTicket(
-                      service: state.listServices![index],
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CustomAppbar(
+                title: "Сервисы",
+              ),
+              ClipRect(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height - 137,
+                    child: ListView.builder(
+                      physics: BouncingScrollPhysics(
+                          parent: AlwaysScrollableScrollPhysics(),
+                          decelerationRate: ScrollDecelerationRate.fast),
+                      clipBehavior: Clip.none,
+                      itemCount: (state.listServices?.length ?? 0) + 1,
+                      itemBuilder: (context, index) {
+                        if (index == state.listServices!.length) {
+                          return const SizedBox(
+                              height: kBottomNavigationBarHeight * 2);
+                        }
+                        return ServiceTicket(
+                          service: state.listServices![index],
+                        );
+                      },
                     ),
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           );
         },
       ),

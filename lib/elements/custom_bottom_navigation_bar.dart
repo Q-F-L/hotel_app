@@ -38,6 +38,8 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           IconButton(
               style: IconButton.styleFrom(
                 fixedSize: Size(92, 65),
+                splashFactory: NoSplash.splashFactory,
+                overlayColor: Colors.transparent,
               ),
               onPressed: () {
                 context
@@ -65,6 +67,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             style: IconButton.styleFrom(
               splashFactory: NoSplash.splashFactory,
               fixedSize: Size(92, 65),
+              overlayColor: Colors.transparent,
             ),
             onPressed: () {
               context
@@ -87,6 +90,8 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           IconButton(
             style: IconButton.styleFrom(
               fixedSize: Size(92, 65),
+              splashFactory: NoSplash.splashFactory,
+              overlayColor: Colors.transparent,
             ),
             onPressed: () {
               context

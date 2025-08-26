@@ -13,33 +13,34 @@ class MyRequestsPage extends StatefulWidget {
 class _MyRequestsPageState extends State<MyRequestsPage> {
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 20),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          CustomAppbar(
-            title: "Сервисы",
-            preferredSize: Size(MediaQuery.of(context).size.width, 124),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height - 132,
-            child: ListView(
-              clipBehavior: Clip.none,
-              children: [
-                CardRequest(),
-                CardRequest(),
-                CardRequest(),
-                CardRequest(),
-                SizedBox(
-                  height: 160,
-                ),
-              ],
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        CustomAppbar(
+          title: "Сервисы",
+        ),
+        ClipRect(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 30),
+            child: SizedBox(
+              height: MediaQuery.of(context).size.height - 137,
+              child: ListView(
+                clipBehavior: Clip.none,
+                children: [
+                  CardRequest(),
+                  CardRequest(),
+                  CardRequest(),
+                  CardRequest(),
+                  SizedBox(
+                    height: 160,
+                  ),
+                ],
+              ),
             ),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

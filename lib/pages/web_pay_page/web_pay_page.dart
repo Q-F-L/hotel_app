@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:m_softer_test_project/pages/home_page/home.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class PaymentWebViewScreen extends StatefulWidget {
@@ -22,7 +23,11 @@ class _PaymentWebViewScreenState extends State<PaymentWebViewScreen> {
       ..setNavigationDelegate(
         NavigationDelegate(
           onNavigationRequest: (NavigationRequest request) {
-            // Можно добавить логику для обработки переходов
+            if (request.url ==
+                'https://app.successhotel.ru/yookassa/payment-return-page') {
+              Navigator.of(context).pop();
+              return NavigationDecision.prevent;
+            }
             return NavigationDecision.navigate;
           },
         ),

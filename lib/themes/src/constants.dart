@@ -114,6 +114,6 @@ class AppImage {
   static const key = "svg/key.svg";
   static const calendar = "svg/calendar.svg";
   static const qrCode = "svg/qrCode.svg";
-  static const outline_plus = "svg/outline_plus.svg";
-  static const outline_minus = "svg/outline_minus.svg";
+  static const outlinePlus = "svg/outline_plus.svg";
+  static const outlineMinus = "svg/outline_minus.svg";
 }

@@ -21,9 +21,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       status: AuthStatus.loading,
     ));
     final String? emailError = Validators.validateEmail(event.email);
-    print("Login");
 
-    print("emailError $emailError");
     if (emailError != null) {
       emit(state.copyWith(
         emailError: emailError,

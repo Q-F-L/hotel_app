@@ -48,7 +48,6 @@ class MyApp extends StatelessWidget {
       ],
       child: Listener(
         onPointerDown: (_) {
-          // Принудительно скрываем навигацию при любом касании
           SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual,
               overlays: [SystemUiOverlay.top]);
         },

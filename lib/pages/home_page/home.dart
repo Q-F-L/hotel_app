@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:m_softer_test_project/elements/custom_appbar.dart';
 import 'package:m_softer_test_project/elements/custom_bottom_navigation_bar.dart';
 import 'package:m_softer_test_project/elements/gradient_floating_action_button.dart';
 import 'package:m_softer_test_project/pages/home_page/bloc/home_bloc.dart';

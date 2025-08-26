@@ -151,8 +151,7 @@ class _ShowAdditionalServicesState extends State<ShowAdditionalServices> {
                     }
                   });
                 },
-                icon:
-                    SvgPicture.asset("$pathForImage${AppImage.outline_minus}"),
+                icon: SvgPicture.asset("$pathForImage${AppImage.outlineMinus}"),
               ),
               Text("${counters[option.name]}"),
               IconButton(
@@ -161,7 +160,7 @@ class _ShowAdditionalServicesState extends State<ShowAdditionalServices> {
                     counters[option.name ?? ""] = counters[option.name]! + 1;
                   });
                 },
-                icon: SvgPicture.asset("$pathForImage${AppImage.outline_plus}"),
+                icon: SvgPicture.asset("$pathForImage${AppImage.outlinePlus}"),
               ),
             ],
           ),

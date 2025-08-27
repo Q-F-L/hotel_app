@@ -3,13 +3,13 @@ part of 'select_hotel_bloc.dart';
 enum SelectHotelStatus { initial, loading, success, failure, send, complited }
 
 class SelectHotelState {
-  final Organizations? hotel;
+  final Organization? hotel;
   final Rooms? rooms;
   final String? date;
   final SelectHotelStatus? status;
   final String? errorMessage;
   final List<Rooms?>? listRooms;
-  final List<Organizations?>? listHotel;
+  final List<Organization?>? listHotel;
 
   const SelectHotelState({
     this.status = SelectHotelStatus.initial,
@@ -22,8 +22,8 @@ class SelectHotelState {
   });
 
   SelectHotelState copyWith({
-    Organizations? hotel,
-    List<Organizations?>? listHotel,
+    Organization? hotel,
+    List<Organization?>? listHotel,
     Rooms? rooms,
     List<Rooms?>? listRooms,
     String? date,

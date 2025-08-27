@@ -2,6 +2,11 @@ part of '../themes.dart';
 
 ThemeData createLightTheme() {
   return ThemeData(
+    sliderTheme: SliderThemeData(
+      trackHeight: 10,
+      activeTrackColor: Colors.red,
+      thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 12),
+    ),
     bottomSheetTheme: BottomSheetThemeData(backgroundColor: Colors.transparent),
     useMaterial3: true,
     appBarTheme: const AppBarTheme(
@@ -10,7 +15,10 @@ ThemeData createLightTheme() {
       surfaceTintColor: Colors.transparent,
       shadowColor: Colors.transparent,
       systemOverlayStyle: SystemUiOverlayStyle(
+        systemNavigationBarDividerColor: Colors.transparent,
         statusBarColor: Colors.transparent,
+        systemNavigationBarColor: Colors.transparent,
+        systemNavigationBarContrastEnforced: false,
       ),
     ),
     inputDecorationTheme:
@@ -22,7 +30,7 @@ ThemeData createLightTheme() {
       secondary: AppColors.grey,
       onSecondary: AppColors.grey,
       surface: AppColors.lightGreen,
-      onSurface: AppColors.lightGreen,
+      onSurface: AppColors.black,
       error: AppColors.grey,
       onError: AppColors.grey,
     ),

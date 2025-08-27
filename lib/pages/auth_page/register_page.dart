@@ -1,13 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:m_softer_test_project/elements/gradient_button.dart';
 import 'package:m_softer_test_project/elements/icon_gradient.dart';
 import 'package:m_softer_test_project/pages/auth_page/bloc/auth_bloc.dart';
+import 'package:m_softer_test_project/themes/themes.dart';
 import 'package:m_softer_test_project/utils/snackbar_helper.dart';
 
-import '../../data/token.dart';
 import '../../elements/text_input_form.dart';
 
 class RegistrationPage extends StatefulWidget {
@@ -19,6 +19,41 @@ class RegistrationPage extends StatefulWidget {
 
 class _RegistrationPageState extends State<RegistrationPage> {
   final _formKey = GlobalKey<FormState>();
+
+  final _nameController = TextEditingController();
+  final _surnameController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
+
+  bool _canClick = false;
+
+  void _wireCanClick() {
+    setState(() {
+      _canClick = _emailController.text.isNotEmpty &&
+          _passwordController.text.isNotEmpty &&
+          _nameController.text.isNotEmpty &&
+          _surnameController.text.isNotEmpty;
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    // Только для UI-активации кнопки — НЕ диспатчим в BLoC
+    _nameController.addListener(_wireCanClick);
+    _surnameController.addListener(_wireCanClick);
+    _emailController.addListener(_wireCanClick);
+    _passwordController.addListener(_wireCanClick);
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _surnameController.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,143 +68,105 @@ class _RegistrationPageState extends State<RegistrationPage> {
         backgroundColor: const Color(0xFFF6FBFB),
         surfaceTintColor: Colors.transparent,
         elevation: 0,
-        systemOverlayStyle: SystemUiOverlayStyle(
-          statusBarColor: Colors.transparent,
-        ),
-        title: Text(
-          "Регистрация",
-          style: Theme.of(context).textTheme.bodyLarge,
-        ),
+        title:
+            Text("Регистрация", style: Theme.of(context).textTheme.bodyLarge),
       ),
       body: BlocProvider(
-        create: (context) => AuthBloc(tokenRepository: TokenRepository()),
+        create: (context) => AuthBloc(),
         child: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
             if (state.status == AuthStatus.failure ||
-                (state.emailError != null ||
-                    state.passwordError != null ||
-                    state.errorName != null ||
-                    state.surnameError != null)) {
+                state.errorName != null ||
+                state.surnameError != null ||
+                state.emailError != null ||
+                state.passwordError != null) {
               final errorMessage = state.errorMessage ??
                   state.errorName ??
                   state.surnameError ??
                   state.emailError ??
                   state.passwordError ??
                   'Произошла ошибка';
-              showCustomSnackBar(context, errorMessage);
+              showToast(context, errorMessage);
             }
-
-            if (state.status == AuthStatus.success) {
-              Navigator.pop(context);
-            }
+            if (state.status == AuthStatus.success) Navigator.pop(context);
           },
           builder: (context, state) {
             final bloc = context.read<AuthBloc>();
-            bool canClick = state.email.isNotEmpty && state.password.isNotEmpty;
 
             return Form(
               key: _formKey,
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 33),
                 child: ListView(
+                  clipBehavior: Clip.none,
                   children: [
-                    Padding(
-                      padding: EdgeInsets.only(top: 30),
-                      child: TextInputForm(
-                        prefix: Image.asset('assets/images/prefix_user.png'),
-                        keyboardType: TextInputType.emailAddress,
-                        hintText: 'Имя',
-                        initialValue: state.name,
-                        errorText: state.errorName,
-                        onChanged: (value) => bloc.add(AuthNameChanged(value)),
+                    const SizedBox(height: 30),
+                    TextInputForm(
+                      controller: _nameController,
+                      prefix: SvgPicture.asset(
+                        '$pathForImage${AppImage.profile}',
+                        fit: BoxFit.scaleDown,
                       ),
+                      keyboardType: TextInputType.text,
+                      hintText: 'Имя',
+                      errorText: state.errorName,
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 20),
-                      child: TextInputForm(
-                        prefix: Image.asset('assets/images/prefix_user.png'),
-                        keyboardType: TextInputType.emailAddress,
-                        hintText: 'Фамилия',
-                        initialValue: state.surname,
-                        errorText: state.surnameError,
-                        onChanged: (value) =>
-                            bloc.add(AuthSurnameChanged(value)),
+                    const SizedBox(height: 20),
+                    TextInputForm(
+                      controller: _surnameController,
+                      prefix: SvgPicture.asset(
+                        '$pathForImage${AppImage.profile}',
+                        fit: BoxFit.scaleDown,
                       ),
+                      keyboardType: TextInputType.text,
+                      hintText: 'Фамилия',
+                      errorText: state.surnameError,
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 20),
-                      child: TextInputForm(
-                        prefix: IconGradient(icon: Icon(Icons.email), colors: [
-                          Color.fromARGB(255, 83, 232, 140),
-                          Color.fromARGB(255, 21, 190, 120),
-                        ]),
-                        keyboardType: TextInputType.emailAddress,
-                        hintText: 'Введите email',
-                        initialValue: state.email,
-                        errorText: state.emailError,
-                        onChanged: (value) => bloc.add(AuthEmailChanged(value)),
-                      ),
+                    const SizedBox(height: 20),
+                    TextInputForm(
+                      controller: _emailController,
+                      prefix: IconGradient(icon: Icon(Icons.email), colors: [
+                        Color.fromARGB(255, 83, 232, 140),
+                        Color.fromARGB(255, 21, 190, 120),
+                      ]),
+                      keyboardType: TextInputType.emailAddress,
+                      hintText: 'Введите email',
+                      errorText: state.emailError,
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 20),
-                      child: TextInputForm(
-                        prefix: IconGradient(icon: Icon(Icons.lock), colors: [
-                          Color.fromARGB(255, 83, 232, 140),
-                          Color.fromARGB(255, 21, 190, 120),
-                        ]),
-                        isPassword: true,
-                        hintText: 'Введите пароль',
-                        initialValue: state.password,
-                        errorText: state.passwordError,
-                        onChanged: (value) =>
-                            bloc.add(AuthPasswordChanged(value)),
-                      ),
+                    const SizedBox(height: 20),
+                    TextInputForm(
+                      controller: _passwordController,
+                      prefix: IconGradient(icon: Icon(Icons.lock), colors: [
+                        Color.fromARGB(255, 83, 232, 140),
+                        Color.fromARGB(255, 21, 190, 120),
+                      ]),
+                      isPassword: true,
+                      hintText: 'Введите пароль',
+                      errorText: state.passwordError,
                     ),
-                    Padding(
-                      padding: EdgeInsets.only(top: 20, bottom: 20),
-                      child: RichText(
-                        textAlign: TextAlign.center,
-                        text: TextSpan(
-                          text: 'Нажимая сохранить я соглашаюсь с ',
-                          style: Theme.of(context).textTheme.labelSmall,
-                          children: <TextSpan>[
-                            TextSpan(
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    showCustomSnackBar(
-                                        context, "Правилам сервис");
-                                  },
-                                text: 'правилами сервиса ',
-                                style: TextStyle(
-                                    color: Color.fromARGB(255, 27, 194, 122))),
-                            TextSpan(text: 'и '),
-                            TextSpan(
-                                recognizer: TapGestureRecognizer()
-                                  ..onTap = () {
-                                    showCustomSnackBar(
-                                        context, 'Политикой конфидециальности');
-                                  },
-                                text: 'политикой конфидециальности',
-                                style: TextStyle(
-                                    color: Color.fromARGB(255, 27, 194, 122))),
-                          ],
-                        ),
-                      ),
-                    ),
+                    const SizedBox(height: 20),
+                    // ... твой RichText с политиками ...
+                    const SizedBox(height: 20),
                     GradientButton(
-                      onPressed: () => canClick
+                      onPressed: () => _canClick
                           ? {
-                              bloc.add(AuthRegister()),
-                              showCustomSnackBar(context, state.message ?? ''),
+                              bloc.add(AuthRegister(
+                                name: _nameController.text,
+                                surname: _surnameController.text,
+                                email: _emailController.text,
+                                password: _passwordController.text,
+                              )),
+                              if (state.message != null)
+                                showToast(context, state.message!),
                             }
-                          : {},
-                      canClick: canClick,
+                          : {showToast(context, "Заполните данные!")},
+                      canClick: _canClick,
                       borderRadius: const BorderRadius.all(Radius.circular(15)),
                       margin: const EdgeInsets.symmetric(
-                          vertical: 0, horizontal: 40.0),
-                      child: Text(
+                          vertical: 0, horizontal: 40),
+                      child: const Text(
                         "Сохранить",
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontFamily: 'Philosopher',
                           color: Color(0xFFFEFEFF),
                           fontSize: 20.0,

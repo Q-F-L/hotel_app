@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:m_softer_test_project/pages/home_page/bloc/botton_navigation_bloc.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:m_softer_test_project/pages/home_page/bloc/home_bloc.dart';
 import 'package:m_softer_test_project/themes/themes.dart';
 
 class CustomBottomNavigationBar extends StatefulWidget {
@@ -18,13 +19,13 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
         context.select((BottonNavigationBloc bloc) => bloc.state.nowPage);
 
     return Container(
-      margin: EdgeInsets.only(bottom: 10, top: 5),
+      margin: EdgeInsets.only(top: 5),
       height: 80,
       padding: EdgeInsets.only(left: 10, right: 10, top: 0),
       decoration: BoxDecoration(
         image: DecorationImage(
           image: AssetImage(
-            "assets/images/button_navigation.png",
+            "$pathForImage${AppImage.buttonNavigationPanel}",
           ),
           fit: BoxFit.cover,
           scale: 1,
@@ -37,6 +38,8 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           IconButton(
               style: IconButton.styleFrom(
                 fixedSize: Size(92, 65),
+                splashFactory: NoSplash.splashFactory,
+                overlayColor: Colors.transparent,
               ),
               onPressed: () {
                 context
@@ -46,7 +49,8 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
               icon: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Image.asset("assets/images/grey_bell.png",
+                  SvgPicture.asset(
+                      "$pathForImage${AppImage.buttonNavigationRequest}",
                       color:
                           nowPage == 0 ? AppColors.textGreen : AppColors.black),
                   Text(
@@ -63,6 +67,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             style: IconButton.styleFrom(
               splashFactory: NoSplash.splashFactory,
               fixedSize: Size(92, 65),
+              overlayColor: Colors.transparent,
             ),
             onPressed: () {
               context
@@ -85,6 +90,8 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
           IconButton(
             style: IconButton.styleFrom(
               fixedSize: Size(92, 65),
+              splashFactory: NoSplash.splashFactory,
+              overlayColor: Colors.transparent,
             ),
             onPressed: () {
               context
@@ -94,7 +101,8 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
             icon: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Image.asset("assets/images/user.png",
+                SvgPicture.asset(
+                    "$pathForImage${AppImage.buttonNavigationProfile}",
                     color:
                         nowPage == 2 ? AppColors.textGreen : AppColors.black),
                 Text(

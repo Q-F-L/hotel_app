@@ -32,15 +32,25 @@ class AuthPasswordChanged extends AuthEvent {
   AuthPasswordChanged(this.password);
 }
 
-class AuthSubmitted extends AuthEvent {}
-
-class AuthLogin extends AuthSubmitted {
-  final String? fcmToken;
-
-  AuthLogin({this.fcmToken});
+class AuthRegister extends AuthEvent {
+  final String name;
+  final String surname;
+  final String email;
+  final String password;
+  const AuthRegister({
+    required this.name,
+    required this.surname,
+    required this.email,
+    required this.password,
+  });
 }
 
-class AuthRegister extends AuthSubmitted {}
+class AuthLogin extends AuthEvent {
+  final String email;
+  final String password;
+  final String? fcmToken;
+  const AuthLogin({required this.email, required this.password, this.fcmToken});
+}
 
 class AuthCheckToken extends AuthEvent {}
 

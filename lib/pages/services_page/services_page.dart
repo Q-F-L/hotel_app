@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:m_softer_test_project/elements/custom_appbar.dart';
 import 'package:m_softer_test_project/elements/service_ticket.dart';
 import 'package:m_softer_test_project/pages/services_page/bloc/services_bloc.dart';
+import 'package:m_softer_test_project/pages/web_pay_page/web_pay_page.dart';
 import 'package:m_softer_test_project/utils/snackbar_helper.dart';
 
 class ServicesPage extends StatefulWidget {
@@ -12,21 +14,54 @@ class ServicesPage extends StatefulWidget {
 }
 
 class _ServicesPageState extends State<ServicesPage> {
+  late ServicesBloc bloc;
+
+  @override
+  void initState() {
+    bloc = ServicesBloc();
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    bloc.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => ServicesBloc()..add(ServicesInitialEvent()),
+      create: (context) => bloc..add(ServicesInitialEvent()),
       child: BlocConsumer<ServicesBloc, ServicesState>(
         listener: (context, state) {
           if (state.status == ServicesStatus.failure) {
-            showCustomSnackBar(context, "Error message: ${state.errorMessage}");
+            showToast(context, "Error message: ${state.errorMessage}");
+          }
+
+          if (state.status == ServicesStatus.order) {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (BuildContext context) => PaymentWebViewScreen(
+                  url: state.url ?? "",
+                ),
+              ),
+            );
           }
         },
         builder: (context, state) {
-          if (state.status == ServicesStatus.loading ||
-              (state.listServices == null || state.listServices!.isEmpty)) {
+          if (state.status == ServicesStatus.loading) {
             return Center(
               child: CircularProgressIndicator(),
+            );
+          }
+
+          if ((state.listServices == null || state.listServices!.isEmpty)) {
+            return Center(
+              child: Text(
+                "Тут пусто!",
+                style: Theme.of(context).textTheme.labelLarge,
+              ),
             );
           }
 
@@ -39,14 +74,38 @@ class _ServicesPageState extends State<ServicesPage> {
             );
           }
 
-          return Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30),
-            child: ListView.builder(
-              itemCount: state.listServices?.length ?? 1,
-              itemBuilder: (context, index) => ServiceTicket(
-                service: state.listServices![index],
+          return Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              CustomAppbar(
+                title: "Сервисы",
               ),
-            ),
+              ClipRect(
+                child: Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 30),
+                  child: SizedBox(
+                    height: MediaQuery.of(context).size.height - 137,
+                    child: ListView.builder(
+                      physics: BouncingScrollPhysics(
+                          parent: AlwaysScrollableScrollPhysics(),
+                          decelerationRate: ScrollDecelerationRate.fast),
+                      clipBehavior: Clip.none,
+                      itemCount: (state.listServices?.length ?? 0) + 1,
+                      itemBuilder: (context, index) {
+                        if (index == state.listServices!.length) {
+                          return const SizedBox(
+                              height: kBottomNavigationBarHeight * 2);
+                        }
+                        return ServiceTicket(
+                          service: state.listServices![index],
+                        );
+                      },
+                    ),
+                  ),
+                ),
+              ),
+            ],
           );
         },
       ),

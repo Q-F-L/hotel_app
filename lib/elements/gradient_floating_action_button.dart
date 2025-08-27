@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:m_softer_test_project/themes/themes.dart';
 
 class GradientFloatingActionButton extends StatelessWidget {
   const GradientFloatingActionButton(
@@ -18,6 +20,7 @@ class GradientFloatingActionButton extends StatelessWidget {
         gradient: LinearGradient(colors: [firstColor, secondColor]),
       ),
       child: FloatingActionButton(
+        splashColor: Colors.transparent,
         backgroundColor: Colors.transparent,
         elevation: 0,
         focusElevation: 0,
@@ -25,7 +28,7 @@ class GradientFloatingActionButton extends StatelessWidget {
         disabledElevation: 0,
         highlightElevation: 0,
         onPressed: onPressed,
-        child: Image.asset("assets/images/services.png"),
+        child: SvgPicture.asset("$pathForImage${AppImage.floatButtonServises}"),
       ),
     );
   }

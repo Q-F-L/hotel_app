@@ -70,10 +70,18 @@ const labelSmallManrope = TextStyle(
     fontWeight: FontWeight.w500,
     color: AppColors.realBlack);
 
+const BoxShadow shadow = BoxShadow(
+  offset: Offset(12, 26),
+  blurRadius: 30,
+  spreadRadius: 0,
+  color: Color.fromARGB(20, 90, 107, 234),
+);
+
 class AppColors {
   // LightTheme
   static const backgroundWhite = Color(0xFAFDFFFF);
   static const white = Colors.white;
+  static const divider = Color(0xFFEEEEEE);
   static const textWhite = Color(0xFFFEFEFF);
   static const inputWhite = Color(0xF4F4F4F4);
   static const grey = Color.fromARGB(255, 59, 59, 59);
@@ -86,4 +94,26 @@ class AppColors {
   static const shadow = Color.fromARGB(40, 90, 108, 234);
   static const lightYellow = Color.fromARGB(255, 255, 237, 144);
   static const yellow = Color.fromARGB(195, 252, 255, 101);
+}
+
+const pathForImage = "assets/images/";
+
+class AppImage {
+  static const buttonNavigationRequest = "svg/buttonNavigationRequest.svg";
+  static const buttonNavigationPanel = "button_navigation.png";
+  static const buttonNavigationProfile = "svg/buttonNavigationProfile.svg";
+  static const floatButtonServises = "svg/floatButtonServises.svg";
+  static const icon = "svg/icon.svg";
+  static const requestInProcesses = "svg/requestInProcesses.svg";
+  static const requestComplited = "svg/requestComplited.svg";
+  static const requestNotAccepted = "svg/requestNotAccepted.svg";
+  static const shower1 = "svg/shower1.svg";
+  static const shower2 = "svg/shower2.svg";
+  static const shower3 = "svg/shower3.svg";
+  static const profile = "svg/profile.svg";
+  static const key = "svg/key.svg";
+  static const calendar = "svg/calendar.svg";
+  static const qrCode = "svg/qrCode.svg";
+  static const outlinePlus = "svg/outline_plus.svg";
+  static const outlineMinus = "svg/outline_minus.svg";
 }

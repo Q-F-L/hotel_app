@@ -1,34 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:m_softer_test_project/themes/themes.dart';
 
-class CustomAppbar extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppbar extends StatelessWidget {
   const CustomAppbar({
     super.key,
-    required this.preferredSize,
     required this.title,
   });
 
   final String title;
 
   @override
-  final Size preferredSize;
-
-  @override
   Widget build(BuildContext context) {
-    return PreferredSize(
-      preferredSize: preferredSize,
+    return SafeArea(
+      bottom: false,
       child: Column(
         children: [
           SizedBox(
-            height: 20,
+            height: 5,
           ),
-          Image.asset(
-            'assets/images/logo_mini.png',
+          SvgPicture.asset(
+            "$pathForImage${AppImage.icon}",
             width: 60,
             height: 60,
           ),
-          SizedBox(
-            height: 10,
-          ),
+          const SizedBox(height: 10),
           Text(
             title,
             style: Theme.of(context).textTheme.bodyLarge,

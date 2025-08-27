@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:m_softer_test_project/data/rooms.dart';
+import 'package:m_softer_test_project/data/rooms/model.dart';
 
 import '../themes/themes.dart';
 import 'icon_gradient.dart';
@@ -127,7 +127,7 @@ class _CustomDropDownMenuRoomState extends State<CustomDropDownMenuRoom> {
                   ),
                   if (index != widget.listString.length - 1)
                     const Divider(
-                      color: Color(0xFFEEEEEE),
+                      color: AppColors.divider,
                       thickness: 2,
                       height: 10,
                     ),

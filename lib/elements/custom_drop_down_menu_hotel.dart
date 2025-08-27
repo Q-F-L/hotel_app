@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:m_softer_test_project/data/hotels.dart';
+import 'package:m_softer_test_project/data/organizations/model.dart';
 
 import '../themes/themes.dart';
 import 'icon_gradient.dart';
@@ -15,11 +15,11 @@ class CustomDropDownMenuHotel extends StatefulWidget {
     this.onSelected,
   });
 
-  final List<Organizations?>? list;
+  final List<Organization?>? list;
   final Widget? icon;
   final String? text;
   final double? width;
-  Function(Organizations?)? onSelected;
+  Function(Organization?)? onSelected;
   bool active;
   @override
   State<CustomDropDownMenuHotel> createState() =>
@@ -35,7 +35,7 @@ class _CustomDropDownMenuHotelState extends State<CustomDropDownMenuHotel> {
       type: MaterialType.button,
       color: AppColors.textWhite,
       shadowColor: Color.fromARGB(42, 23, 133, 137),
-      child: DropdownMenu<Organizations?>(
+      child: DropdownMenu<Organization?>(
         textStyle: Theme.of(context).textTheme.labelSmall,
         width: widget.width,
         enabled: widget.active,
@@ -86,11 +86,11 @@ class _CustomDropDownMenuHotelState extends State<CustomDropDownMenuHotel> {
         onSelected: widget.onSelected,
         dropdownMenuEntries: widget.list?.asMap().entries.map((entry) {
               int index = entry.key;
-              Organizations? menu = entry.value;
+              Organization? menu = entry.value;
 
-              return DropdownMenuEntry<Organizations?>(
+              return DropdownMenuEntry<Organization?>(
                 value: menu,
-                label: menu?.firstName ?? '',
+                label: menu?.title ?? '',
                 style: ButtonStyle(
                   visualDensity: VisualDensity.compact,
                   padding: WidgetStatePropertyAll(EdgeInsets.all(0)),
@@ -121,7 +121,7 @@ class _CustomDropDownMenuHotelState extends State<CustomDropDownMenuHotel> {
                           const SizedBox(width: 16),
                           Expanded(
                             child: Text(
-                              menu?.firstName ?? "Не указано",
+                              menu?.title ?? "Не указано",
                               style: Theme.of(context)
                                   .textTheme
                                   .labelSmall
@@ -134,7 +134,7 @@ class _CustomDropDownMenuHotelState extends State<CustomDropDownMenuHotel> {
                       ),
                       if (index != widget.list!.length - 1)
                         const Divider(
-                          color: Color(0xFFEEEEEE),
+                          color: AppColors.divider,
                           thickness: 2,
                           height: 10,
                         ),

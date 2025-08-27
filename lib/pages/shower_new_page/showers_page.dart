@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:m_softer_test_project/pages/auth_page/auth_page.dart';
+import 'package:m_softer_test_project/pages/launch_bloc/launch_bloc.dart';
+import 'package:m_softer_test_project/themes/themes.dart';
 
 import '../../elements/shower.dart';
 import 'bloc/shower_new_page_bloc.dart';
@@ -13,20 +16,20 @@ class Showers extends StatefulWidget {
 
 class _ShowersState extends State<Showers> {
   late PageController _pageController;
-  late ShowerNewPageBloc showerNewPageBloc;
-  static const List<Map> listShowers = [
+  late ShowerNewPageBloc bloc;
+  List<Map> listShowers = [
     {
-      "image": "assets/images/bell.png",
+      "image": "$pathForImage${AppImage.shower1}",
       "description": "Заказывайте услуги отеля из любого места онлайн",
       "textButton": "Понятно",
     },
     {
-      "image": "assets/images/payment_card.png",
+      "image": "$pathForImage${AppImage.shower2}",
       "description": "Оплачивайте прямо в приложении",
       "textButton": "Хорошо",
     },
     {
-      "image": "assets/images/key.png",
+      "image": "$pathForImage${AppImage.shower3}",
       "description": "Оплачивайте прямо в приложении",
       "textButton": "Поехаели!",
     },
@@ -34,18 +37,34 @@ class _ShowersState extends State<Showers> {
 
   @override
   void initState() {
-    // TODO: implement initState
     _pageController = PageController();
-    showerNewPageBloc = ShowerNewPageBloc(_pageController);
+    bloc = ShowerNewPageBloc(_pageController);
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    bloc.close();
+    _pageController.dispose();
+    super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider.value(
-      value: showerNewPageBloc,
-      child: BlocBuilder<ShowerNewPageBloc, ShowerNewPageState>(
-        bloc: showerNewPageBloc,
+      value: bloc,
+      child: BlocConsumer<ShowerNewPageBloc, ShowerNewPageState>(
+        listener: (context, state) {
+          if (state.seen == true) {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => AuthPage()),
+              (Route<dynamic> route) => false,
+            );
+          }
+        },
+        bloc: bloc,
         builder: (context, state) {
           return PageView(
             physics: const NeverScrollableScrollPhysics(),
@@ -57,11 +76,13 @@ class _ShowersState extends State<Showers> {
                   image: listShowers[i]['image'],
                   description: listShowers[i]['description'],
                   textButton: listShowers[i]['textButton'],
-                  onPressLast: 2 == i
-                      ? () {
-                          Navigator.pushNamed(context, "/auth");
-                        }
-                      : null,
+                  onPress: () {
+                    if (i == 2) {
+                      context.read<LaunchBloc>().add(CompleteShowersEvent());
+                    } else {
+                      bloc.add(NewPage());
+                    }
+                  },
                 );
               },
             ),

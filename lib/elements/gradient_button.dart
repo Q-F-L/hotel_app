@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:m_softer_test_project/utils/snackbar_helper.dart';
 
 class GradientButton extends StatelessWidget {
   final VoidCallback? onPressed;
@@ -11,7 +10,6 @@ class GradientButton extends StatelessWidget {
   final List<BoxShadow>? shadow;
   final EdgeInsetsGeometry margin;
   bool canClick;
-  String errorMessage;
 
   GradientButton({
     super.key,
@@ -28,19 +26,15 @@ class GradientButton extends StatelessWidget {
     this.border,
     this.shadow,
     this.canClick = true,
-    this.errorMessage = "Заполните данные!",
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: margin,
+      height: 57,
       child: InkWell(
-        onTap: canClick
-            ? onPressed
-            : () {
-                showCustomSnackBar(context, errorMessage);
-              },
+        onTap: onPressed,
         borderRadius: borderRadius,
         child: Opacity(
           opacity: canClick ? 1 : 0.5,

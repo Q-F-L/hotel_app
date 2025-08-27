@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:m_softer_test_project/elements/show_rating.dart';
 
 import '../themes/themes.dart';
@@ -11,43 +12,28 @@ class CardRequest extends StatefulWidget {
 }
 
 class _CardRequestState extends State<CardRequest> {
-  var stateIconMap = <String, String>{
-    'complated': 'check_mark',
-    'inProcess': 'time_mark',
-    'unaccepted': 'grey_time_mark'
-  };
-
-  String state = 'inProcess';
-
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () {
-        showDialog(
-            context: context,
-            builder: (context) {
-              return ShowRating();
-            });
-      },
-      child: Container(
-        height: 100,
-        margin: EdgeInsets.only(bottom: 15),
-        padding: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          border: Border.all(
-            color: AppColors.grey1,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: AppColors.shadow,
-              spreadRadius: 0,
-              blurRadius: 20,
-              offset: Offset(0, 8), // changes position of shadow
-            ),
-          ],
-          color: AppColors.white,
-          borderRadius: BorderRadius.all(Radius.circular(16)),
+    return Container(
+      height: 100,
+      margin: EdgeInsets.only(bottom: 15),
+      padding: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        border: Border.all(
+          color: AppColors.grey1,
         ),
+        boxShadow: [shadow],
+        color: AppColors.white,
+        borderRadius: BorderRadius.all(Radius.circular(16)),
+      ),
+      child: InkWell(
+        onTap: () {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return ShowRating();
+              });
+        },
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -73,7 +59,8 @@ class _CardRequestState extends State<CardRequest> {
                 SizedBox(
                   child: Row(
                     children: [
-                      Image.asset("assets/images/${stateIconMap[state]}.png"),
+                      SvgPicture.asset(
+                          "$pathForImage${AppImage.requestComplited}"),
                       SizedBox(
                         width: 8,
                       ),

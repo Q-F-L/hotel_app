@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:m_softer_test_project/elements/gradient_button.dart';
 
 import '../pages/shower_new_page/bloc/shower_new_page_bloc.dart';
@@ -11,24 +13,32 @@ class Shower extends StatelessWidget {
     required this.image,
     required this.description,
     required this.textButton,
-    this.onPressLast,
+    this.onPress,
   });
 
   final String image;
   final String description;
   final String textButton;
-  final VoidCallback? onPressLast;
+  final VoidCallback? onPress;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        systemOverlayStyle: SystemUiOverlayStyle(
+          systemNavigationBarDividerColor: Colors.transparent,
+          statusBarColor: Colors.transparent,
+          systemNavigationBarColor: Colors.transparent,
+          systemNavigationBarContrastEnforced: false,
+        ),
+      ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           const SizedBox(),
-          Image.asset("assets/images/logo_mini.png"),
-          Image.asset(image),
+          SvgPicture.asset("$pathForImage${AppImage.icon}"),
+          SvgPicture.asset(image),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 50),
             child: Text(
@@ -43,8 +53,7 @@ class Shower extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 25, right: 40),
             child: GradientButton(
-              canClick: true,
-              onPressed: onPressLast ??
+              onPressed: onPress ??
                   () => context.read<ShowerNewPageBloc>().add(NewPage()),
               borderRadius: const BorderRadius.all(Radius.circular(15)),
               margin: const EdgeInsets.symmetric(vertical: 0, horizontal: 40.0),

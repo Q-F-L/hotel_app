@@ -6,7 +6,7 @@ enum AuthStatus {
   authenticated,
   unauthenticated,
   success,
-  failure,
+  failure
 }
 
 class AuthState {

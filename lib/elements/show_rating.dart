@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:m_softer_test_project/elements/gradient_button.dart';
+import 'package:m_softer_test_project/elements/star_rating.dart';
 import 'package:m_softer_test_project/elements/text_input_form.dart';
 import 'package:m_softer_test_project/themes/themes.dart';
-
-import 'star_rating.dart';
 
 class ShowRating extends StatefulWidget {
   const ShowRating({super.key});
@@ -42,7 +41,6 @@ class _ShowRatingState extends State<ShowRating> {
         ),
         GradientButton(
           onPressed: () {},
-          canClick: true,
           borderRadius: BorderRadius.all(Radius.circular(16)),
           child: Text(
             "Готово",

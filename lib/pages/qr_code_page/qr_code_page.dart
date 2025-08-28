@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -19,11 +20,13 @@ class QrCodePage extends StatefulWidget {
 
 class _QrCodePageState extends State<QrCodePage> {
   final controller = MobileScannerController(
+    returnImage: true,
     useNewCameraSelector: false,
     autoStart: false,
     formats: [BarcodeFormat.qrCode],
   );
   late final QrCodeBloc bloc;
+  Uint8List? scannedImage;
 
   @override
   void initState() {
@@ -83,32 +86,43 @@ class _QrCodePageState extends State<QrCodePage> {
                   SizedBox(
                     height: 300,
                     width: MediaQuery.of(context).size.width,
-                    child: MobileScanner(
-                      key: ValueKey(DateTime.now()
-                          .millisecondsSinceEpoch), // для разработчика удалить при сборке продакшена.
-                      overlayBuilder: (context, constraints) {
-                        return state.status != QrCodeStatus.loading
-                            ? CustomPaint(
-                                painter: QrScannerOverlay(
-                                  borderColor: Colors.white,
-                                  borderWidth: 3.0,
-                                  borderRadius: 20.0,
-                                  borderLength: 35.0,
-                                  cutOutSize:
-                                      MediaQuery.of(context).size.width * 0.5,
-                                ),
-                              )
-                            : CircularProgressIndicator(strokeWidth: 2);
-                      },
-                      controller: controller,
-                      onDetect: (capture) {
-                        final List<Barcode> barcodes = capture.barcodes;
+                    child: scannedImage != null
+                        ? Image.memory(
+                            scannedImage!,
+                            fit: BoxFit.fitWidth,
+                          )
+                        : MobileScanner(
+                            key: ValueKey(DateTime.now()
+                                .millisecondsSinceEpoch), // для разработчика удалить при сборке продакшена.
+                            overlayBuilder: (context, constraints) {
+                              return state.status != QrCodeStatus.loading
+                                  ? CustomPaint(
+                                      painter: QrScannerOverlay(
+                                        borderColor: Colors.white,
+                                        borderWidth: 3.0,
+                                        borderRadius: 20.0,
+                                        borderLength: 35.0,
+                                        cutOutSize:
+                                            MediaQuery.of(context).size.width *
+                                                0.5,
+                                      ),
+                                    )
+                                  : CircularProgressIndicator(strokeWidth: 2);
+                            },
+                            controller: controller,
+                            onDetect: (capture) {
+                              final List<Barcode> barcodes = capture.barcodes;
+                              setState(() {
+                                scannedImage = capture.image;
+                              });
 
-                        for (final barcode in barcodes) {
-                          bloc.add(ScanQrCodeEvent(response: barcode.rawValue));
-                        }
-                      },
-                    ),
+                              for (final barcode in barcodes) {
+                                bloc.add(ScanQrCodeEvent(
+                                    response: barcode.rawValue));
+                              }
+                              controller.stop();
+                            },
+                          ),
                   ),
                   SizedBox(
                     height: 15,

@@ -6,5 +6,5 @@
     <color name="colorAccent">#2BA438</color>
     
     <!-- Для Splash Screen -->
-    <color name="splash_background">#2BA438</color>
+    <color name="splash_background">#FFFFFF</color>
 </resources>

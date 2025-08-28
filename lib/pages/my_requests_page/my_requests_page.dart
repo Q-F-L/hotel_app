@@ -17,15 +17,19 @@ class _MyRequestsPageState extends State<MyRequestsPage> {
       mainAxisAlignment: MainAxisAlignment.center,
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        CustomAppbar(
-          title: "Сервисы",
+        Expanded(
+          flex: 3,
+          child: CustomAppbar(
+            title: "Мои запросы",
+          ),
         ),
-        ClipRect(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30),
+        Expanded(
+          flex: 13,
+          child: ClipRect(
             child: SizedBox(
               height: MediaQuery.of(context).size.height - 137,
               child: ListView(
+                padding: EdgeInsets.symmetric(horizontal: 30),
                 clipBehavior: Clip.none,
                 children: [
                   CardRequest(),

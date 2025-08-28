@@ -35,15 +35,15 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final LoginModel jsonModel =
           await AuthRequest.login(event.email, event.password);
 
-      if (jsonModel.status == true) {
-        final token = jsonModel.token ?? "Ошибка: Пустой токен";
+      if (jsonModel.status == true && (jsonModel.token ?? '').isNotEmpty) {
+        final token = jsonModel.token;
 
-        await TokenRepository.saveToken(token);
+        await TokenRepository.saveToken(token!);
 
         await TokenRepository.loadToken();
 
         // Нужно для firbase
-        await AuthRequest.sendFcmToken(token, token);
+        await AuthRequest.sendFcmToken(authToken: token, fcmToken: token);
 
         emit(state.copyWith(
           status: AuthStatus.authenticated,
@@ -119,18 +119,12 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   void _onCheckToken(AuthCheckToken event, Emitter<AuthState> emit) async {
     emit(state.copyWith(status: AuthStatus.loading));
-    await User.create();
-    if (TokenRepository.token == User.deviceToken) {
-      emit(state.copyWith(
-        status: AuthStatus.authenticated,
-        token: User.deviceToken,
-      ));
-      return;
-    }
 
     if (TokenRepository.token.isNotEmpty) {
       await AuthRequest.sendFcmToken(
-          TokenRepository.token, TokenRepository.token);
+          authToken: TokenRepository.token, fcmToken: TokenRepository.token);
+
+      ///TODO не отправлять bearer token вместо divice tokrn
       await User.create();
       emit(state.copyWith(
         status: AuthStatus.authenticated,

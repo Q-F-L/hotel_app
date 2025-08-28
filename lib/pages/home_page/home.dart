@@ -17,6 +17,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   late PageController _pageController;
+  bool _isFromNavBar = false;
 
   @override
   void initState() {
@@ -29,7 +30,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _pageController.dispose();
     super.dispose();
   }
@@ -40,28 +40,75 @@ class _HomePageState extends State<HomePage> {
       create: (context) => BottonNavigationBloc(),
       child: BlocConsumer<BottonNavigationBloc, HomeState>(
         listener: (context, state) {
-          _pageController.animateToPage(
+          _isFromNavBar = true;
+
+          _pageController
+              .animateToPage(
             state.nowPage,
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
-          );
+          )
+              .then((_) {
+            _isFromNavBar = false;
+          });
         },
         builder: (context, state) {
           return Scaffold(
             resizeToAvoidBottomInset: false,
             bottomSheet: CustomBottomNavigationBar(),
-            floatingActionButton: GradientFloatingActionButton(
-              onPressed: () => context
-                  .read<BottonNavigationBloc>()
-                  .add(BNMoveToEvent(selectedPage: 1)),
-              firstColor: Color.fromARGB(255, 83, 232, 140),
-              secondColor: Color.fromARGB(255, 21, 190, 120),
+            floatingActionButton: TweenAnimationBuilder<Color?>(
+              tween: ColorTween(
+                begin: AppColors.white,
+                end: state.nowPage == 1
+                    ? const Color.fromARGB(255, 83, 232, 140)
+                    : AppColors.white,
+              ),
+              duration: const Duration(milliseconds: 300),
+              builder: (context, firstColor, child) {
+                return TweenAnimationBuilder<Color?>(
+                  tween: ColorTween(
+                    begin: AppColors.white,
+                    end: state.nowPage == 1
+                        ? const Color.fromARGB(255, 21, 190, 120)
+                        : AppColors.white,
+                  ),
+                  duration: const Duration(milliseconds: 300),
+                  builder: (context, secondColor, child) {
+                    return TweenAnimationBuilder<Color?>(
+                      tween: ColorTween(
+                        begin: AppColors.realBlack,
+                        end: state.nowPage == 1
+                            ? AppColors.white
+                            : AppColors.realBlack,
+                      ),
+                      duration: const Duration(milliseconds: 300),
+                      builder: (context, iconColor, child) {
+                        return GradientFloatingActionButton(
+                          onPressed: () => context
+                              .read<BottonNavigationBloc>()
+                              .add(BNMoveToEvent(selectedPage: 1)),
+                          firstColor: firstColor!,
+                          secondColor: secondColor!,
+                          iconColor: iconColor!,
+                        );
+                      },
+                    );
+                  },
+                );
+              },
             ),
             floatingActionButtonLocation:
                 FloatingActionButtonLocation.centerDocked,
             backgroundColor: AppColors.backgroundWhite,
             body: PageView(
               controller: _pageController,
+              onPageChanged: (index) {
+                if (!_isFromNavBar) {
+                  context
+                      .read<BottonNavigationBloc>()
+                      .add(BNMoveToEvent(selectedPage: index));
+                }
+              },
               children: const [MyRequestsPage(), ServicesPage(), ProfilePage()],
             ),
           );

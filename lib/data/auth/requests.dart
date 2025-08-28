@@ -71,7 +71,8 @@ class AuthRequest {
   }
 
   // Пока нет FireBase
-  static Future<void> sendFcmToken(String authToken, String fcmToken) async {
+  static Future<void> sendFcmToken(
+      {String? authToken, String? fcmToken}) async {
     try {
       await http.post(
         Uri.parse('$urlDomain/api/profile/fcm-token'),

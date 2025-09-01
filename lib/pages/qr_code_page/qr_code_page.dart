@@ -93,7 +93,7 @@ class _QrCodePageState extends State<QrCodePage> {
                           )
                         : MobileScanner(
                             key: ValueKey(DateTime.now()
-                                .millisecondsSinceEpoch), // для разработчика удалить при сборке продакшена.
+                                .millisecondsSinceEpoch), //TODO: для разработчика удалить при сборке продакшена.
                             overlayBuilder: (context, constraints) {
                               return state.status != QrCodeStatus.loading
                                   ? CustomPaint(

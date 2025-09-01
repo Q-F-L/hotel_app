@@ -39,7 +39,7 @@ ThemeData createLightTheme() {
       bodyLarge: bodyLarge,
       titleLarge: titleLarge,
       titleSmall: titleSmall,
-      headlineLarge: headline2_regular,
+      headlineLarge: headline2Regular,
       bodySmall: bodySmall,
       labelSmall: labelSmall,
       labelMedium: datePickerText,

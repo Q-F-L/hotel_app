@@ -5,7 +5,7 @@ import '../pages/text_input_form/bloc/text_input_form_bloc.dart';
 import '../themes/themes.dart';
 
 class TextInputForm extends StatefulWidget {
-  TextInputForm({
+  const TextInputForm({
     super.key,
     this.prefix,
     this.isPassword = false,
@@ -16,6 +16,7 @@ class TextInputForm extends StatefulWidget {
     this.hintText,
     this.errorText,
     this.controller,
+    this.focusNode,
   });
 
   final Widget? prefix;
@@ -25,8 +26,9 @@ class TextInputForm extends StatefulWidget {
   final String? initialValue;
   final void Function(String)? onChanged;
   final String? hintText;
-  String? errorText;
+  final String? errorText;
   final TextEditingController? controller;
+  final FocusNode? focusNode;
 
   @override
   State<TextInputForm> createState() => _TextInputFormState();
@@ -70,6 +72,7 @@ class _TextInputFormState extends State<TextInputForm> {
         return Container(
           decoration: BoxDecoration(boxShadow: [shadow]),
           child: TextFormField(
+            focusNode: widget.focusNode,
             keyboardType: widget.keyboardType,
             controller: widget.controller,
             onChanged: widget.onChanged,

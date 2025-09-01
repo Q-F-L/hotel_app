@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class IconGradient extends StatelessWidget {
-  IconGradient({super.key, required this.icon, required this.colors});
-  Widget icon;
-  List<Color> colors;
+  const IconGradient({super.key, required this.icon, required this.colors});
+  final Widget icon;
+  final List<Color> colors;
 
   @override
   Widget build(BuildContext context) {

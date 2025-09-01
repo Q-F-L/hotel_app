@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../themes/themes.dart';
 
-showToast(BuildContext context, String message) {
+showToast(BuildContext context, String message, {bool? focus = false}) {
   FToast fToast = FToast();
-  ;
-  // Убираем все тосты — и активные, и в очереди
+
+  // Убираем все тосты активные, очереди
   fToast.removeCustomToast();
   fToast.removeQueuedCustomToasts();
 
@@ -27,7 +27,7 @@ showToast(BuildContext context, String message) {
 
   fToast.showToast(
     child: toast,
-    gravity: ToastGravity.BOTTOM,
+    gravity: focus ?? false ? ToastGravity.CENTER : ToastGravity.BOTTOM,
     toastDuration: const Duration(seconds: 2),
   );
 }

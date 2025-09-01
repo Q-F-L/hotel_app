@@ -18,13 +18,9 @@ class RoomByCodeRequest {
         },
         body: jsonEncode({"code": code}),
       );
-      print("response.body");
-      print(response.body);
       final RoomByCodeModel jsonModel = roomByCodeModelFromJson(response.body);
-      print("jsonModel.success ${jsonModel.success}");
       return jsonModel;
     } catch (e) {
-      print(e);
       return RoomByCodeModel(error: e.toString());
     }
   }

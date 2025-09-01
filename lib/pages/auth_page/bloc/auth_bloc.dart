@@ -14,18 +14,22 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<AuthLogin>(_onLogin);
     on<AuthRegister>(_onRegister);
     on<AuthCheckToken>(_onCheckToken);
+
+    on<AuthClearStatus>((event, emit) {
+      emit(state.copyWith(
+          status: AuthStatus.initial, errorMessage: null, message: null));
+    });
   }
 
   void _onLogin(AuthLogin event, Emitter<AuthState> emit) async {
     emit(state.copyWith(
       status: AuthStatus.loading,
     ));
-    final String? emailError = Validators.validateEmail(event.email);
+    final String? errorMessage = Validators.validateEmail(event.email);
 
-    if (emailError != null) {
+    if (errorMessage != null) {
       emit(state.copyWith(
-        emailError: emailError,
-        isFormValid: true,
+        errorMessage: errorMessage,
         status: AuthStatus.failure,
       ));
       return;
@@ -56,7 +60,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         ));
       }
     } catch (e) {
-      print(e);
       emit(state.copyWith(
         status: AuthStatus.failure,
         errorMessage: e.toString(),
@@ -69,22 +72,19 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     final emailError = Validators.validateEmail(event.email);
     final nameError = Validators.validateName(event.name);
     final surnameError = Validators.validateSurname(event.surname);
+    final errorMessage =
+        nameError ?? surnameError ?? emailError ?? passwordError;
 
     emit(state.copyWith(
-      errorName: nameError,
-      surnameError: surnameError,
-      emailError: emailError,
-      passwordError: passwordError,
-      isFormValid: emailError == null &&
-          passwordError == null &&
-          nameError == null &&
-          surnameError == null,
+      status: AuthStatus.failure,
+      errorMessage: errorMessage,
     ));
 
-    if (emailError != null ||
-        passwordError != null ||
-        nameError != null ||
-        surnameError != null) {
+    if (errorMessage != null) {
+      emit(state.copyWith(
+        status: AuthStatus.failure,
+        errorMessage: errorMessage,
+      ));
       return;
     }
 
@@ -124,7 +124,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       await AuthRequest.sendFcmToken(
           authToken: TokenRepository.token, fcmToken: TokenRepository.token);
 
-      ///TODO не отправлять bearer token вместо divice tokrn
+      ///TODO не отправлять bearer token вместо divice token
       await User.create();
       emit(state.copyWith(
         status: AuthStatus.authenticated,

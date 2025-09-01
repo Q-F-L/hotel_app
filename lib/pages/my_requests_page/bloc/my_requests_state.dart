@@ -1,6 +1,5 @@
 part of 'my_requests_bloc.dart';
 
-@immutable
-sealed class MyRequestsState {}
+abstract class MyRequestsState {}
 
 final class MyRequestsInitial extends MyRequestsState {}

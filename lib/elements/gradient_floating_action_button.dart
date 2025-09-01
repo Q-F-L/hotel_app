@@ -32,6 +32,7 @@ class GradientFloatingActionButton extends StatelessWidget {
         onPressed: onPressed,
         child: SvgPicture.asset(
           "$pathForImage${AppImage.floatButtonServises}",
+          // ignore: deprecated_member_use
           color: iconColor,
         ),
       ),

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Основные цвета -->
-    <color name="colorPrimary">#2BA438</color>
-    <color name="colorPrimaryDark">#2BA438</color>
-    <color name="colorAccent">#2BA438</color>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#FFFFFF</color>
+    <color name="colorAccent">#FFFFFF</color>
     
     <!-- Для Splash Screen -->
     <color name="splash_background">#FFFFFF</color>

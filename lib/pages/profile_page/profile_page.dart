@@ -124,7 +124,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               },
                               child: Text(
                                 "Выселиться",
-                                style: headline2_regular,
+                                style: headline2Regular,
                               ),
                             ),
                           ],

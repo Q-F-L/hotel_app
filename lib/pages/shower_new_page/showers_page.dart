@@ -44,7 +44,6 @@ class _ShowersState extends State<Showers> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     bloc.close();
     _pageController.dispose();
     super.dispose();

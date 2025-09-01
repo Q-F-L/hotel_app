@@ -104,7 +104,6 @@ class _ShowAdditionalServicesState extends State<ShowAdditionalServices> {
   }
 
   Widget _buildOption(Options option) {
-    print(option.values);
     switch (option.type) {
       case 1:
         return _textOption(option);
@@ -175,9 +174,6 @@ class _ShowAdditionalServicesState extends State<ShowAdditionalServices> {
         .map((e) => e.trim())
         .where((e) => e.isNotEmpty)
         .toList();
-    print("items");
-    print(items);
-    print(option.values);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

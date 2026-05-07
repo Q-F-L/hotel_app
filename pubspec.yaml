@@ -39,7 +39,7 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   device_preview: ^1.2.0
-  intl: ^0.20.2
+#  intl: ^0.20.2
   scroll_datetime_picker: ^0.2.2
   mobile_scanner: ^6.0.10
   http: ^1.4.0
@@ -48,7 +48,7 @@ dependencies:
   webview_flutter: ^4.13.0
   flutter_svg: ^2.2.0
   url_launcher: ^6.3.2
-  flutter_native_splash: ^2.4.6
+  flutter_native_splash: ^2.4.4
 
 flutter_native_splash:
   color: "#FFFFFF"

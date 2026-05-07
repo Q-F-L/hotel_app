@@ -19,28 +19,43 @@ class QrCodePage extends StatefulWidget {
 }
 
 class _QrCodePageState extends State<QrCodePage> {
-  final controller = MobileScannerController(
+  final MobileScannerController controller = MobileScannerController(
     returnImage: true,
-    useNewCameraSelector: false,
-    autoStart: false,
+    autoStart: true,
     formats: [BarcodeFormat.qrCode],
   );
+
   late final QrCodeBloc bloc;
   Uint8List? scannedImage;
 
   @override
   void initState() {
-    controller.start();
-
-    bloc = QrCodeBloc();
     super.initState();
+    bloc = QrCodeBloc();
   }
 
   @override
-  Future<void> dispose() async {
+  void dispose() {
     controller.dispose();
     bloc.close();
     super.dispose();
+  }
+
+  void _onDetect(BarcodeCapture capture) {
+    final barcodes = capture.barcodes;
+
+    setState(() {
+      scannedImage = capture.image;
+    });
+
+    for (final barcode in barcodes) {
+      final value = barcode.rawValue;
+      if (value != null) {
+        bloc.add(ScanQrCodeEvent(response: value));
+      }
+    }
+
+    controller.stop();
   }
 
   @override
@@ -61,86 +76,89 @@ class _QrCodePageState extends State<QrCodePage> {
         ),
       ),
       body: BlocProvider(
-        create: (context) => bloc,
+        create: (_) => bloc,
         child: BlocConsumer<QrCodeBloc, QrCodeState>(
           listener: (context, state) {
             if (state is CheckInSuccess) {
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (context) => HomePage()),
-                (Route<dynamic> route) => false,
+                    (route) => false,
               );
             }
 
             if (state.status == QrCodeStatus.failure) {
-              showToast(context, state.errorMessage ?? "Error null");
+              showToast(context, state.errorMessage ?? "Error");
             }
+
             if (state.status == QrCodeStatus.success) {
               showToast(context, "Success");
             }
           },
           builder: (context, state) {
+            final success = state.oraganizationIfno?.success ?? false;
+
             return SafeArea(
               child: Column(
                 children: [
                   SizedBox(
                     height: 300,
                     width: MediaQuery.of(context).size.width,
-                    child: scannedImage != null
-                        ? Image.memory(
+                    child: Stack(
+                      children: [
+                        if (scannedImage != null)
+                          Image.memory(
                             scannedImage!,
-                            fit: BoxFit.fitWidth,
+                            fit: BoxFit.cover,
+                            width: double.infinity,
                           )
-                        : MobileScanner(
-                            key: ValueKey(DateTime.now()
-                                .millisecondsSinceEpoch), //TODO: для разработчика удалить при сборке продакшена.
-                            overlayBuilder: (context, constraints) {
-                              return state.status != QrCodeStatus.loading
-                                  ? CustomPaint(
-                                      painter: QrScannerOverlay(
-                                        borderColor: Colors.white,
-                                        borderWidth: 3.0,
-                                        borderRadius: 20.0,
-                                        borderLength: 35.0,
-                                        cutOutSize:
-                                            MediaQuery.of(context).size.width *
-                                                0.5,
-                                      ),
-                                    )
-                                  : CircularProgressIndicator(strokeWidth: 2);
-                            },
+                        else
+                          MobileScanner(
                             controller: controller,
-                            onDetect: (capture) {
-                              final List<Barcode> barcodes = capture.barcodes;
-                              setState(() {
-                                scannedImage = capture.image;
-                              });
-
-                              for (final barcode in barcodes) {
-                                bloc.add(ScanQrCodeEvent(
-                                    response: barcode.rawValue));
-                              }
-                              controller.stop();
-                            },
+                            onDetect: _onDetect,
                           ),
+
+                        // 🔥 OVERLAY (замена overlayBuilder)
+                        if (scannedImage == null)
+                          IgnorePointer(
+                            child: CustomPaint(
+                              painter: QrScannerOverlay(
+                                cutOutSize:
+                                MediaQuery.of(context).size.width * 0.5,
+                              ),
+                              child: Container(),
+                            ),
+                          ),
+
+                        if (state.status == QrCodeStatus.loading)
+                          const Center(
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                      ],
+                    ),
                   ),
-                  SizedBox(
-                    height: 15,
-                  ),
+
+                  const SizedBox(height: 15),
+
                   columnTextResponse(state),
-                  SizedBox(
-                    height: 24,
-                  ),
+
+                  const SizedBox(height: 24),
+
                   GradientButton(
-                    canClick: state.oraganizationIfno?.success ?? false,
-                    margin: EdgeInsets.symmetric(horizontal: 20),
-                    onPressed: () {
-                      bloc.add(CheckIn(
-                        roomId: state.oraganizationIfno!.room!.id!,
-                        date: DateTime.now().toString(),
-                      ));
-                    },
-                    borderRadius: BorderRadius.all(Radius.circular(16)),
+                    canClick: success,
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    onPressed: success
+                        ? () {
+                      bloc.add(
+                        CheckIn(
+                          roomId: state.oraganizationIfno!.room!.id!,
+                          date: DateTime.now().toString(),
+                        ),
+                      );
+                    }
+                        : null,
+                    borderRadius:
+                    const BorderRadius.all(Radius.circular(16)),
                     child: Text(
                       "Готово",
                       style: whiteTextButton,
@@ -156,45 +174,46 @@ class _QrCodePageState extends State<QrCodePage> {
   }
 
   Widget columnTextResponse(QrCodeState state) {
-    return state.oraganizationIfno?.success ?? false
-        ? SizedBox(
-            height: 50,
-            child: Column(
-              children: [
-                Text(
-                  '${state.oraganizationIfno?.room?.organization?.title ?? 'Нет названия организации'}, ${state.oraganizationIfno?.room?.organization?.physicalAddress ?? 'Нет адреса'}, ',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall
-                      ?.copyWith(fontSize: 16),
-                ),
-                Text(
-                  "№ ${state.oraganizationIfno?.room?.name ?? 'Нет комнаты'}",
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .textTheme
-                      .labelSmall
-                      ?.copyWith(fontSize: 16),
-                ),
-              ],
-            ),
-          )
-        : SizedBox();
+    final info = state.oraganizationIfno;
+
+    if (info?.success != true) return const SizedBox();
+
+    return SizedBox(
+      height: 50,
+      child: Column(
+        children: [
+          Text(
+            '${info?.room?.organization?.title ?? 'Нет названия'}, '
+                '${info?.room?.organization?.physicalAddress ?? 'Нет адреса'}',
+            textAlign: TextAlign.center,
+            style: Theme.of(context)
+                .textTheme
+                .labelSmall
+                ?.copyWith(fontSize: 16),
+          ),
+          Text(
+            "№ ${info?.room?.name ?? 'Нет комнаты'}",
+            textAlign: TextAlign.center,
+            style: Theme.of(context)
+                .textTheme
+                .labelSmall
+                ?.copyWith(fontSize: 16),
+          ),
+        ],
+      ),
+    );
   }
 }
 
 class QrScannerOverlay extends CustomPainter {
   final Color borderColor;
   final double borderWidth;
-  final double borderRadius;
   final double borderLength;
   final double cutOutSize;
 
   QrScannerOverlay({
     this.borderColor = Colors.white,
     this.borderWidth = 4.0,
-    this.borderRadius = 12.0,
     this.borderLength = 30.0,
     required this.cutOutSize,
   });
@@ -204,31 +223,29 @@ class QrScannerOverlay extends CustomPainter {
     final paint = Paint()
       ..color = borderColor
       ..style = PaintingStyle.stroke
-      ..strokeWidth = borderWidth
-      ..strokeJoin = StrokeJoin.round;
+      ..strokeWidth = borderWidth;
 
     final centerX = size.width / 2;
     final centerY = size.height / 2;
-    final halfSize = cutOutSize / 2;
+    final half = cutOutSize / 2;
 
-    _drawCorner(canvas, paint, centerX - halfSize, centerY - halfSize, 0);
-    _drawCorner(canvas, paint, centerX + halfSize, centerY - halfSize, 90);
-    _drawCorner(canvas, paint, centerX + halfSize, centerY + halfSize, 180);
-    _drawCorner(canvas, paint, centerX - halfSize, centerY + halfSize, 270);
+    _drawCorner(canvas, paint, centerX - half, centerY - half, 0);
+    _drawCorner(canvas, paint, centerX + half, centerY - half, 90);
+    _drawCorner(canvas, paint, centerX + half, centerY + half, 180);
+    _drawCorner(canvas, paint, centerX - half, centerY + half, 270);
   }
 
-  void _drawCorner(
-      Canvas canvas, Paint paint, double x, double y, double rotation) {
+  void _drawCorner(Canvas canvas, Paint paint, double x, double y, double rot) {
     canvas.save();
     canvas.translate(x, y);
-    canvas.rotate(rotation * pi / 180);
+    canvas.rotate(rot * pi / 180);
 
-    final cornerPath = Path()
-      ..moveTo(0, borderLength)
+    final path = Path()
+      ..moveTo(0, 30)
       ..lineTo(0, 0)
-      ..lineTo(borderLength, 0);
+      ..lineTo(30, 0);
 
-    canvas.drawPath(cornerPath, paint);
+    canvas.drawPath(path, paint);
     canvas.restore();
   }
 

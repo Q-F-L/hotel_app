@@ -1,5 +1,5 @@
 import 'package:bloc/bloc.dart';
-import 'package:m_softer_test_project/data/services/models/order.dart';
+import 'package:m_softer_test_project/data/services/models/createOrder.dart';
 import 'package:m_softer_test_project/data/services/models/services.dart';
 import 'package:m_softer_test_project/data/services/requests.dart';
 
@@ -13,7 +13,7 @@ class ServicesBloc extends Bloc<ServicesEvent, ServicesState> {
   }
 
   _createOrder(CreateOrder event, Emitter<ServicesState> emit) async {
-    final OrderModel jsonModel = await ServicesRequest.createOreder(
+    final CreateOrderModel jsonModel = await ServicesRequest.createOreder(
         event.servicesId ?? 0, event.options ?? []);
 
     try {

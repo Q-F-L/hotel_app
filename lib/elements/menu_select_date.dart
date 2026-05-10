@@ -5,9 +5,9 @@ import 'package:scroll_datetime_picker/scroll_datetime_picker.dart';
 import '../themes/themes.dart';
 
 class MenuSelectDate extends StatefulWidget {
-  MenuSelectDate({super.key, required this.onChange});
+  const MenuSelectDate({super.key, required this.onChange});
 
-  Function(String?) onChange;
+  final Function(String?) onChange;
 
   @override
   State<MenuSelectDate> createState() => _MenuSelectDateState();
@@ -19,7 +19,6 @@ class _MenuSelectDateState extends State<MenuSelectDate> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     dropdownController = TextEditingController();
   }

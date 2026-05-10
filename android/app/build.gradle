@@ -7,7 +7,7 @@ plugins {
 
 android {
     namespace = "com.example.m_softer_test_project"
-    compileSdk = 35
+    compileSdk = 36
     ndkVersion = flutter.ndkVersion
 
     compileOptions {

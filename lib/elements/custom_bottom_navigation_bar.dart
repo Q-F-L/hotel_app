@@ -51,6 +51,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
                 children: [
                   SvgPicture.asset(
                       "$pathForImage${AppImage.buttonNavigationRequest}",
+                      // ignore: deprecated_member_use
                       color:
                           nowPage == 0 ? AppColors.textGreen : AppColors.black),
                   Text(
@@ -103,6 +104,7 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
               children: [
                 SvgPicture.asset(
                     "$pathForImage${AppImage.buttonNavigationProfile}",
+                    // ignore: deprecated_member_use
                     color:
                         nowPage == 2 ? AppColors.textGreen : AppColors.black),
                 Text(

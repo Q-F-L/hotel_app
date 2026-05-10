@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:m_softer_test_project/utils/constants.dart';
 
@@ -71,7 +72,8 @@ class AuthRequest {
   }
 
   // Пока нет FireBase
-  static Future<void> sendFcmToken(String authToken, String fcmToken) async {
+  static Future<void> sendFcmToken(
+      {String? authToken, String? fcmToken}) async {
     try {
       await http.post(
         Uri.parse('$urlDomain/api/profile/fcm-token'),
@@ -85,7 +87,7 @@ class AuthRequest {
         }),
       );
     } catch (e) {
-      print(e);
+      debugPrint(e.toString());
     }
   }
 }

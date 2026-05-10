@@ -20,7 +20,6 @@ class QrCodeBloc extends Bloc<QrCodeEvent, QrCodeState> {
   }
 
   _scanQrCodeEvent(ScanQrCodeEvent event, Emitter<QrCodeState> emit) async {
-    print("event.response ${event.response}");
     emit(state.copyWith(status: QrCodeStatus.loading));
     try {
       String qrCode = event.response!.split('/').last;

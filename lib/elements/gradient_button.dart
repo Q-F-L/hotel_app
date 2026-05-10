@@ -9,9 +9,9 @@ class GradientButton extends StatelessWidget {
   final BoxBorder? border;
   final List<BoxShadow>? shadow;
   final EdgeInsetsGeometry margin;
-  bool canClick;
+  final bool canClick;
 
-  GradientButton({
+  const GradientButton({
     super.key,
     required this.onPressed,
     required this.child,

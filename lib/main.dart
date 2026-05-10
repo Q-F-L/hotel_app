@@ -26,6 +26,7 @@ void main() async {
   initializeDateFormatting('ru_RU', null).then((_) => runApp(MyApp(
         authBloc: authBloc,
       )));
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp,]);
 }
 
 class MyApp extends StatelessWidget {

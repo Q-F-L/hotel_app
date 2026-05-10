@@ -55,13 +55,17 @@ class _ProfilePageState extends State<ProfilePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CustomAppbar(
-                title: "Сервисы",
+              Expanded(
+                flex: 3,
+                child: CustomAppbar(
+                  title: "Мой профиль",
+                ),
               ),
-              ClipRect(
-                child: SizedBox(
-                  height: MediaQuery.of(context).size.height - 137,
+              Expanded(
+                flex: 13,
+                child: ClipRect(
                   child: ListView(
+                    padding: EdgeInsets.zero,
                     clipBehavior: Clip.none,
                     children: [
                       Container(
@@ -120,7 +124,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               },
                               child: Text(
                                 "Выселиться",
-                                style: headline2_regular,
+                                style: headline2Regular,
                               ),
                             ),
                           ],

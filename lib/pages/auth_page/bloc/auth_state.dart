@@ -14,7 +14,6 @@ class AuthState {
   final String password;
   final String? emailError;
   final String? passwordError;
-  final bool isFormValid;
   final AuthStatus status;
   final String? errorMessage;
   final String name;
@@ -33,7 +32,6 @@ class AuthState {
     this.password = '',
     this.emailError,
     this.passwordError,
-    this.isFormValid = false,
     this.status = AuthStatus.initial,
     this.errorMessage,
     this.name = '',
@@ -69,7 +67,6 @@ class AuthState {
       password: password ?? this.password,
       emailError: emailError,
       passwordError: passwordError,
-      isFormValid: isFormValid ?? this.isFormValid,
       status: status ?? this.status,
       errorMessage: errorMessage ?? this.errorMessage,
       message: message ?? this.message,

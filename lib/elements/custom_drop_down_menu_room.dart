@@ -5,7 +5,7 @@ import '../themes/themes.dart';
 import 'icon_gradient.dart';
 
 class CustomDropDownMenuRoom extends StatefulWidget {
-  CustomDropDownMenuRoom({
+  const CustomDropDownMenuRoom({
     super.key,
     required this.listString,
     this.icon,
@@ -19,8 +19,8 @@ class CustomDropDownMenuRoom extends StatefulWidget {
   final Widget? icon;
   final String? text;
   final double? width;
-  Function(Rooms?)? onSelected;
-  bool active;
+  final Function(Rooms?)? onSelected;
+  final bool active;
   @override
   State<CustomDropDownMenuRoom> createState() => _CustomDropDownMenuRoomState();
 }

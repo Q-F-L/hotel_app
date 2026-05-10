@@ -34,13 +34,13 @@ const titleSmall = TextStyle(
     fontSize: 20,
     color: Color.fromARGB(255, 59, 59, 59),
     fontFamily: "Philosopher");
-const headline2_regular = TextStyle(
+const headline2Regular = TextStyle(
   fontFamily: "Philosopher",
   fontWeight: FontWeight.w500,
   fontSize: 16,
   color: AppColors.black,
 );
-const headline3_regular = TextStyle(
+const headline3Regular = TextStyle(
     fontFamily: "Philosopher",
     fontWeight: FontWeight.w800,
     fontSize: 16,

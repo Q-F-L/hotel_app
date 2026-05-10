@@ -9,6 +9,7 @@ import 'package:m_softer_test_project/themes/themes.dart';
 import 'package:m_softer_test_project/utils/snackbar_helper.dart';
 
 import '../../elements/text_input_form.dart';
+import 'auth_page.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -17,14 +18,13 @@ class RegistrationPage extends StatefulWidget {
   State<RegistrationPage> createState() => _RegistrationPageState();
 }
 
-class _RegistrationPageState extends State<RegistrationPage> {
+class _RegistrationPageState extends State<RegistrationPage>
+    with WidgetsBindingObserver {
   final _formKey = GlobalKey<FormState>();
-
   final _nameController = TextEditingController();
   final _surnameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
-
   bool _canClick = false;
 
   void _wireCanClick() {
@@ -39,7 +39,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
   @override
   void initState() {
     super.initState();
-    // Только для UI-активации кнопки — НЕ диспатчим в BLoC
     _nameController.addListener(_wireCanClick);
     _surnameController.addListener(_wireCanClick);
     _emailController.addListener(_wireCanClick);
@@ -57,38 +56,42 @@ class _RegistrationPageState extends State<RegistrationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF6FBFB),
-      appBar: AppBar(
-        leading: IconButton(
-          onPressed: () => Navigator.pop(context),
-          icon: Image.asset('assets/images/left_arrow.png'),
-        ),
-        centerTitle: true,
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
         backgroundColor: const Color(0xFFF6FBFB),
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
-        title:
-            Text("Регистрация", style: Theme.of(context).textTheme.bodyLarge),
-      ),
-      body: BlocProvider(
-        create: (context) => AuthBloc(),
-        child: BlocConsumer<AuthBloc, AuthState>(
+        appBar: AppBar(
+          leading: IconButton(
+            onPressed: () => Navigator.pop(context),
+            icon: Image.asset('assets/images/left_arrow.png'),
+          ),
+          centerTitle: true,
+          backgroundColor: const Color(0xFFF6FBFB),
+          surfaceTintColor: Colors.transparent,
+          elevation: 0,
+          title:
+              Text("Регистрация", style: Theme.of(context).textTheme.bodyLarge),
+        ),
+        body: BlocConsumer<AuthBloc, AuthState>(
           listener: (context, state) {
-            if (state.status == AuthStatus.failure ||
-                state.errorName != null ||
-                state.surnameError != null ||
-                state.emailError != null ||
-                state.passwordError != null) {
-              final errorMessage = state.errorMessage ??
-                  state.errorName ??
-                  state.surnameError ??
-                  state.emailError ??
-                  state.passwordError ??
-                  'Произошла ошибка';
-              showToast(context, errorMessage);
+            if (state.status == AuthStatus.success) {
+              showToast(context, state.message ?? "Пустое сообщение",
+                  focus: WidgetsBinding.instance.window.viewInsets.bottom > 0);
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (BuildContext context) => AuthPage()),
+                ModalRoute.withName('/'),
+              );
+              context.read<AuthBloc>().add(AuthClearStatus());
             }
-            if (state.status == AuthStatus.success) Navigator.pop(context);
+
+            if (state.status == AuthStatus.failure) {
+              final errorMessage = state.errorMessage ?? 'Произошла ошибка';
+              showToast(context, errorMessage,
+                  focus: WidgetsBinding.instance.window.viewInsets.bottom > 0);
+              context.read<AuthBloc>().add(AuthClearStatus());
+            }
           },
           builder: (context, state) {
             final bloc = context.read<AuthBloc>();
@@ -145,7 +148,42 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       errorText: state.passwordError,
                     ),
                     const SizedBox(height: 20),
-                    // ... твой RichText с политиками ...
+                    Padding(
+                      padding: EdgeInsets.only(top: 20, bottom: 20),
+                      child: RichText(
+                        textAlign: TextAlign.center,
+                        text: TextSpan(
+                          text: 'Нажимая сохранить я соглашаюсь с ',
+                          style: Theme.of(context).textTheme.labelSmall,
+                          children: <TextSpan>[
+                            TextSpan(
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    showToast(context, "Правилам сервис",
+                                        focus: WidgetsBinding.instance.window
+                                                .viewInsets.bottom >
+                                            0);
+                                  },
+                                text: 'правилами сервиса ',
+                                style: TextStyle(
+                                    color: Color.fromARGB(255, 27, 194, 122))),
+                            TextSpan(text: 'и '),
+                            TextSpan(
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    showToast(
+                                        context, 'Политикой конфидециальности',
+                                        focus: WidgetsBinding.instance.window
+                                                .viewInsets.bottom >
+                                            0);
+                                  },
+                                text: 'политикой конфидециальности',
+                                style: TextStyle(
+                                    color: Color.fromARGB(255, 27, 194, 122))),
+                          ],
+                        ),
+                      ),
+                    ),
                     const SizedBox(height: 20),
                     GradientButton(
                       onPressed: () => _canClick

@@ -2,8 +2,6 @@ part of 'auth_bloc.dart';
 
 abstract class AuthEvent {
   const AuthEvent();
-
-  List<Object> get props => [];
 }
 
 class AuthNameChanged extends AuthEvent {
@@ -22,8 +20,6 @@ class AuthEmailChanged extends AuthEvent {
   final String email;
 
   AuthEmailChanged(this.email);
-
-  List<Object> get props => [email];
 }
 
 class AuthPasswordChanged extends AuthEvent {
@@ -55,3 +51,5 @@ class AuthLogin extends AuthEvent {
 class AuthCheckToken extends AuthEvent {}
 
 class AuthLogout extends AuthEvent {}
+
+class AuthClearStatus extends AuthEvent {}

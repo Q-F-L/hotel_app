@@ -7,10 +7,12 @@ class GradientFloatingActionButton extends StatelessWidget {
       {super.key,
       this.onPressed,
       required this.firstColor,
-      required this.secondColor});
+      required this.secondColor,
+      required this.iconColor});
   final VoidCallback? onPressed;
   final Color firstColor;
   final Color secondColor;
+  final Color iconColor;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +30,11 @@ class GradientFloatingActionButton extends StatelessWidget {
         disabledElevation: 0,
         highlightElevation: 0,
         onPressed: onPressed,
-        child: SvgPicture.asset("$pathForImage${AppImage.floatButtonServises}"),
+        child: SvgPicture.asset(
+          "$pathForImage${AppImage.floatButtonServises}",
+          // ignore: deprecated_member_use
+          color: iconColor,
+        ),
       ),
     );
   }

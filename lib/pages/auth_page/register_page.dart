@@ -9,6 +9,7 @@ import 'package:m_softer_test_project/themes/themes.dart';
 import 'package:m_softer_test_project/utils/snackbar_helper.dart';
 
 import '../../elements/text_input_form.dart';
+import 'auth_page.dart';
 
 class RegistrationPage extends StatefulWidget {
   const RegistrationPage({super.key});
@@ -77,7 +78,11 @@ class _RegistrationPageState extends State<RegistrationPage>
             if (state.status == AuthStatus.success) {
               showToast(context, state.message ?? "Пустое сообщение",
                   focus: WidgetsBinding.instance.window.viewInsets.bottom > 0);
-              Navigator.pop(context);
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (BuildContext context) => AuthPage()),
+                ModalRoute.withName('/'),
+              );
               context.read<AuthBloc>().add(AuthClearStatus());
             }
 
